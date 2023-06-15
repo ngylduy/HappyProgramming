@@ -1,5 +1,7 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,20 +37,24 @@ public class MentorProfile {
     @JoinColumn(name = "userID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonBackReference
     private User mentorProfile;
 
-    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mentorProfile", fetch=FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonManagedReference
     private Collection<Rating> ratings;
 
-    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mentorProfile", fetch=FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonManagedReference
     private Collection<MentorSkill> mentorSkills;
 
-    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mentorProfile", fetch=FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonManagedReference
     private Collection<Request> requests;
 }

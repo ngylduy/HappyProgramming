@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/mentor")
+@RequestMapping(value = "/mentor", consumes={"application/json"})
 public class MentorProfileController {
 
     private final MentorProfileService mentorProfileService;

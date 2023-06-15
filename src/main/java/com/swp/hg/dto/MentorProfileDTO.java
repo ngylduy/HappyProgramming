@@ -15,6 +15,7 @@ public class MentorProfileDTO {
     private String comment;
     private String description;
     private String skill_name;
+    private Integer year_of_exp;
 
     private Integer currentPage;
     private Integer itemPerPage;

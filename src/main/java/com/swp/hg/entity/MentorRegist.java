@@ -1,5 +1,6 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +26,6 @@ public class MentorRegist {
     @JoinColumn(name = "menteeID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonBackReference
     private User mentorRegist;
 }

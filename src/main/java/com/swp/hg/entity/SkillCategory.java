@@ -1,6 +1,8 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
@@ -26,14 +28,19 @@ public class SkillCategory {
     @Column (name = "status")
     private boolean status;
 
-    @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Collection<RequestSkill> requestSkills;
 
-    @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Collection<MentorSkill> mentorSkills;
+//    @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @JsonBackReference
+//    private Collection<RequestSkill> requestSkills;
+//
+//    @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @JsonBackReference
+//    private Collection<MentorSkill> mentorSkills;
+
+
 }
 

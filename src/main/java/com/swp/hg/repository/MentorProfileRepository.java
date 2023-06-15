@@ -23,10 +23,7 @@ public class MentorProfileRepository {
     public List<MentorProfileDTO> doSearch(MentorProfileDTO mentorProfileDTO){
         StringBuilder sql = new StringBuilder();
 
-        sql.append("select mp.avatar, u.fullname , mp.introduction, mp.git_hub, r.star, r.comment, ms.description, " +
-                "sk.skill_name from mentor_profile " +
-                "mp join rating r on mp.mentorID = r.mentorID join mentor_skill ms on mp.mentorID = ms.mentorID join " +
-                "skill_category sk on sk.skillID = ms.skillID join user u on mp.userid = u.id");
+        sql.append("select mp.avatar, u.fullname , mp.introduction, mp.git_hub, r.star, r.comment, ms.description, sk.skill_name from mentor_profile mp join rating r on mp.mentorID = r.mentorID join mentor_skill ms on mp.mentorID = ms.mentorID join  skill_category sk on sk.skillID = ms.skillID join user u on mp.userid = u.id");
 
         sql.append(" where 1=1 ");
 
@@ -49,6 +46,7 @@ public class MentorProfileRepository {
         query.addScalar("comment", StandardBasicTypes.STRING);
         query.addScalar("description", StandardBasicTypes.STRING);
         query.addScalar("skill_name", StandardBasicTypes.STRING);
+//        query.addScalar("years_of_exp", StandardBasicTypes.INTEGER);
 
         query.setResultTransformer(Transformers.aliasToBean(MentorProfileDTO.class));
 
@@ -60,10 +58,7 @@ public class MentorProfileRepository {
     public List<MentorProfileDTO> paging(MentorProfileDTO mentorProfileDTO){
         StringBuilder sql = new StringBuilder();
 
-        sql.append("select mp.avatar, u.fullname , mp.introduction, mp.git_hub, r.star, r.comment, ms.description, " +
-                "sk.skill_name from mentor_profile " +
-                "mp join rating r on mp.mentorID = r.mentorID join mentor_skill ms on mp.mentorID = ms.mentorID join " +
-                "skill_category sk on sk.skillID = ms.skillID join user u on mp.userid = u.id");
+        sql.append("select mp.avatar, u.fullname , mp.introduction, mp.git_hub, r.star, r.comment, ms.description, sk.skill_name from mentor_profile mp join rating r on mp.mentorID = r.mentorID join mentor_skill ms on mp.mentorID = ms.mentorID join  skill_category sk on sk.skillID = ms.skillID join user u on mp.userid = u.id");
 
         sql.append(" where 1=1 ");
 
@@ -86,6 +81,7 @@ public class MentorProfileRepository {
         query.addScalar("comment", StandardBasicTypes.STRING);
         query.addScalar("description", StandardBasicTypes.STRING);
         query.addScalar("skill_name", StandardBasicTypes.STRING);
+ //       query.addScalar("years_of_exp", StandardBasicTypes.INTEGER);
 
         query.setResultTransformer(Transformers.aliasToBean(MentorProfileDTO.class));
 

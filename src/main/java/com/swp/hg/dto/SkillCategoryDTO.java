@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SkilCategoryDTO {
+public class SkillCategoryDTO {
 
     private Integer id;
 
@@ -13,7 +13,7 @@ public class SkilCategoryDTO {
 
     private Boolean status;
 
-    public SkilCategoryDTO(Integer id, String name, Boolean status) {
+    public SkillCategoryDTO(Integer id, String name, Boolean status) {
         this.id = id;
         this.name = name;
         this.status = status;

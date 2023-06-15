@@ -1,5 +1,8 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,5 +29,7 @@ public class RequestSkill {
     @JoinColumn(name = "skillID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonManagedReference
+    @JsonIgnore
     private SkillCategory skillCategory;
 }
