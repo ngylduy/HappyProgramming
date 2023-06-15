@@ -1,5 +1,6 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +13,14 @@ public class Rating {
     private int rateID;
     private String comment;
     private int star;
-    private int menteeID;
-    private int mentorID;
+
+    @ManyToOne
+    @JoinColumn(name = "menteeID")
+    @JsonBackReference
+    private User menteeRating;
+
+    @ManyToOne
+    @JoinColumn(name = "mentorID")
+    @JsonBackReference
+    private MentorProfile mentorProfile;
 }

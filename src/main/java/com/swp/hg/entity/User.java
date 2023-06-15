@@ -1,9 +1,13 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.sql.Date;
+import java.util.Collection;
 
 @Data
 @Entity
@@ -23,4 +27,16 @@ public class User {
     private String address;
     private boolean status;
     private int role;
+
+    @OneToMany(mappedBy = "mentorRegist", cascade = CascadeType.ALL)
+    private Collection<MentorRegist> mentorRegists;
+
+    @OneToMany(mappedBy = "menteeRating", cascade = CascadeType.ALL)
+    private Collection<Rating> ratings;
+
+    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
+    private Collection<MentorProfile> mentorProfiles;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Collection<Request> requests;
 }

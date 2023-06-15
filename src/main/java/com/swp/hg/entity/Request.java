@@ -1,5 +1,9 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,12 +21,6 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "requestID")
     private int requestID;
-
-    @Column (name = "mentorID")
-    private int mentorID;
-
-    @Column (name = "menteeID")
-    private int menteeID;
 
     @Column (name = "date")
     private Date date;
@@ -43,7 +41,15 @@ public class Request {
     private int mentorStatus;
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Collection<RequestSkill> requestSkills;
+
+    @ManyToOne
+    @JoinColumn(name = "menteeID")
+    @JsonBackReference
+    private User users;
+
+    @ManyToOne
+    @JoinColumn(name = "mentorID")
+    @JsonBackReference
+    private MentorProfile mentorProfile;
 }

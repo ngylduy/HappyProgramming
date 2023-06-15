@@ -1,5 +1,8 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,18 +18,14 @@ public class RequestSkill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "requestSkillID")
     private int requestSkillID;
-    private int requestID;
-    private int skillID;
 
     @ManyToOne
-    @JoinColumn(name = "request_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JoinColumn(name = "requestID")
+    @JsonBackReference
     private Request request;
 
     @ManyToOne
-    @JoinColumn(name = "skill_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JoinColumn(name = "skillID")
+    @JsonBackReference
     private SkillCategory skillCategory;
 }

@@ -1,9 +1,11 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -15,9 +17,6 @@ public class MentorProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mentorID;
-
-    @Column (name = "userID")
-    private int userID;
 
     @Column (name = "avatar")
     private String avatar;
@@ -34,4 +33,20 @@ public class MentorProfile {
     @Column (name = "Profession")
     private String Profession;
 
+    @ManyToOne
+    @JoinColumn(name = "userID")
+    @JsonBackReference
+    private User mentorProfile;
+
+    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Collection<Rating> ratings;
+
+    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Collection<MentorSkill> mentorSkills;
+
+    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Collection<Request> requests;
 }
