@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SkillCategoryDTO {
-    private int skillCategoryId;
+    private int skillID;
     private String skillName;
     private boolean status;
 }
