@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Home() {
+   
   return (
     <HomPage>
       <>
