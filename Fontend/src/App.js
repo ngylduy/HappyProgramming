@@ -9,10 +9,15 @@ import Dashboard from './screens/Dashboard';
 import Mentee from './screens/Mentee';
 import Mentor from './screens/Mentor';
 import Analytics from './screens/Analytics';
+import Profile from './screens/Profile';
+import ListMentee from './screens/ListMentor';
+
 
 
 function App() {
   return (
+  
+    
     <BrowserRouter>    
      <Routes>    
      <Route path='/' element={<Home/>}/>
@@ -23,6 +28,8 @@ function App() {
      <Route path='/mentee' element={<Mentee/>}/>
      <Route path='/mentor' element={<Mentor/>}/>
      <Route path='/analytics' element={<Analytics/>}/>
+     <Route path='/profile' element={<Profile/>}/>
+     <Route path='/listmentor' element={<ListMentee/>}/>
      </Routes>   
     </BrowserRouter>
    

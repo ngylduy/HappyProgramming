@@ -1,5 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
-import { Col, Row } from 'react-bootstrap';
+import {  Row } from 'react-bootstrap';
 
 function Navbar({ isLoggedIn, handleLogout }) {
   

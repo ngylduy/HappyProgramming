@@ -27,8 +27,9 @@ const Banner = () => {
         },9000)
         return () => clearInterval(interval)
     },[])
-    console.log("run");
+  
     return (
+        
         <>
             <section className='section'>
                 <div className="introduce">

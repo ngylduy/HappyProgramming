@@ -10,8 +10,6 @@ function Mentee() {
     return (
         <TemplateAdmin>
             <>
-                
-               
                 <div className="container-xl">
                     <div className="table-responsive">
                         <div className="table-wrapper">
@@ -69,7 +67,7 @@ function Mentee() {
                                                 title="Settings"
                                                 data-toggle="tooltip"
                                             >
-                                                <PencilSquare/>
+                                                <PencilSquare />
                                             </a>
                                             <a
                                                 href="#"
@@ -77,7 +75,7 @@ function Mentee() {
                                                 title="Delete"
                                                 data-toggle="tooltip"
                                             >
-                                                <Trash3Fill/>
+                                                <Trash3Fill />
                                             </a>
                                         </td>
                                     </tr>
@@ -105,7 +103,7 @@ function Mentee() {
                                                 title="Settings"
                                                 data-toggle="tooltip"
                                             >
-                                                <PencilSquare/>
+                                                <PencilSquare />
                                             </a>
                                             <a
                                                 href="#"
@@ -113,7 +111,7 @@ function Mentee() {
                                                 title="Delete"
                                                 data-toggle="tooltip"
                                             >
-                                                <Trash3Fill/>
+                                                <Trash3Fill />
                                             </a>
                                         </td>
                                     </tr>
@@ -141,7 +139,7 @@ function Mentee() {
                                                 title="Settings"
                                                 data-toggle="tooltip"
                                             >
-                                                <PencilSquare/>
+                                                <PencilSquare />
                                             </a>
                                             <a
                                                 href="#"
@@ -149,7 +147,7 @@ function Mentee() {
                                                 title="Delete"
                                                 data-toggle="tooltip"
                                             >
-                                                <Trash3Fill/>
+                                                <Trash3Fill />
                                             </a>
                                         </td>
                                     </tr>
@@ -177,7 +175,7 @@ function Mentee() {
                                                 title="Settings"
                                                 data-toggle="tooltip"
                                             >
-                                                <PencilSquare/>
+                                                <PencilSquare />
                                             </a>
                                             <a
                                                 href="#"
@@ -185,7 +183,7 @@ function Mentee() {
                                                 title="Delete"
                                                 data-toggle="tooltip"
                                             >
-                                                <Trash3Fill/>
+                                                <Trash3Fill />
                                             </a>
                                         </td>
                                     </tr>
@@ -213,7 +211,7 @@ function Mentee() {
                                                 title="Settings"
                                                 data-toggle="tooltip"
                                             >
-                                               <PencilSquare/>
+                                                <PencilSquare />
                                             </a>
                                             <a
                                                 href="#"
@@ -221,13 +219,13 @@ function Mentee() {
                                                 title="Delete"
                                                 data-toggle="tooltip"
                                             >
-                                               <Trash3Fill/>
+                                                <Trash3Fill />
                                             </a>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <div className="clearfix">
+                            {/* <div className="clearfix">
                                 <div className="hint-text">
                                     Showing <b>5</b> out of <b>25</b> entries
                                 </div>
@@ -266,7 +264,7 @@ function Mentee() {
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

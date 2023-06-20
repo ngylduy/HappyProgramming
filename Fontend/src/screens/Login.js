@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import TemplateLogin from '../template/TemplateLogin';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
     const [username, setUserName] = useState('');
@@ -39,6 +41,7 @@ function Login() {
 
             if (response.data.message === "Login Success" && response.data.id === 1) {
                 setIsLoggedIn(true);
+                toast.success('Dang nhap thanh cong')
                 setUserName(response.data.username);
                 if (rememberMe) {
                     localStorage.setItem('username', username);
@@ -50,6 +53,7 @@ function Login() {
                 navigate('/mentee');
             } else if (response.data.message === "Login Success") {
                 setIsLoggedIn(true);
+                toast.success('Dang nhap thanh cong')
                 setUserName(response.data.username);
                 if (rememberMe) {
                     localStorage.setItem('username', username);
@@ -60,20 +64,24 @@ function Login() {
                 }
                 navigate('/');
             } else {
-                alert('Tên tài khoản hoặc mật khẩu không chính xác');
+                toast.error('Tên tài khoản hoặc mật khẩu không chính xác');
             }
         } catch (error) {
-            console.log(error);
-            alert('Đã có lỗi xảy ra. Vui lòng thử lại sau');
+           
+            toast.error('Đã có lỗi xảy ra. Vui lòng thử lại sau');
         }
     }
-    console.log(isLoggedIn);
+    useEffect(() => {
+        console.log(isLoggedIn);
+      }, [isLoggedIn]);
+      
     if (isLoggedIn) {
         navigate('/');
     }
 
     return (
         <TemplateLogin>
+            <ToastContainer/>
             <div className="container1">
                 <div className="row px-3">
                     <div className="col-lg-10 col-xl-9 card flex-row mx-auto px-0">

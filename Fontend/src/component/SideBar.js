@@ -1,35 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Sidebar from 'react-sidebar';
 import '../styles/sidebar.css'
-import { NavLink,Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 
-function SideBar() {
-  function w3_open() {
-    document.getElementById("main").style.marginLeft = "25%";
-    document.getElementById("mySidebar").style.width = "25%";
-    document.getElementById("mySidebar").style.display = "block";
-    document.getElementById("openNav").style.display = 'none';
-  }
+const MySidebar = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  function w3_close() {
-    document.getElementById("main").style.marginLeft = "0%";
-    document.getElementById("mySidebar").style.display = "none";
-    document.getElementById("openNav").style.display = "inline-block";
-  }
+  const onSetSidebarOpen = (open) => {
+    setSidebarOpen(open);
+  };
 
   return (
-    <>
-    <div className="sidebar">
-    <NavLink to="/"  className={({isActive}) => (isActive ? 'link-acvtive' : 'link')} >Home</NavLink>
-    <NavLink to="/mentee"  className={({isActive}) => (isActive ? 'link-acvtive' : 'link')} >Mentee</NavLink>
-    <a href="#news">News</a>
-    <a href="#contact">Contact</a>
-    <a href="#about">About</a>
-  </div>
-  
-  </>
+    <Sidebar
+      sidebar={
+        <div className='sidebar-menu'>
+          <div>
+          <img
+            src="https://happycoding.io/tutorials/html/images/rainbow-logo-2.png"
+            width="90vh"
+            style={{
+              marginTop: "10px",
+              marginBottom: "10px",
+              marginLeft: "60px"
+              
+            }}
+          />
+          </div>
+          <div className='side-menu'>
+          <ul>
+            <div className='bar-menu'>
+            <Link to="/login" style={{ textDecoration: "none", fontSize: "20px" }}>Login</Link>
+            </div>
+            <div className='bar-menu'>
+            <Link to="/login" style={{ textDecoration: "none", fontSize: "20px" }}>Home</Link>
+            </div>
+            <div className='bar-menu'>
+            <Link to="/login" style={{ textDecoration: "none", fontSize: "20px" }}>Mentee</Link>
+            </div>
 
+          </ul>
+          </div>
+        </div>
+      }
+      open={sidebarOpen}
+      onSetOpen={onSetSidebarOpen}
+      styles={{
+        sidebar: {
+          width: '250px',
+          background: '#f0f0f0'
+        },
+        content: {
+          padding: '16px'
+        }
+      }}
+    >
+      <button onClick={() => setSidebarOpen(!sidebarOpen)}>Mở menu</button>
+
+    </Sidebar>
   );
-}
+};
 
-export default SideBar;
+export default MySidebar;
