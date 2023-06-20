@@ -13,24 +13,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/skill")
+@RequestMapping("/api")
 public class SkillCategoryController {
 
     @Autowired
     private SkillCategoryService skillCategoryService;
 
-    @GetMapping("")
+    @GetMapping("/skill")
     public List<SkillCategory> getAll() {
         return skillCategoryService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/skill/{id}")
     public SkillCategory getById(@PathVariable int id) {
         return skillCategoryService.getById(id);
     }
 
-    @PostMapping("")
+    @PostMapping("/skill")
     public ResponseEntity<?> saveOrUpdate(@RequestBody SkillCategoryDTO skillCategoryDTO) {
+        ResultDTO<SkillCategory> skillCategoryResultDTO = skillCategoryService.saveOrUpdate(skillCategoryDTO);
+        return new ResponseEntity<ResultDTO<SkillCategory>>(skillCategoryResultDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/skill/{id}")
+    public ResponseEntity<?> updateSkillCategory(@RequestBody SkillCategoryDTO skillCategoryDTO, @PathVariable int id) {
+        skillCategoryDTO.setSkillID(id);
         ResultDTO<SkillCategory> skillCategoryResultDTO = skillCategoryService.saveOrUpdate(skillCategoryDTO);
         return new ResponseEntity<ResultDTO<SkillCategory>>(skillCategoryResultDTO, HttpStatus.OK);
     }

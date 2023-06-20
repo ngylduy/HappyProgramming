@@ -25,18 +25,14 @@ public class SkillCategoryImpl implements SkillCategoryService {
 
     @Override
     public SkillCategory getById(int id) {
-        SkillCategory skillCategory = skillCategoryRepository.findById(id).orElse(null);
-        if (skillCategory != null) {
-            return skillCategory;
-        }
-        return null;
+        return skillCategoryRepository.findById(id).orElse(null);
     }
 
     @Override
     public ResultDTO<SkillCategory> saveOrUpdate(SkillCategoryDTO skillCategoryDTO) {
         ResultDTO<SkillCategory> resultDTO = new ResultDTO<>();
         try {
-            SkillCategory skillCategory = getById(skillCategoryDTO.getSkillCategoryId());
+            SkillCategory skillCategory = getById(skillCategoryDTO.getSkillID());
             System.out.println(skillCategory);
             if (skillCategory == null) {
                 skillCategory = new SkillCategory();
