@@ -17,6 +17,9 @@ public class UserDTO {
     private String email;
     private Date dob;
     private String address;
-    private String role;
+    private boolean status;
+    private int role;
 
+    public UserDTO(String johndoe, String johndoe123, String johnDoe, boolean b, String number, String mail, String s, String s1) {
+    }
 }

@@ -6,6 +6,7 @@ import com.swp.hg.response.LoginMessage;
 import com.swp.hg.response.RegisterMessage;
 import com.swp.hg.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +21,20 @@ public class UserController {
     @PostMapping(path = "/save")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO){
         RegisterMessage registerMessage = userService.addUser(userDTO);
-        return ResponseEntity.ok(registerMessage);
+        if (registerMessage.isSuccess()){
+            return ResponseEntity.ok(registerMessage);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(registerMessage);
+        }
     }
 
     @PostMapping(path = "/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
         LoginMessage loginMessage = userService.loginUser(loginDTO);
-        return ResponseEntity.ok(loginMessage);
+        if (loginMessage.isSuccess()){
+            return ResponseEntity.ok(loginMessage);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginMessage);
+        }
     }
 }

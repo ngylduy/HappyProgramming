@@ -42,6 +42,9 @@ public class User {
         this.address = address;
     }
 
+    public User(String existinguser, String password123, String existingUser, boolean gender, String number, String mail, String s, String address) {
+    }
+
     @Override
     public String toString() {
         return "User{" +

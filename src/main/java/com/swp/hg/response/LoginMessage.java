@@ -3,14 +3,7 @@ package com.swp.hg.response;
 public class LoginMessage {
     String message;
     int id;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    boolean isSuccess;
 
     public String getMessage() {
         return message;
@@ -20,9 +13,26 @@ public class LoginMessage {
         this.message = message;
     }
 
-    public LoginMessage(String message, int id) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean success) {
+        isSuccess = success;
+    }
+
+    public LoginMessage(String message, int id, boolean isSuccess) {
         this.message = message;
         this.id = id;
+        this.isSuccess = isSuccess;
     }
 
 }
