@@ -1,16 +1,21 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "Request")
 public class Request {
     @Id
@@ -19,6 +24,7 @@ public class Request {
     private int requestID;
 
     @Column (name = "date")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date date;
 
     @Column (name = "status")
@@ -39,6 +45,7 @@ public class Request {
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+
     private Collection<RequestSkill> requestSkills;
 
 
@@ -46,11 +53,16 @@ public class Request {
     @JoinColumn(name = "menteeID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonBackReference
     private User users;
 
     @ManyToOne
     @JoinColumn(name = "mentorID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonBackReference
     private MentorProfile mentorProfile;
+
+    public void setId(long l) {
+    }
 }

@@ -1,20 +1,17 @@
 package com.swp.hg.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@Component
 @Table(name = "SkillCategory")
 public class SkillCategory {
     @Id
@@ -26,21 +23,16 @@ public class SkillCategory {
     private String skillName;
 
     @Column (name = "status")
+    @Getter
     private boolean status;
 
+    @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
+    private Collection<RequestSkill> requestSkills;
 
-//    @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @JsonBackReference
-//    private Collection<RequestSkill> requestSkills;
-//
-//    @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @JsonBackReference
-//    private Collection<MentorSkill> mentorSkills;
-
-
+    @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
+    private Collection<MentorSkill> mentorSkills;
 }
+
+
+
 

@@ -23,20 +23,19 @@ public class MentorSkill {
     @Column (name = "description")
     private String description;
 
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "mentorID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonBackReference
     private MentorProfile mentorProfile;
 
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "skillID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
-    @JsonIgnore
+    @JsonBackReference
     private SkillCategory skillCategory;
 }

@@ -23,13 +23,13 @@ public class RequestSkill {
     @JoinColumn(name = "requestID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonBackReference
     private Request request;
 
     @ManyToOne
     @JoinColumn(name = "skillID")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
-    @JsonIgnore
+    @JsonBackReference
     private SkillCategory skillCategory;
 }
