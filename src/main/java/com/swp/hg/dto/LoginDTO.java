@@ -22,4 +22,5 @@ public class LoginDTO {
                 ", password='" + password + '\'' +
                 '}';
     }
+
 }

@@ -1,7 +1,9 @@
 package com.swp.hg.controller;
 
+import com.swp.hg.dto.ChangePassDTO;
 import com.swp.hg.dto.LoginDTO;
 import com.swp.hg.dto.UserDTO;
+import com.swp.hg.response.ChangePassMessage;
 import com.swp.hg.response.LoginMessage;
 import com.swp.hg.response.RegisterMessage;
 import com.swp.hg.service.UserService;
@@ -37,4 +39,15 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginMessage);
         }
     }
+
+    @PostMapping(path = "/change_pass")
+    public ResponseEntity<ChangePassMessage> changePass(@RequestBody ChangePassDTO changePassDTO) {
+        ChangePassMessage changePassMessage = userService.changePass(changePassDTO);
+        if (changePassMessage.isSuccess()) {
+            return ResponseEntity.ok(changePassMessage);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(changePassMessage);
+        }
+    }
+
 }
