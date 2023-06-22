@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +40,7 @@ public class MentorProfileController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    //add mentor CV
    @PostMapping("/add")
 
    public ResponseEntity<ApiResponse> addMentorCV(@RequestBody MentorCVDTO mentorCVDTO) {
@@ -56,8 +54,34 @@ public class MentorProfileController {
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
        }
    }
+   //delete mentor CV
+   @DeleteMapping("/delete/{mentorID}")
+    public ResponseEntity<ApiResponse> deleteMentorCV(@PathVariable int mentorID){
+        try {
+              mentorCVService.deleteMentorSkill(mentorID);
+              mentorCVService.deleteMentorProfile(mentorID);
+              return ResponseEntity.ok(new ApiResponse(true,"Mentor CV deleted successfully"));
+        }catch(Exception e){
+              String errorMessage = "Failed to delete mentor CV";
+              return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, errorMessage));
+        }
+   }
+
+   //update mentor CV
+//   @PutMapping("/update/{userId}")
+//       public ResponseEntity<?> updateMentorProfile(@PathVariable int userId, @RequestBody MentorCVDTO mentorCVDTO) {
+//           ResponseEntity<?> response;
+//           try {
+//               response = mentorCVService.updateMentorCV(userId, mentorCVDTO);
+//           } catch (Exception e) {
+//               String errorMessage = "Failed to update mentor profile: " + e.getMessage();
+//               response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+//           }
+//           return response;
+//       }
+   }
 
 
 
 
-}
+

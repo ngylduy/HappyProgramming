@@ -22,7 +22,7 @@ public class MentorCVDTO {
 
     //mentor skill
     private String description;
-    private String yearsOfExp;
+    private int yearOfExp;
     List<Integer> skillId ;
 
     private boolean status;

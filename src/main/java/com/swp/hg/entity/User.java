@@ -47,4 +47,7 @@ public class User {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Collection<Request> requests;
+
+    public User() {
+    }
 }
