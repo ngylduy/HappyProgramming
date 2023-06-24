@@ -1,5 +1,7 @@
 package com.swp.hg.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.swp.hg.dto.MentorCVDTO;
 import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.entity.MentorSkill;
@@ -10,6 +12,7 @@ import com.swp.hg.repository.MentorSkillRepository;
 import com.swp.hg.repository.SkillCategoryRepository;
 import com.swp.hg.repository.UserRepository;
 import com.swp.hg.response.ApiResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import org.springframework.http.HttpStatus;
@@ -39,8 +42,11 @@ public class MentorCVService {
         this.skillCategoryRepository = skillCategoryRepository;
     }
 
-    //add mentor CV
-    public ResponseEntity<?> addMentorCV(MentorCVDTO mentorCVDTO) {
+
+
+    public ResponseEntity<?> addMentorCV(int userID, MentorCVDTO mentorCVDTO) {
+
+
         try {
             MentorProfile mentorProfile = new MentorProfile();
             mentorProfile.setAvatar(mentorCVDTO.getAvatar());
@@ -48,7 +54,7 @@ public class MentorCVService {
             mentorProfile.setLinkedIn(mentorCVDTO.getLinkedln());
             mentorProfile.setGitHub(mentorCVDTO.getGithub());
             mentorProfile.setProfession(mentorCVDTO.getProfession());
-            User user = userRepository.findById(mentorCVDTO.getUserid()).orElse(null);
+            User user = userRepository.findById(userID).orElse(null);
             mentorProfile.setMentorProfile(user);
 
             // Save the mentor profile
@@ -75,7 +81,7 @@ public class MentorCVService {
                     List<String> errors = new ArrayList<>();
                     errors.add("Invalid type input for yearsOfExp");
                     // Return the error response
-                    return new ResponseEntity<>(new ApiResponse(false, "Invalid input", errors), HttpStatus.BAD_REQUEST);
+                    return ResponseEntity.badRequest().body(new ApiResponse(false, "Invalid input", errors));
                 }
 
                 mentorSkillRepository.save(mentorSkill);
@@ -88,9 +94,63 @@ public class MentorCVService {
         }
     }
 
+
+//    public ApiResponse addMentorCV(int userID, MentorCVDTO mentorCVDTO) {
+//
+//
+//        try {
+//            MentorProfile mentorProfile = new MentorProfile();
+//            mentorProfile.setAvatar(mentorCVDTO.getAvatar());
+//            mentorProfile.setIntroduction(mentorCVDTO.getIntroduction());
+//            mentorProfile.setLinkedIn(mentorCVDTO.getLinkedln());
+//            mentorProfile.setGitHub(mentorCVDTO.getGithub());
+//            mentorProfile.setProfession(mentorCVDTO.getProfession());
+//            User user = userRepository.findById(userID).orElse(null);
+//            mentorProfile.setMentorProfile(user);
+//
+//            // Save the mentor profile
+//
+//
+//            // Save the mentor skills
+//            for (Integer skillId : mentorCVDTO.getSkillId()) {
+//                MentorSkill mentorSkill = new MentorSkill();
+//                mentorSkill.setDescription(mentorCVDTO.getDescription());
+//                mentorSkill.setMentorProfile(mentorProfile);
+//                SkillCategory skillCategory = skillCategoryRepository.findById(skillId).orElse(null);
+//                mentorSkill.setSkillCategory(skillCategory);
+//
+//
+//                ObjectMapper objectMapper = new ObjectMapper();
+//
+//                try {
+//                    int yearOfExp = objectMapper.readValue(mentorCVDTO.getYearOfExp(), int.class);
+//                    if (yearOfExp <= 0) {
+//                        return new ApiResponse(false, "Wrong years of experience");
+//                    }
+//                    mentorSkill.setYearsOfExp(yearOfExp);
+//                } catch (InvalidFormatException e) {
+//                    return new ApiResponse(false, "Wrong format of years of experience");
+//                }
+//
+//                mentorSkillRepository.save(mentorSkill);
+//            }
+//
+//            mentorProfileRepo.save(mentorProfile);
+//            return new ApiResponse(true,"Add mentor cv successfully");
+//
+//        } catch (Exception e) {
+//            return new ApiResponse(false,"Failed to add mentor cv");
+//        }
+//    }
+
+
+
+
+
+
     //delete mentorCV by mentorID
-           public void deleteMentorSkill(int mentorID){
-              MentorProfile mentorProfile = mentorProfileRepo.getById(mentorID);
+           public void deleteMentorSkill(int userid){
+               MentorProfile mentorProfile = mentorProfileRepo.findMentorProfilesByUserID(userid);
               if(mentorProfile!=null){
                   Collection<MentorSkill> mentorSkills = mentorProfile.getMentorSkills();
                   for (MentorSkill mentorSkill:mentorSkills) {
@@ -99,65 +159,72 @@ public class MentorCVService {
               }
            }
 
-           public void deleteMentorProfile(int mentorID){
-                mentorProfileRepo.deleteById(mentorID);
+           public void deleteMentorProfile(int userid){
+              MentorProfile mentorProfile = mentorProfileRepo.findMentorProfilesByUserID(userid);
+               mentorProfileRepo.delete(mentorProfile);
            }
 
-      //update mentor CV by mentorID
+      //update mentor CV by userID
+      @Transactional
+      public ResponseEntity<?> updateMentorCV(int userID, MentorCVDTO mentorCVDTO){
 
-//    public ResponseEntity<?> updateMentorCV(int userId, MentorCVDTO mentorCVDTO){
-//        try {
-//            // Retrieve the existing mentor profile by user ID
-//            MentorProfile mentorProfile = mentorProfileRepo.findByMentorProfileUserId(userId);
-//            if (mentorProfile == null) {
-//                // If mentor profile doesn't exist, return a not found response
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Mentor profile not found");
-//            }
-//
-//            // Update the mentor profile fields
-//            mentorProfile.setAvatar(mentorCVDTO.getAvatar());
-//            mentorProfile.setIntroduction(mentorCVDTO.getIntroduction());
-//            mentorProfile.setLinkedIn(mentorCVDTO.getLinkedln());
-//            mentorProfile.setGitHub(mentorCVDTO.getGithub());
-//            mentorProfile.setProfession(mentorCVDTO.getProfession());
-//
-//            // Save the updated mentor profile
-//            mentorProfileRepo.save(mentorProfile);
-//
-//            // Delete existing mentor skills associated with the mentor profile
-//            mentorSkillRepository.deleteByMentorProfile(mentorProfile);
-//
-//            // Save the updated mentor skills
-//            for (Integer skillId : mentorCVDTO.getSkillId()) {
-//                MentorSkill mentorSkill = new MentorSkill();
-//                mentorSkill.setDescription(mentorCVDTO.getDescription());
-//                mentorSkill.setMentorProfile(mentorProfile);
-//                SkillCategory skillCategory = skillCategoryRepository.findById(skillId).orElse(null);
-//                mentorSkill.setSkillCategory(skillCategory);
-//
-//                try {
-//                    int yearOfExp = mentorCVDTO.getYearOfExp();
-//                    if (yearOfExp <= 0) {
-//                        return ResponseEntity.badRequest().body(new ApiResponse(false, "Invalid input", Collections.singletonList("Invalid value for yearsOfExp")));
-//                    }
-//                    mentorSkill.setYearsOfExp(yearOfExp);
-//
-//                } catch (NumberFormatException e) {
-//                    List<String> errors = new ArrayList<>();
-//                    errors.add("Invalid type input for yearsOfExp");
-//                    return new ResponseEntity<>(new ApiResponse(false, "Invalid input", errors), HttpStatus.BAD_REQUEST);
-//                }
-//
-//                mentorSkillRepository.save(mentorSkill);
-//            }
-//
-//            return ResponseEntity.ok("Mentor profile updated successfully");
-//        } catch (Exception e) {
-//            String errorMessage = "Failed to update Mentor profile: " + e.getMessage();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-//        }
-//
-//    }
+        try {
+            // Retrieve the existing MentorProfile by ID
+            MentorProfile mentorProfile = mentorProfileRepo.findMentorProfilesByUserID(userID);
+            if (mentorProfile == null) {
+                // Return an error response if MentorProfile is not found
+                return new ResponseEntity<>(new ApiResponse(false, "Mentor profile not found"), HttpStatus.NOT_FOUND);
+            }
+
+            // Update the MentorProfile fields
+
+            mentorProfile.setAvatar(mentorCVDTO.getAvatar());
+            mentorProfile.setIntroduction(mentorCVDTO.getIntroduction());
+            mentorProfile.setLinkedIn(mentorCVDTO.getLinkedln());
+            mentorProfile.setGitHub(mentorCVDTO.getGithub());
+            mentorProfile.setProfession(mentorCVDTO.getProfession());
+            User user = userRepository.findById(userID).orElse(null);
+            mentorProfile.setMentorProfile(user);
+
+            // Save the updated mentor profile
+            mentorProfileRepo.save(mentorProfile);
+
+            // Delete existing mentor skills for the mentor profile
+            mentorSkillRepository.deleteByMentorProfile(mentorProfile);
+
+            // Save the updated mentor skills
+            for (Integer skillId : mentorCVDTO.getSkillId()) {
+                MentorSkill mentorSkill = new MentorSkill();
+                mentorSkill.setDescription(mentorCVDTO.getDescription());
+                mentorSkill.setMentorProfile(mentorProfile);
+                SkillCategory skillCategory = skillCategoryRepository.findById(skillId).orElse(null);
+                mentorSkill.setSkillCategory(skillCategory);
+
+                try {
+                    int yearOfExp = mentorCVDTO.getYearOfExp();
+                    if (yearOfExp <= 0) {
+                        return ResponseEntity.badRequest().body(new ApiResponse(false, "Invalid input",
+                                Collections.singletonList("Invalid value for yearsOfExp")));
+                    }
+                    mentorSkill.setYearsOfExp(yearOfExp);
+                } catch (NumberFormatException e) {
+                    // Handle invalid type input for yearsOfExp
+                    List<String> errors = new ArrayList<>();
+                    errors.add("Invalid type input for yearsOfExp");
+                    // Return the error response
+                    return new ResponseEntity<>(new ApiResponse(false, "Invalid input", errors), HttpStatus.BAD_REQUEST);
+                }
+
+                mentorSkillRepository.save(mentorSkill);
+            }
+
+            return ResponseEntity.ok("Mentor CV updated successfully"); // Return success message with HTTP 200 status
+        } catch (Exception e) {
+            String errorMessage = "Failed to update Mentor CV: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
+
+    }
 
 
 

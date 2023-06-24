@@ -3,19 +3,14 @@ package com.swp.hg.controller;
 import com.swp.hg.dto.MentorCVDTO;
 import com.swp.hg.dto.MentorProfileDTO;
 import com.swp.hg.dto.SearchResultDTO;
+import com.swp.hg.repository.MentorProfileRepo;
 import com.swp.hg.response.ApiResponse;
 import com.swp.hg.service.MentorCVService;
 import com.swp.hg.service.MentorProfileService;
 import com.swp.hg.service.SkillCategoryService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/mentor")
@@ -25,12 +20,15 @@ public class MentorProfileController {
 
     private final MentorCVService mentorCVService;
 
+    private final MentorProfileRepo mentorProfileRepo;
 
 
-    public MentorProfileController(MentorProfileService mentorProfileService, MentorCVService mentorCVService, SkillCategoryService skillCategoryService) {
+
+    public MentorProfileController(MentorProfileService mentorProfileService, MentorCVService mentorCVService, SkillCategoryService skillCategoryService, MentorProfileRepo mentorProfileRepo) {
         this.mentorProfileService = mentorProfileService;
         this.mentorCVService = mentorCVService;
 
+        this.mentorProfileRepo = mentorProfileRepo;
     }
 
 
@@ -41,11 +39,11 @@ public class MentorProfileController {
     }
 
     //add mentor CV
-   @PostMapping("/add")
+   @PostMapping("/add/{userid}")
 
-   public ResponseEntity<ApiResponse> addMentorCV(@RequestBody MentorCVDTO mentorCVDTO) {
+   public ResponseEntity<ApiResponse> addMentorCV(@PathVariable int userid,@RequestBody MentorCVDTO mentorCVDTO) {
        try {
-           mentorCVService.addMentorCV(mentorCVDTO);
+           mentorCVService.addMentorCV(userid, mentorCVDTO);
            ApiResponse response = new ApiResponse(true, "Mentor CV added successfully");
            return ResponseEntity.ok(response);
        } catch (Exception e) {
@@ -55,11 +53,11 @@ public class MentorProfileController {
        }
    }
    //delete mentor CV
-   @DeleteMapping("/delete/{mentorID}")
-    public ResponseEntity<ApiResponse> deleteMentorCV(@PathVariable int mentorID){
+   @DeleteMapping("/delete/{userid}")
+    public ResponseEntity<ApiResponse> deleteMentorCV(@PathVariable int userid){
         try {
-              mentorCVService.deleteMentorSkill(mentorID);
-              mentorCVService.deleteMentorProfile(mentorID);
+              mentorCVService.deleteMentorSkill(userid);
+              mentorCVService.deleteMentorProfile(userid);
               return ResponseEntity.ok(new ApiResponse(true,"Mentor CV deleted successfully"));
         }catch(Exception e){
               String errorMessage = "Failed to delete mentor CV";
@@ -68,17 +66,23 @@ public class MentorProfileController {
    }
 
    //update mentor CV
-//   @PutMapping("/update/{userId}")
-//       public ResponseEntity<?> updateMentorProfile(@PathVariable int userId, @RequestBody MentorCVDTO mentorCVDTO) {
-//           ResponseEntity<?> response;
-//           try {
-//               response = mentorCVService.updateMentorCV(userId, mentorCVDTO);
-//           } catch (Exception e) {
-//               String errorMessage = "Failed to update mentor profile: " + e.getMessage();
-//               response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-//           }
-//           return response;
-//       }
+   @PutMapping("/update/{userId}")
+       public ResponseEntity<?> updateMentorProfile(@PathVariable int userId, @RequestBody MentorCVDTO mentorCVDTO) {
+           ResponseEntity<?> response;
+           try {
+               response = mentorCVService.updateMentorCV(userId, mentorCVDTO);
+           } catch (Exception e) {
+               String errorMessage = "Failed to update mentor profile: " + e.getMessage();
+               response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+           }
+           return response;
+       }
+
+
+       @GetMapping("/total")
+       public int totalMentor(){
+          return mentorProfileRepo.totalMentor();
+       }
    }
 
 

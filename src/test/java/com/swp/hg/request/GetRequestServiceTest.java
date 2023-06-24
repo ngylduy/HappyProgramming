@@ -1,7 +1,7 @@
 package com.swp.hg.request;
 
 import com.swp.hg.entity.Request;
-import com.swp.hg.repository.RequestRepository;
+import com.swp.hg.repository.*;
 import com.swp.hg.service.RequestService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,10 +23,18 @@ public class GetRequestServiceTest {
 
     private RequestService requestService;
 
+
+
+   
+
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        requestService = new RequestService(requestRepository);
+        UserRepository userRepository = null;
+        MentorProfileRepo mentorProfileRepo =null;
+        SkillCategoryRepository skillCategoryRepository = null;
+        RequestSkillRepository requestSkillRepository = null;
+        requestService = new RequestService(requestRepository, userRepository, mentorProfileRepo, skillCategoryRepository, requestSkillRepository);
     }
 
     @Test

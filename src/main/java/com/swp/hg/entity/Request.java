@@ -24,7 +24,7 @@ public class Request {
     private int requestID;
 
     @Column (name = "date")
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date date;
 
     @Column (name = "status")
@@ -45,7 +45,6 @@ public class Request {
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-
     private Collection<RequestSkill> requestSkills;
 
 
