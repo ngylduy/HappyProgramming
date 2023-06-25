@@ -51,6 +51,7 @@ const ListMentee = () => {
                                                 Charlene Reed
                                             </a>
                                         </h3>
+                                        <hr/>
                                         <div className="mentee-details">
                                             <h6>
                                                 <b>Mentee ID :</b> 01
@@ -97,6 +98,7 @@ const ListMentee = () => {
                                                 Richard Wilson
                                             </a>
                                         </h3>
+                                        <hr/>
                                         <div className="mentee-details">
                                             <h5>
                                                 <b>Mentee ID :</b> 16
@@ -144,6 +146,7 @@ const ListMentee = () => {
                                                 Richard Wilson
                                             </a>
                                         </h3>
+                                        <hr/>
                                         <div className="mentee-details">
                                             <h5>
                                                 <b>Mentee ID :</b> 16

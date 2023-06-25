@@ -9,74 +9,81 @@ import 'react-toastify/dist/ReactToastify.css';
 function Login() {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+   
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const storedUsername = localStorage.getItem('username');
-        const storedPassword = localStorage.getItem('password');
-        if (storedUsername && storedPassword) {
-            setUserName(storedUsername);
-            setPassword(storedPassword);
-            setRememberMe(true);
+    useEffect(()=>{
+        const stname =localStorage.getItem('token')
+        if(stname){
+            navigate("/")
         }
-    }, []);
+    },[])
+    
+    // useEffect(() => {
+    //     const storedUsername = localStorage.getItem('username');
+    //     const storedPassword = localStorage.getItem('password');
+    //     if (storedUsername && storedPassword) {
+    //         setUserName(storedUsername);
+    //         setPassword(storedPassword);
+    //         setRememberMe(true);
+    //     }
+    // }, []);
 
     async function handleLogin(event) {
         event.preventDefault();
         if (!username || !password) {
-            alert('Vui lòng nhập tên đăng nhập và mật khẩu.');
+            toast.error('Vui lòng nhập tên đăng nhập và mật khẩu.');
             return;
         }
 
         try {
             const response = await axios.post(
-                `http://localhost:8080/api/v1/user/login`,
-                {
-                    username: username,
-                    password: password,
-                }
+              `http://localhost:8080/api/auth/login`,
+              {
+                username: username,
+                password: password,
+              }
             );
-
-            if (response.data.message === "Login Success" && response.data.id === 1) {
-                setIsLoggedIn(true);
-                toast.success('Dang nhap thanh cong')
-                setUserName(response.data.username);
-                if (rememberMe) {
-                    localStorage.setItem('username', username);
-                    localStorage.setItem('password', password);
-                } else {
-                    localStorage.removeItem('username');
-                    localStorage.removeItem('password');
-                }
+          
+            if (response.status === 200) {
+              if (response.data.id === 1) {
+                localStorage.setItem('username', username);
+                // setUserName(response.data.username);
+                // if (rememberMe) {
+                //   localStorage.setItem('username', username);
+                //   localStorage.setItem('password', password);
+                // } else {
+                //   localStorage.removeItem('username');
+                //   localStorage.removeItem('password');
+                // }
                 navigate('/mentee');
-            } else if (response.data.message === "Login Success") {
-                setIsLoggedIn(true);
-                toast.success('Dang nhap thanh cong')
-                setUserName(response.data.username);
-                if (rememberMe) {
-                    localStorage.setItem('username', username);
-                    localStorage.setItem('password', password);
-                } else {
-                    localStorage.removeItem('username');
-                    localStorage.removeItem('password');
-                }
+              } else {
+                // setUserName(response.data.username);
+                localStorage.setItem("token", response.data.token)
+                // if (rememberMe) {
+                //   localStorage.setItem('username', username);
+                //   localStorage.setItem('password', password);
+                // } else {
+                //   localStorage.removeItem('username');
+                //   localStorage.removeItem('password');
+                // }
                 navigate('/');
+              }
+              toast.success('Đăng nhập thành công');
             } else {
-                toast.error('Tên tài khoản hoặc mật khẩu không chính xác');
+              throw new Error(`Unexpected status code ${response.status}`);
             }
-        } catch (error) {
-           
-            toast.error('Đã có lỗi xảy ra. Vui lòng thử lại sau');
-        }
-    }
-    useEffect(() => {
-        console.log(isLoggedIn);
-      }, [isLoggedIn]);
+          } catch (error) {
+            if (error.response && error.response.status === 403) {
+              toast.error('Tên tài khoản hoặc mật khẩu không chính xác');
+            } else {
+              toast.error('Đã có lỗi xảy ra. Vui lòng thử lại sau');
+            }
+          }
+          
+        
+   
       
-    if (isLoggedIn) {
-        navigate('/');
     }
 
     return (

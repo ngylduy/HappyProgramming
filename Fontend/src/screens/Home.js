@@ -2,7 +2,7 @@ import React from 'react'
 import HomPage from '../template/HomePage';
 import "../styles/home.css"
 import { Icon } from '@iconify/react';
-
+import { ToastContainer } from "react-toastify";
 import { Container } from 'react-bootstrap';
 
 function Home() {
@@ -10,6 +10,7 @@ function Home() {
   return (
     <HomPage>
       <>
+      <ToastContainer/>
         {/* ======= About Section ======= */}
         <section id="about" className="about">
           <div className="container" data-aos="fade-up">

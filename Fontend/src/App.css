@@ -389,6 +389,8 @@ nav {
 }
 .breadcrumb-bar{
   margin-top: 89px;
+  background-color: #bfcac8;
+  padding: 20px;
 }
 .card-body{
 padding: 20px;

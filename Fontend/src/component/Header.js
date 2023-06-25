@@ -1,10 +1,60 @@
-import { NavLink, Link } from "react-router-dom";
-import {  Row } from 'react-bootstrap';
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import { Row, NavDropdown } from 'react-bootstrap';
+import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function Navbar({ isLoggedIn, handleLogout }) {
-  
+
+function Navbar() {
+    const token =localStorage.getItem('token')
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+
+        navigate('/')
+        toast.success("Logout success")
+    }
+    const [users, setUsers] = useState([]);
+    const [stname, setToken] = useState(localStorage.getItem('token'));
+
+    useEffect(() => {
+        if (stname) {
+            console.log('Token is stored in localStorage:', stname);
+        } else {
+            console.log('Token is not stored in localStorage');
+        }
+    }, [stname]);
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/api/user/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log(response.data)
+                setUsers(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+    
+        if (token) {
+            setToken(token);
+            fetchUsers();
+        }else {
+            setUsers([]);
+        }
+    
+    }, [token]);
+    
+    
+    
     return (
+
         <>
+
+
             <nav className="navbar navbar-expand-sm navbar-light bg-light fixed-top nsvj ">
                 <div className="container-fluid">
                     <img
@@ -29,21 +79,45 @@ function Navbar({ isLoggedIn, handleLogout }) {
                     </button>
                     <div >
                         <Row>
-                            <li className="lnv nav-item font">
-                                <NavLink to="/" className={({ isActive }) => (isActive ? 'link-acvtive' : 'link')} style={{ textDecoration: "none", fontSize: "20px" }}>Home</NavLink>
-                            </li>
-                            <li className="lnv nav-item font">
-                                <Link to="/about" style={{ textDecoration: "none", fontSize: "20px" }}>About</Link>
-                            </li>
-                            {isLoggedIn ? (
-                                <li className="lnv nav-item font">
-                                    <Link to="/" onClick={handleLogout} style={{ textDecoration: "none", fontSize: "20px" }}>Logout</Link>
-                                </li>
+
+
+                            {users.fullname ? (
+                                <p>Xin chào, {users.fullname}!</p>
                             ) : (
-                                <li className="lnv nav-item font">
-                                    <Link to="/login" style={{ textDecoration: "none", fontSize: "20px" }}>Login</Link>
-                                </li>
+                                <p></p>
                             )}
+
+
+
+                            <div />
+                            <div styles={{ textAlign: "right" }}>
+                                <Row>
+                                    <li className="lnv nav-item font ">
+                                        <NavLink to="/" className={({ isActive }) => (isActive ? 'link-acvtive' : 'link')} style={{ textDecoration: "none", fontSize: "20px" }}>Home</NavLink>
+                                    </li>
+                                    <li className="lnv nav-item font">
+                                        <Link to="/about" style={{ textDecoration: "none", fontSize: "20px" }}>About</Link>
+                                    </li>
+                                </Row>
+                            </div>
+                            <li className="lnv nav-item font">
+                                <NavDropdown title="Setting" style={{ textDecoration: "none", fontSize: "20px" }}>
+                                    {token ? (
+                                        <NavDropdown.Item onClick={() => handleLogout()} style={{ textDecoration: "none", fontSize: "20px" }} >Logout</NavDropdown.Item>
+                                    ) : (
+                                        <NavDropdown.Item ><Link to="/login" style={{ textDecoration: "none", fontSize: "20px" }}>Login</Link></NavDropdown.Item>
+                                    )}
+
+
+
+
+
+                                </NavDropdown>
+                            </li>
+
+
+
+
                         </Row>
                     </div>
                 </div>
