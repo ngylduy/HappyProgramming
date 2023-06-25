@@ -3,7 +3,6 @@ package com.swp.hg.service;
 import com.swp.hg.dto.ResultDTO;
 import com.swp.hg.dto.SkillCategoryDTO;
 import com.swp.hg.entity.SkillCategory;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
