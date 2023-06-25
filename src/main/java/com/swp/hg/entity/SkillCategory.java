@@ -13,12 +13,14 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "SkillCategory")
 public class SkillCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "skillID")
-    private int skillID;
+    private long skillID;
 
     @Column (name = "skillName")
     private String skillName;
@@ -35,5 +37,6 @@ public class SkillCategory {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Collection<MentorSkill> mentorSkills;
+
 }
 
