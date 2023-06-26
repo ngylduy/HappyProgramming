@@ -4,14 +4,12 @@ import com.swp.hg.dto.UserDTO;
 import com.swp.hg.entity.User;
 import com.swp.hg.repository.UserRepository;
 import com.swp.hg.response.RegisterMessage;
-import com.swp.hg.service.impl.UserIMPL;
-import org.junit.Before;
+import com.swp.hg.service.impl.RegisterIMPL;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
@@ -25,12 +23,12 @@ public class RegisterServiceTest    {
     private UserRepository userRepository;
 
     @Mock
-    private UserIMPL userIMPL;
+    private RegisterIMPL registerIMPL;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        userIMPL = new UserIMPL(userRepository);
+        registerIMPL = new RegisterIMPL(userRepository);
     }
 
     @Test
@@ -51,7 +49,7 @@ public class RegisterServiceTest    {
         when(userRepository.findByPhone(userDTO.getPhone())).thenReturn(null);
 
         // Act
-        RegisterMessage result = userIMPL.addUser(userDTO);
+        RegisterMessage result = registerIMPL.addUser(userDTO);
 
         // Assert
         assertTrue(result.isSuccess());
@@ -71,12 +69,33 @@ public class RegisterServiceTest    {
         userDTO.setAddress("123 Street");
 
         // Act
-        RegisterMessage result = userIMPL.addUser(userDTO);
+        RegisterMessage result = registerIMPL.addUser(userDTO);
 
         // Assert
         assertFalse(result.isSuccess());
         assertEquals("Register failed!, Because username is required!", result.getMessage());
     }
+
+    @Test
+    public void testAddUserWithMissingPassword() {
+        // Arrange
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername("username");
+        userDTO.setEmail("email@example.com");
+        userDTO.setPhone("123456789");
+        userDTO.setFullname("John Doe");
+        userDTO.setGender(true);
+        userDTO.setDob(Date.valueOf("1990-01-01"));
+        userDTO.setAddress("123 Street");
+
+        // Act
+        RegisterMessage result = registerIMPL.addUser(userDTO);
+
+        // Assert
+        assertFalse(result.isSuccess());
+        assertEquals("Register failed!, Because password is required!", result.getMessage());
+    }
+
 
     @Test
     public void testAddUserWithExistingUsername() {
@@ -94,11 +113,51 @@ public class RegisterServiceTest    {
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(new User());
 
         // Act
-        RegisterMessage result = userIMPL.addUser(userDTO);
+        RegisterMessage result = registerIMPL.addUser(userDTO);
 
         // Assert
         assertFalse(result.isSuccess());
         assertEquals("Register failed!, Because username already exists", result.getMessage());
+    }
+
+    @Test
+    public void testAddUserWithMissingEmail() {
+        // Arrange
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername("username");
+        userDTO.setPhone("123456789");
+        userDTO.setPassword("password");
+        userDTO.setFullname("John Doe");
+        userDTO.setGender(true);
+        userDTO.setDob(Date.valueOf("1990-01-01"));
+        userDTO.setAddress("123 Street");
+
+        // Act
+        RegisterMessage result = registerIMPL.addUser(userDTO);
+
+        // Assert
+        Assertions.assertFalse(result.isSuccess());
+        Assertions.assertEquals("Register failed!, Because email is required!", result.getMessage());
+    }
+
+    @Test
+    public void testAddUserWithMissingPhone() {
+        // Arrange
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername("username");
+        userDTO.setEmail("email@example.com");
+        userDTO.setPassword("password");
+        userDTO.setFullname("John Doe");
+        userDTO.setGender(true);
+        userDTO.setDob(Date.valueOf("1990-01-01"));
+        userDTO.setAddress("123 Street");
+
+        // Act
+        RegisterMessage result = registerIMPL.addUser(userDTO);
+
+        // Assert
+        Assertions.assertFalse(result.isSuccess());
+        Assertions.assertEquals("Register failed!, Because phone is required!", result.getMessage());
     }
 
 }

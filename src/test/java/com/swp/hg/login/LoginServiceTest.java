@@ -9,7 +9,7 @@ import com.swp.hg.dto.LoginDTO;
 import com.swp.hg.entity.User;
 import com.swp.hg.repository.UserRepository;
 import com.swp.hg.response.LoginMessage;
-import com.swp.hg.service.impl.UserIMPL;
+import com.swp.hg.service.impl.LoginIMPL;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +24,12 @@ public class LoginServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private UserIMPL userIMPL;
+    private LoginIMPL loginIMPL;
 
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        userIMPL = new UserIMPL(userRepository);
+        loginIMPL = new LoginIMPL(userRepository);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class LoginServiceTest {
         when(userRepository.findOneByUsernameAndPassword(username, password)).thenReturn(Optional.of(user));
 
         // Act
-        LoginMessage result = userIMPL.loginUser(loginDTO);
+        LoginMessage result = loginIMPL.loginUser(loginDTO);
 
         // Assert
         assertTrue(result.isSuccess());
@@ -72,7 +72,7 @@ public class LoginServiceTest {
         when(userRepository.findByUsername(username)).thenReturn(null);
 
         // Act
-        LoginMessage result = userIMPL.loginUser(loginDTO);
+        LoginMessage result = loginIMPL.loginUser(loginDTO);
 
         // Assert
         assertFalse(result.isSuccess());
@@ -98,7 +98,7 @@ public class LoginServiceTest {
         when(userRepository.findOneByUsernameAndPassword(username, password)).thenReturn(Optional.empty());
 
         // Act
-        LoginMessage result = userIMPL.loginUser(loginDTO);
+        LoginMessage result = loginIMPL.loginUser(loginDTO);
 
         // Assert
         assertFalse(result.isSuccess());

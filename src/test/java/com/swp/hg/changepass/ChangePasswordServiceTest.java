@@ -4,8 +4,7 @@ import com.swp.hg.dto.ChangePassDTO;
 import com.swp.hg.entity.User;
 import com.swp.hg.repository.UserRepository;
 import com.swp.hg.response.ChangePassMessage;
-import com.swp.hg.service.UserService;
-import com.swp.hg.service.impl.UserIMPL;
+import com.swp.hg.service.impl.ChangePassIMPL;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,12 +20,12 @@ public class ChangePasswordServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private UserIMPL userIMPL;
+    private ChangePassIMPL changePassIMPL;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        userIMPL = new UserIMPL(userRepository);
+        changePassIMPL = new ChangePassIMPL(userRepository);
     }
 
     @Test
@@ -48,7 +47,7 @@ public class ChangePasswordServiceTest {
         changePassDTO.setNewPassword(newPassword);
         changePassDTO.setConfirmNewPassword(confirmNewPassword);
 
-        ChangePassMessage result = userIMPL.changePass(changePassDTO);
+        ChangePassMessage result = changePassIMPL.changePass(changePassDTO);
 
         Assert.assertTrue(result.isSuccess());
         Assert.assertEquals("Password changed successfully.", result.getMessage());
@@ -73,7 +72,7 @@ public class ChangePasswordServiceTest {
         changePassDTO.setNewPassword(newPassword);
         changePassDTO.setConfirmNewPassword(confirmNewPassword);
 
-        ChangePassMessage result = userIMPL.changePass(changePassDTO);
+        ChangePassMessage result = changePassIMPL.changePass(changePassDTO);
 
         Assert.assertFalse(result.isSuccess());
         Assert.assertEquals("Incorrect old password.", result.getMessage());
@@ -98,7 +97,7 @@ public class ChangePasswordServiceTest {
         changePassDTO.setNewPassword(newPassword);
         changePassDTO.setConfirmNewPassword(confirmNewPassword);
 
-        ChangePassMessage result = userIMPL.changePass(changePassDTO);
+        ChangePassMessage result = changePassIMPL.changePass(changePassDTO);
 
         Assert.assertFalse(result.isSuccess());
         Assert.assertEquals("New password and confirm password do not match.", result.getMessage());
@@ -123,7 +122,7 @@ public class ChangePasswordServiceTest {
         changePassDTO.setNewPassword(newPassword);
         changePassDTO.setConfirmNewPassword(confirmNewPassword);
 
-        ChangePassMessage result = userIMPL.changePass(changePassDTO);
+        ChangePassMessage result = changePassIMPL.changePass(changePassDTO);
 
         Assert.assertFalse(result.isSuccess());
         Assert.assertEquals("New password cannot be blank.", result.getMessage());

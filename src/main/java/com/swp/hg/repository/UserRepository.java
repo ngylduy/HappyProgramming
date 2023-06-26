@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@EnableJpaRepositories
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findOneByUsernameAndPassword(String username , String password);
@@ -18,6 +17,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
 
     User findByPhone(String phone);
+
+    User findById(int id);
 
 
 }
