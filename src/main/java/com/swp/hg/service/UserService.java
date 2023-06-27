@@ -6,14 +6,14 @@ import com.swp.hg.entity.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> getAll();
     User getById(int id);
 
-    //New added
+    List<User> getListUserByRole(String role_name);
 
     User saveUser(User user);
     Role saveRole(Role role);
     void addRoleToUser(String username, String role_name);
+    void removeRoleFromUser(String username, String role_name);
     User getUser(String username);
     List<User> getUsers();
     List<Role> getRoles();

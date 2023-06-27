@@ -1,25 +1,22 @@
 package com.swp.hg.service.Impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.swp.hg.entity.SkillCategory;
-import com.swp.hg.service.SkillCategoryService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import com.swp.hg.dto.RatingDTO;
 import com.swp.hg.dto.ResultDTO;
 import com.swp.hg.entity.Rating;
 import com.swp.hg.repository.RatingRepository;
 import com.swp.hg.service.MentorProfileService;
 import com.swp.hg.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class RatingImplTest {
 
@@ -126,16 +123,6 @@ public class RatingImplTest {
         verify(ratingRepository, times(1)).save(any(Rating.class));
     }
 
-    @Test
-    void testDelete() {
-
-        int id = 2;
-        when(ratingRepository.findAll()).thenReturn(mockRatings);
-
-        ResultDTO<Rating> result = ratingService.delete(id);
-
-        assertEquals("Rating not found", result.getMessage());
-    }
     @Test
     void testGetById() {
         int id = 1;

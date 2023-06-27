@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MentorProfileRepo extends JpaRepository<MentorProfile, Integer> {
 
-   @Query(value ="select * from mentor_profile  where userid = :id LIMIT 1", nativeQuery = true)
+    @Query(value = "select * from mentor_profile  where userid = :id LIMIT 1", nativeQuery = true)
     MentorProfile findMentorProfilesByUserID(@Param("id") int id);
 
-   @Query(value = "select count(*) as total from mentor_profile" , nativeQuery = true)
-   Integer totalMentor();
+    @Query(value = "select count(*) as total from mentor_profile", nativeQuery = true)
+    Integer totalMentor();
 
 }

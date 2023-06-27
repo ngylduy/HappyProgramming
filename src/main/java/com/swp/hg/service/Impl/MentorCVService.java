@@ -11,6 +11,7 @@ import com.swp.hg.repository.SkillCategoryRepository;
 import com.swp.hg.repository.UserRepository;
 import com.swp.hg.response.ApiResponse;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,29 +22,15 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MentorCVService {
 
     private final MentorProfileRepo mentorProfileRepo;
-
     private final MentorSkillRepository mentorSkillRepository;
-
     private final UserRepository userRepository;
-
     private final SkillCategoryRepository skillCategoryRepository;
 
-
-    public MentorCVService(MentorProfileRepo mentorProfileRepo, MentorSkillRepository mentorSkillRepository, UserRepository userRepository, SkillCategory skillCategory, SkillCategoryRepository skillCategoryRepository) {
-        this.mentorProfileRepo = mentorProfileRepo;
-        this.mentorSkillRepository = mentorSkillRepository;
-        this.userRepository = userRepository;
-        this.skillCategoryRepository = skillCategoryRepository;
-    }
-
-
-
     public ResponseEntity<?> addMentorCV(int userID, MentorCVDTO mentorCVDTO) {
-
-
         try {
             MentorProfile mentorProfile = new MentorProfile();
             mentorProfile.setAvatar(mentorCVDTO.getAvatar());

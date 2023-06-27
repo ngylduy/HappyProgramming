@@ -41,13 +41,13 @@ public class UserImpl implements UserService, UserDetailsService {
     private final ConfirmationTokenResetPasswordService confirmationTokenResetPasswordService;
 
     @Override
-    public List<User> getAll() {
-        return null;
+    public User getById(int id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public User getById(int id) {
-        return userRepository.findById(id).orElse(null);
+    public List<User> getListUserByRole(String role_name){
+        return userRepository.findAllByRolesName(role_name);
     }
 
     @Override
@@ -66,6 +66,13 @@ public class UserImpl implements UserService, UserDetailsService {
         User user = userRepository.findByUsername(username).get();
         Role role = roleRepository.findByName(role_name);
         user.getRoles().add(role);
+    }
+
+    @Override
+    public void removeRoleFromUser(String username, String role_name) {
+        User user = userRepository.findByUsername(username).get();
+        Role role = roleRepository.findByName(role_name);
+        user.getRoles().remove(role);
     }
 
     @Override

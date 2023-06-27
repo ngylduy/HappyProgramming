@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ApiResponse {
+
     private boolean success;
     private String message;
     private List<String> errors;

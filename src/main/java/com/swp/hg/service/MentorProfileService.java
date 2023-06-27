@@ -11,5 +11,6 @@ import java.util.List;
 public interface MentorProfileService {
     SearchResultDTO<MentorProfileDTO> search(MentorProfileDTO mentorProfileDTO);
 
+    MentorProfile getById(int id);
 
 }
