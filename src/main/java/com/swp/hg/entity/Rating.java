@@ -23,4 +23,16 @@ public class Rating {
     @JoinColumn(name = "mentorID")
     @JsonBackReference
     private MentorProfile mentorProfile;
+
+    public Rating() {
+
+    }
+
+    public Rating(int rateID, String comment, int star, User menteeRating, MentorProfile mentorProfile) {
+        this.rateID = rateID;
+        this.comment = comment;
+        this.star = star;
+        this.menteeRating = menteeRating;
+        this.mentorProfile = mentorProfile;
+    }
 }

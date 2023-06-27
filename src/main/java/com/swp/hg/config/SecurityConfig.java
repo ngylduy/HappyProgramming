@@ -1,10 +1,11 @@
 package com.swp.hg.config;
 
-import com.swp.hg.filter.JwtAuthorizationFilter;
+import com.swp.hg.filter.AuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,7 +19,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-     private final JwtAuthorizationFilter jwtAuthenticationFilter;
+     private final AuthorizationFilter authenticationFilter;
      private final AuthenticationProvider authenticationProvider;
 
      @Bean
@@ -38,7 +39,7 @@ public class SecurityConfig {
                  .authenticated()
                  .and()
                  .authenticationProvider(authenticationProvider)
-                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
          return http.build();
      }
 

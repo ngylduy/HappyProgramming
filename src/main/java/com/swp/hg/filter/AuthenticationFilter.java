@@ -1,4 +1,4 @@
-package com.swp.hg.service.Impl;
+package com.swp.hg.filter;
 
 import com.swp.hg.auth.AuthenticationRequest;
 import com.swp.hg.auth.AuthenticationResponse;
@@ -17,7 +17,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationFilter {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;

@@ -2,15 +2,16 @@ package com.swp.hg.controller;
 
 import com.swp.hg.dto.UserDTO;
 import com.swp.hg.service.Impl.RegistrationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/auth/registration")
+@CrossOrigin
+@RequiredArgsConstructor
 public class RegistrationController {
 
-    @Autowired
-    private RegistrationService registrationService;
+    private final RegistrationService registrationService;
 
     @PostMapping
     public String register(@RequestBody UserDTO userDTO) {

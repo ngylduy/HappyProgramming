@@ -3,20 +3,22 @@ package com.swp.hg.controller;
 import com.swp.hg.auth.AuthenticationRequest;
 import com.swp.hg.dto.ChangePassword;
 import com.swp.hg.dto.RegistrationRequest;
-import com.swp.hg.service.Impl.AuthenticationService;
-import com.swp.hg.service.Impl.ResetPassword;
 import com.swp.hg.dto.ResponseStatus;
+import com.swp.hg.filter.AuthenticationFilter;
+import com.swp.hg.service.Impl.ResetPassword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AuthenticationController {
 
     private final ResetPassword resetPassword;
-    private final AuthenticationService authenticationService;
+    private final AuthenticationFilter authenticationService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest){

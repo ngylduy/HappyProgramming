@@ -1,23 +1,24 @@
 package com.swp.hg.service.Impl;
 
 import com.swp.hg.dto.MentorProfileDTO;
-import com.swp.hg.dto.ResultDTO;
 import com.swp.hg.dto.SearchResultDTO;
-import com.swp.hg.dto.SkillCategoryDTO;
-import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.repository.MentorProfileRepository;
 import com.swp.hg.service.MentorProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MentorProfileImpl {
+public class MentorProfileServiceImpl implements MentorProfileService {
 
-    @Autowired
-    private MentorProfileRepository mentorProfileRepository;
+    private final MentorProfileRepository mentorProfileRepository;
 
+
+    public MentorProfileServiceImpl(MentorProfileRepository mentorProfileRepository) {
+        this.mentorProfileRepository = mentorProfileRepository;
+    }
+
+    @Override
     public SearchResultDTO<MentorProfileDTO> search(MentorProfileDTO mentorProfileDTO){
 
         List<MentorProfileDTO> list;
@@ -36,4 +37,6 @@ public class MentorProfileImpl {
         }
         return  dto;
     }
+
+
 }

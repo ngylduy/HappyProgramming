@@ -62,9 +62,9 @@ public class UserImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addRoleToUser(String username, String rolename) {
+    public void addRoleToUser(String username, String role_name) {
         User user = userRepository.findByUsername(username).get();
-        Role role = roleRepository.findByName(rolename);
+        Role role = roleRepository.findByName(role_name);
         user.getRoles().add(role);
     }
 
@@ -168,13 +168,8 @@ public class UserImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public int enableAppUser(String email) {
-        return userRepository.enableAppUser(email);
-    }
-
-    @Override
-    public int activeAppUser(String email) {
-        return userRepository.activeAppUser(email);
+    public void enableAppUser(String email) {
+        userRepository.enableAppUser(email);
     }
 
     @Override

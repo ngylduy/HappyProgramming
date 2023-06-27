@@ -3,6 +3,7 @@ package com.swp.hg.service.Impl;
 import com.swp.hg.dto.RatingDTO;
 import com.swp.hg.dto.ResultDTO;
 import com.swp.hg.entity.Rating;
+import com.swp.hg.entity.SkillCategory;
 import com.swp.hg.repository.RatingRepository;
 import com.swp.hg.service.MentorProfileService;
 import com.swp.hg.service.RatingService;
@@ -72,11 +73,6 @@ public class RatingImpl implements RatingService {
             resultDTO.setMessage(e.getMessage());
         }
         return resultDTO;
-    }
-
-    @Override
-    public Rating delete(int id) {
-        return null;
     }
 
     @Override

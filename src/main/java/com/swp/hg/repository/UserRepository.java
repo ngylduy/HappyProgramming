@@ -12,20 +12,16 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username);
-    boolean existsByUsernameAndPassword(String username, String password);
     User findByEmail(String email);
-    User findByPhone(String phone);
-    User findTopByOrderByIdDesc();
     User findUserByUsername(String username);
 
     @Modifying
-    @Query("UPDATE User user SET user.status = false WHERE user.id = ?1")
-    int deactive(Long id);
+    @Query("UPDATE User u SET u.status = false WHERE u.id = ?1")
+    void deactive(Long id);
+
     @Transactional
     @Modifying
-    @Query("UPDATE User a SET a.status=true, a.status=true WHERE a.email=?1")
-    int enableAppUser(String email);
-    @Query("UPDATE User a SET a.status=true WHERE a.email=?1")
-    int activeAppUser(String email);
+    @Query("UPDATE User u SET u.status=true WHERE u.email = ?1")
+    void enableAppUser(String email);
 
 }

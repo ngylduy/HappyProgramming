@@ -15,7 +15,5 @@ public interface RatingService {
 
     ResultDTO<Rating> saveOrUpdate(RatingDTO ratingDTO);
 
-    Rating delete(int id);
-
     Rating getById(int id);
 }
