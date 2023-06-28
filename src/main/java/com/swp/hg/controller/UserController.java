@@ -34,7 +34,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user")
+    @GetMapping
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
@@ -44,7 +44,7 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getRoles());
     }
 
-    @PostMapping("/user/save")
+    @PostMapping("/save")
     public ResponseEntity<User> saveUsers(@RequestHeader("access_token") String access_token, @RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));

@@ -16,7 +16,7 @@ public class MentorCVDTO {
     private String linkedln;
     private String github;
     private String profession;
-//    private int userid;
+    //private int userid;
 
     //mentor skill
     private String description;
@@ -24,10 +24,5 @@ public class MentorCVDTO {
     List<Integer> skillId ;
 
     private boolean status;
-
-
     //
-
-
-
 }

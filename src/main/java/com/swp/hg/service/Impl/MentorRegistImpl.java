@@ -34,8 +34,9 @@ public class MentorRegistImpl implements MentorRegistService {
         mentorRegist.setStatus(registDTO.getStatus());
         if (registDTO.getStatus() == 1) {
             User user = userRepository.findUserById(mentorRegist.getMentorRegist().getId());
-            userImpl.addRoleToUser(user.getUsername(), "ROLE_MENTOR");
-            userImpl.removeRoleFromUser(user.getUsername(), "ROLE_MENTEE");
+            userImpl.removeRoleFromUser(user.getUsername(), "USER_MENTEE");
+            userImpl.addRoleToUser(user.getUsername(), "USER_MENTOR");
+            userRepository.save(user);
         }
         mentorRegistRepository.save(mentorRegist);
     }

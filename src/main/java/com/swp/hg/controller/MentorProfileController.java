@@ -79,7 +79,7 @@ public class MentorProfileController {
         return mentorProfileRepo.totalMentor();
     }
 
-    @PutMapping("/updateMentorRegistStatus")
+    @PutMapping("/updateStatus")
     public ResponseEntity<?> updateMentorRegistStatus(@RequestBody MentorRegistDTO registDTO) {
         mentorRegistService.updateMentorRegistStatus(registDTO);
         return ResponseEntity.ok(new ApiResponse(true, "Mentor regist status updated successfully"));

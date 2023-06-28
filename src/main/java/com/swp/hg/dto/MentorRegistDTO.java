@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 public class MentorRegistDTO {
         private int registID;
-        private LocalDateTime date;
         private int status;
         private int userId;
 }

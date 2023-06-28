@@ -10,6 +10,7 @@ import com.swp.hg.repository.UserRepository;
 import com.swp.hg.service.UserService;
 import com.swp.hg.token.ConfirmationToken;
 import com.swp.hg.token.ConfirmationTokenService;
+import com.swp.hg.validate.Validate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class UserImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getListUserByRole(String role_name){
+    public List<User> getListUserByRole(String role_name) {
         return userRepository.findAllByRolesName(role_name);
     }
 
@@ -92,12 +93,18 @@ public class UserImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = new User();
+        User user;
         int userId;
-        user = userRepository.findByUsername(username).get();
-        username = user.getUsername();
-        userId = user.getId();
 
+        if (Validate.validateEmail(username)) {
+            user = userRepository.findByEmail(username);
+            username = user.getUsername();
+            userId = user.getId();
+        } else {
+            user = userRepository.findUserByUsername(username);
+            username = user.getUsername();
+            userId = user.getId();
+        }
 
         if (user == null) {
             log.error("User not found in the database");
@@ -115,10 +122,19 @@ public class UserImpl implements UserService, UserDetailsService {
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         Set<Role> set = new HashSet<Role>();
-        set.add(new Role(0, "ROLE_USER"));
-        set.stream().forEach(i -> authorities.add(new SimpleGrantedAuthority(i.getName())));
+
+        if (user.getRoles().contains(new Role(1, "USER_ADMIN"))) {
+            set.add(new Role(1, "USER_ADMIN"));
+        } else if (user.getRoles().contains(new Role(2, "USER_MENTOR"))) {
+            set.add(new Role(2, "USER_MENTOR"));
+        } else {
+            set.add(new Role(3, "USER_MENTEE"));
+        }
+
+        set.forEach(i -> authorities.add(new SimpleGrantedAuthority(i.getName())));
 
         Map<String, String> map = new HashMap<>();
+
         map.put("username", user.getUsername());
         map.put("name", user.getFullname());
 
@@ -128,6 +144,7 @@ public class UserImpl implements UserService, UserDetailsService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
         return new org.springframework.security.core.userdetails.User(userPayload, user.getPassword(), authorities);
     }
 
@@ -137,7 +154,7 @@ public class UserImpl implements UserService, UserDetailsService {
         boolean userExistsUsername = userRepository.findUserByUsername(user.getUsername()) != null;
         if (userExistsEmail || userExistsUsername) {
             User appUserPrevious = userRepository.findByEmail(user.getEmail());
-            Boolean isEnabled = appUserPrevious.isEnabled();
+            boolean isEnabled = appUserPrevious.isEnabled();
             if (!isEnabled) {
                 String token = UUID.randomUUID().toString();
                 saveConfirmationToken(appUserPrevious, token);
@@ -165,11 +182,11 @@ public class UserImpl implements UserService, UserDetailsService {
 
     @Override
     public void saveConfirmationTokenResetPassword(User appUser, String token) {
-        try{
+        try {
             PasswordResetToken passwordResetToken = new PasswordResetToken(token, appUser.getId(), LocalDateTime.now(),
                     LocalDateTime.now().plusMinutes(15));
             confirmationTokenResetPasswordService.saveConfirmationToken(passwordResetToken);
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
         }
     }
