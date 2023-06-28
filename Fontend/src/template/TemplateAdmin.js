@@ -1,17 +1,17 @@
+import { Row , Col} from "react-bootstrap";
 import SideBar from "../component/SideBar";
 
 export default function TemplateAdmin({title="", children}){
     return(
-        <div className = "">
-           
+        <Row>
+            <Col md={2} xs={2}>
             <SideBar/>
-            <div className="tieude">
-                <div className="col-12">{children}</div>
-            </div>
+            </Col>
+            <Col md={9} xs={10}>
+            <div style={{marginTop:"90px"}}>{children}</div>
+            </Col>
+        </Row>
             
-            
-           
-        </div>
 
     );
 }

@@ -6,11 +6,14 @@ import {BrowserRouter , Routes ,Route} from 'react-router-dom'
 import Register from './screens/Register';
 import Rating from './screens/Rating';
 import Dashboard from './screens/Dashboard';
-import Mentee from './screens/Mentee';
+import Mentee from './screens/ManagerSkill';
 import Mentor from './screens/Mentor';
 import Analytics from './screens/Analytics';
 import Profile from './screens/Profile';
 import ListMentee from './screens/ListMentor';
+import ProfileUser from './screens/ProfileUser';
+import AddSkill from './screens/AddSkill';
+import ChangePass from './screens/ChangePassword';
 
 
 
@@ -25,11 +28,15 @@ function App() {
      <Route path='/register' element={<Register/>}/>
      <Route path='/rating' element={<Rating/>}/>
      <Route path='/dashboard' element={<Dashboard/>}/>
-     <Route path='/mentee' element={<Mentee/>}/>
+     <Route path='/managerskill' element={<Mentee/>}/>
+     <Route path='/skill/add' element={<AddSkill/>}/>
      <Route path='/mentor' element={<Mentor/>}/>
      <Route path='/analytics' element={<Analytics/>}/>
      <Route path='/profile' element={<Profile/>}/>
      <Route path='/listmentor' element={<ListMentee/>}/>
+     <Route path='/11' element={<ProfileUser/>}/>
+     <Route path='/changepass' element={<ChangePass/>}/>
+
      </Routes>   
     </BrowserRouter>
    

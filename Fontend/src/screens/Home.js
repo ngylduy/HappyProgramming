@@ -8,6 +8,7 @@ import { Container } from 'react-bootstrap';
 function Home() {
 
   return (
+    
     <HomPage>
       <>
       <ToastContainer/>

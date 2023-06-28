@@ -1,21 +1,24 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { Row, NavDropdown } from 'react-bootstrap';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 
 function Navbar() {
-    const token =localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     const navigate = useNavigate();
     const handleLogout = () => {
-        localStorage.removeItem('token')
+        if (window.confirm("Are you sure you want to Logout")){
+            sessionStorage.removeItem('token')
 
-        navigate('/')
-        toast.success("Logout success")
+            navigate('/')
+            toast.success("Logout success")
+        }
+       
     }
     const [users, setUsers] = useState([]);
-    const [stname, setToken] = useState(localStorage.getItem('token'));
+    const [stname, setToken] = useState(sessionStorage.getItem('token'));
 
     useEffect(() => {
         if (stname) {
@@ -38,18 +41,18 @@ function Navbar() {
                 console.error(error);
             }
         };
-    
+
         if (token) {
             setToken(token);
             fetchUsers();
-        }else {
+        } else {
             setUsers([]);
         }
-    
+
     }, [token]);
-    
-    
-    
+
+
+
     return (
 
         <>
@@ -80,13 +83,13 @@ function Navbar() {
                     <div >
                         <Row>
 
-
-                            {users.fullname ? (
-                                <p>Xin chào, {users.fullname}!</p>
-                            ) : (
-                                <p></p>
-                            )}
-
+                            <div claaName="col-md-12" style={{ fontSize: "20px", texAlign: "center", color: "#FF33FF" }}>
+                                {users.fullname ? (
+                                    <p>Xin chào, {users.fullname}!</p>
+                                ) : (
+                                    <p></p>
+                                )}
+                            </div>
 
 
                             <div />
@@ -103,16 +106,15 @@ function Navbar() {
                             <li className="lnv nav-item font">
                                 <NavDropdown title="Setting" style={{ textDecoration: "none", fontSize: "20px" }}>
                                     {token ? (
-                                        <NavDropdown.Item onClick={() => handleLogout()} style={{ textDecoration: "none", fontSize: "20px" }} >Logout</NavDropdown.Item>
+                                        <>
+                                            <NavDropdown.Item><Link to="/11" style={{ textDecoration: "none", fontSize: "20px" }}>Profile</Link></NavDropdown.Item>
+                                            <NavDropdown.Item onClick={() => handleLogout()} style={{ textDecoration: "none", fontSize: "20px" }}>Logout</NavDropdown.Item>
+                                        </>
                                     ) : (
-                                        <NavDropdown.Item ><Link to="/login" style={{ textDecoration: "none", fontSize: "20px" }}>Login</Link></NavDropdown.Item>
+                                        <NavDropdown.Item><Link to="/login" style={{ textDecoration: "none", fontSize: "20px" }}>Login</Link></NavDropdown.Item>
                                     )}
-
-
-
-
-
                                 </NavDropdown>
+
                             </li>
 
 

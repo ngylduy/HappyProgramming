@@ -13,21 +13,21 @@ function Login() {
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
     useEffect(()=>{
-        const stname =localStorage.getItem('token')
+        const stname =sessionStorage.getItem('token')
         if(stname){
             navigate("/")
         }
     },[])
     
-    // useEffect(() => {
-    //     const storedUsername = localStorage.getItem('username');
-    //     const storedPassword = localStorage.getItem('password');
-    //     if (storedUsername && storedPassword) {
-    //         setUserName(storedUsername);
-    //         setPassword(storedPassword);
-    //         setRememberMe(true);
-    //     }
-    // }, []);
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        const storedPassword = localStorage.getItem('password');
+        if (storedUsername && storedPassword) {
+            setUserName(storedUsername);
+            setPassword(storedPassword);
+            setRememberMe(true);
+        }
+    }, []);
 
     async function handleLogin(event) {
         event.preventDefault();
@@ -47,7 +47,7 @@ function Login() {
           
             if (response.status === 200) {
               if (response.data.id === 1) {
-                localStorage.setItem('username', username);
+                sessionStorage.setItem('username', username);
                 // setUserName(response.data.username);
                 // if (rememberMe) {
                 //   localStorage.setItem('username', username);
@@ -59,7 +59,7 @@ function Login() {
                 navigate('/mentee');
               } else {
                 // setUserName(response.data.username);
-                localStorage.setItem("token", response.data.token)
+                sessionStorage.setItem("token", response.data.token)
                 // if (rememberMe) {
                 //   localStorage.setItem('username', username);
                 //   localStorage.setItem('password', password);
