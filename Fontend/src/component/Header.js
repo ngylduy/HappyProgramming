@@ -83,7 +83,7 @@ function Navbar() {
                     <div >
                         <Row>
 
-                            <div claaName="col-md-12" style={{ fontSize: "20px", texAlign: "center", color: "#FF33FF" }}>
+                            <div claaName="col-md-12" style={{ fontSize: "20px",marginRight:"100px", color: "#FF33FF" }}>
                                 {users.fullname ? (
                                     <p>Xin chào, {users.fullname}!</p>
                                 ) : (

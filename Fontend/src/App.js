@@ -14,6 +14,7 @@ import ListMentee from './screens/ListMentor';
 import ProfileUser from './screens/ProfileUser';
 import AddSkill from './screens/AddSkill';
 import ChangePass from './screens/ChangePassword';
+import EditSkill from './screens/EditSkill';
 
 
 
@@ -36,6 +37,8 @@ function App() {
      <Route path='/listmentor' element={<ListMentee/>}/>
      <Route path='/11' element={<ProfileUser/>}/>
      <Route path='/changepass' element={<ChangePass/>}/>
+     <Route path='/skill/edit/:id' element={<EditSkill/>}/>
+
 
      </Routes>   
     </BrowserRouter>

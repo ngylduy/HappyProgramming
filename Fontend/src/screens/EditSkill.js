@@ -1,0 +1,109 @@
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+const EditSkill = () => {
+    const { id } = useParams();
+    
+    const [skillName, setSkillName] = useState('');
+    const [status, setStatus] = useState('1');
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/skill/${id}`)
+            .then((resp) => resp.json())
+            .then((data) => {
+                console.log(data.skillName)
+                setSkillName(data.skillName || '');
+                setStatus(data.status || '');
+            });
+    }, [id]);
+
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (skillName.trim() === '') {
+            alert("Please enter a valid name");
+            return;
+        } else {
+            const updatedSkill = {
+                id,
+                skillName,
+                status
+            };
+
+            console.log(updatedSkill);
+
+            fetch(`http://localhost:8080/api/skill/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedSkill),
+            })
+            .then(() => {
+                alert("Update successful");
+                navigate("/managerskill");
+            })
+            .catch((error) => {
+                console.error("Error updating skill:", error);
+            });
+        }
+    };
+
+    return (
+        <Col className="offset-md-2 col-md-8" style={{ border: "1px solid red" }}>
+            <Row>
+                <Col style={{ textAlign: "center" }}>
+                    <h3>Edit Skill</h3>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={12}>
+                    <Form onSubmit={handleSubmit}>
+                        <Row>
+                            <Form.Group className="col-md-6">
+                                <Form.Text>Id</Form.Text>
+                                <Form.Control value={id} disabled />
+                            </Form.Group>
+                            <Form.Group className="col-md-6">
+                                <Form.Text>
+                                    Name <span style={{ color: "red" }}>*</span>
+                                </Form.Text>
+                                <Form.Control
+                                    value={skillName}
+                                    onChange={(e) => setSkillName(e.target.value)}
+                                />
+                                {skillName.trim() === '' && (
+                                    <Form.Text>
+                                        <span style={{ color: "red" }}>
+                                            Please enter a valid name
+                                        </span>
+                                    </Form.Text>
+                                )}
+                            </Form.Group>
+                        </Row>
+                        <Row>
+                            <Form.Group className="col-md-6">
+                                <Form.Text>Status</Form.Text>
+                                <Form.Control value={1} disabled />
+                            </Form.Group>
+                        </Row>
+                        <Row>
+                            <Col className="col-md-12" style={{ textAlign: "center" }}>
+                                <Button className="btn btn-primary" type="submit">
+                                    Edit
+                                </Button>
+                                <Link to={"/"} className="btn btn-danger">
+                                    Back Home
+                                </Link>
+                            </Col>
+                            <Col className="col-md-6"></Col>
+                        </Row>
+                    </Form>
+                </Col>
+            </Row>
+        </Col>
+    );
+};
+
+export default EditSkill;

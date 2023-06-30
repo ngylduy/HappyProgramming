@@ -88,7 +88,7 @@ function Mentee() {
                                                 <td >{s.skillName}</td>
                                                 <td >
                                                     {
-                                                        <Link styles={{color:"blue"}} to={'/product/edit/' + s.skillID}><PencilSquare /></Link>
+                                                        <Link styles={{color:"blue"}} to={'/skill/edit/' + s.skillID}><PencilSquare /></Link>
                                                     }
                                                 </td>
                                                 <td >

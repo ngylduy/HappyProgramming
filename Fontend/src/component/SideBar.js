@@ -78,7 +78,7 @@ function SideBar() {
                         {/* <!-- Nav Item - Utilities Collapse Menu --> */}
                         
                         <NavDropdown className="nav-item" title="Setting" >
-                            <Link to="/mentee" className='dropdown-item'>Manager Skill</Link>
+                            <Link to="/managerskill" className='dropdown-item'>Manager Skill</Link>
                             <NavDropdown.Item  className='dropdown-item'>Logout</NavDropdown.Item>
                         </NavDropdown>
 
