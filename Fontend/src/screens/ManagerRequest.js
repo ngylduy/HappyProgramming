@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import TemplateAdmin from "../template/TemplateAdmin"
-import "../styles/mentee.css"
+
 import { PencilSquare, Trash3Fill } from "react-bootstrap-icons";
 import { Col, Table, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Alert, Button } from "react-bootstrap";
+
 
 
 
@@ -17,12 +17,22 @@ import { Alert, Button } from "react-bootstrap";
 
 
 function ManagerRequest() {
-    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [token, setToken] = useState(sessionStorage.getItem('token'));
+
+    useEffect(() => {
+        if (token) {
+            console.log('Token is stored in localStorage:', token);
+        } else {
+            console.log('Token is not stored in localStorage');
+        }
+    }, [token]);
+    
 
     const [request, setRequest] = useState([]);
-    const handleDelete = (skillID) => {
-        if (window.confirm("Are you sure you want to delete this skill?")) {
-            fetch(`http://localhost:8080/api/${{ skillID }}`, {
+    const handleDelete = (id) => {
+        
+        if (window.confirm("Are you sure you want to delete this request?")) {
+            fetch(`http://localhost:8080/api/${id}`, {
                 method: "DELETE"
             }).then(() => {
                 alert("delete successfully");
@@ -31,19 +41,22 @@ function ManagerRequest() {
                 .catch(err => {
                     console.log(err.message);
                 })
-            setShowConfirmation(true);
+
 
         }
     }
+    
 
         useEffect(() => {
-            fetch(`http://localhost:8080/request/getall`)
+            fetch(`http://localhost:8080/api/request/getall`)
                 .then((resp) => resp.json())
                 .then((data) => {
                     setRequest(data);
+                    console.log(data)
                 })
                 .catch((err) => {
                     console.log(err.message);
+                    console.log(err);
                 });
         }, [])
         return (
@@ -67,42 +80,37 @@ function ManagerRequest() {
                                     <thead>
                                         <tr>
                                             <th >Id</th>
-                                            <th >Date</th>
-                                            <th>Link</th>
-                                            <th >Title</th>
-                                            <th>content</th>
-                                            <th>status</th>
+                                            <th >content</th>
+                                            <th>date</th>
+                                            <th >link</th>
+                                            <th>title</th>
+                                            <th scope={2} >Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {skill.map((s) => (
-                                            <tr key={s.skillID}>
-                                                <td >{s.skillID}</td>
-                                                <td >{s.skillName}</td>
+                                        {request.map((r) => (
+                                            <tr key={r.requestID}>
+                                                <td >{r.requestID}</td>
+                                                <td >{r.content}</td>
+                                                <td>{r.date}</td>
+                                                <td>{r.link}</td>
+                                                <td>{r.title}</td>
                                                 <td >
                                                     {
-                                                        <Link styles={{color:"blue"}} to={'/product/edit/' + s.skillID}><PencilSquare /></Link>
+                                                        <Link styles={{color:"blue"}} to={'/skill/edit/' + r.skillID}><PencilSquare /></Link>
                                                     }
                                                 </td>
                                                 <td >
                                                     {
                                                         <>
-                                                            {/* <Link to={'/managerskill'} onClick={() => handleDelete(s.skillID)}><Trash3Fill /></Link> */}
-                                                            <Button onClick={() => handleDelete(skill.id)}><Trash3Fill /></Button>
-
-                                                            <Alert show={showConfirmation} variant="success">
-                                                                <Alert.Heading>Success!</Alert.Heading>
-                                                                <p>The skill was deleted successfully.</p>
-                                                                <hr />
-                                                                <div className="d-flex justify-content-end">
-                                                                    <Button onClick={() => setShowConfirmation(false)} variant="outline-success">
-                                                                        Close
-                                                                    </Button>
-                                                                </div>
-                                                            </Alert>
+                                                            <Link style={{marginRight:"30px"}} onClick={() => handleDelete(r.requestID)} ><Trash3Fill /></Link>
+                                                           
                                                         </>
                                                     }
                                                 </td>
+
+                                               
+                                                
                                             </tr>
                                         ))}
                                     </tbody>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TemplateAdmin from "../template/TemplateAdmin"
-import "../styles/mentee.css"
+
 import { PencilSquare, Trash3Fill } from "react-bootstrap-icons";
 import { Col, Table, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -78,7 +78,7 @@ function Mentee() {
                                         <tr>
                                             <th >Id</th>
                                             <th >Name</th>
-                                            <th >Action</th>
+                                            <th scope={2} >Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>

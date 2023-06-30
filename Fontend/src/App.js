@@ -15,6 +15,9 @@ import ProfileUser from './screens/ProfileUser';
 import AddSkill from './screens/AddSkill';
 import ChangePass from './screens/ChangePassword';
 import EditSkill from './screens/EditSkill';
+import ManagerUser from './screens/MannagerUser';
+import ManagerRequest from './screens/ManagerRequest';
+import AddRequest from './screens/AddRequest';
 
 
 
@@ -38,7 +41,9 @@ function App() {
      <Route path='/11' element={<ProfileUser/>}/>
      <Route path='/changepass' element={<ChangePass/>}/>
      <Route path='/skill/edit/:id' element={<EditSkill/>}/>
-
+     <Route path='/managerrequest' element={<ManagerRequest/>}/>
+     <Route path='/request/add' element={<AddRequest/>}/>
+     <Route path='/manageruser' element={<ManagerUser/>}/>
 
      </Routes>   
     </BrowserRouter>

@@ -8,14 +8,14 @@ const ListMentee = () => {
                 <div className="container-fluid">
                     <div className="row align-items-center">
                         <div className="col-md-8 col-12">
-                            <h2 className="breadcrumb-title">Mentee List</h2>
+                            <h2 className="breadcrumb-title">Mentor List</h2>
                         </div>
                         <div className="col-md-4 col-12">
                             <form className="search-form custom-search-form">
                                 <div className="input-group">
                                     <input
                                         type="text"
-                                        placeholder="Search Mentees..."
+                                        placeholder="Search Mentor..."
                                         className="form-control"
                                     />
                                     <div className="input-group-append">
@@ -54,7 +54,7 @@ const ListMentee = () => {
                                         <hr/>
                                         <div className="mentee-details">
                                             <h6>
-                                                <b>Mentee ID :</b> 01
+                                                <b>Mentor ID :</b> 01
                                             </h6>
                                             <h5>
                                                 <i className="fas fa-map-marker-alt" /> North Carolina, USA
@@ -101,7 +101,7 @@ const ListMentee = () => {
                                         <hr/>
                                         <div className="mentee-details">
                                             <h5>
-                                                <b>Mentee ID :</b> 16
+                                                <b>Mentor ID :</b> 16
                                             </h5>
                                             <h5 className="mb-0">
                                                 <i className="fas fa-map-marker-alt" /> Alabama, USA
@@ -149,7 +149,7 @@ const ListMentee = () => {
                                         <hr/>
                                         <div className="mentee-details">
                                             <h5>
-                                                <b>Mentee ID :</b> 16
+                                                <b>Mentor ID :</b> 16
                                             </h5>
                                             <h5 className="mb-0">
                                                 <i className="fas fa-map-marker-alt" /> Alabama, USA
