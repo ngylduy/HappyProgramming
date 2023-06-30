@@ -42,7 +42,7 @@ public class SkillCategoryController {
         return new ResponseEntity<ResultDTO<SkillCategory>>(skillCategoryResultDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/skill/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         ResultDTO<SkillCategory> skillCategoryResultDTO = skillCategoryService.delete(id);
         return new ResponseEntity<ResultDTO<SkillCategory>>(skillCategoryResultDTO, HttpStatus.OK);

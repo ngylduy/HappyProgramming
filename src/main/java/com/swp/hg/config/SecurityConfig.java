@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,25 +18,28 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-     private final AuthorizationFilter authenticationFilter;
-     private final AuthenticationProvider authenticationProvider;
+    private final AuthorizationFilter authenticationFilter;
+    private final AuthenticationProvider authenticationProvider;
+    private final AccessDeniedHandler accessDeniedHandler;
 
-     @Bean
-     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-         http.csrf().disable();
-         http.sessionManagement().sessionCreationPolicy(STATELESS);
-         http.authorizeRequests()
-                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                 .requestMatchers("/api/*").permitAll()
-                 .and()
-                 .csrf().disable()
-                 .authorizeRequests()
-                 .anyRequest()
-                 .authenticated()
-                 .and()
-                 .authenticationProvider(authenticationProvider)
-                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-         return http.build();
-     }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.sessionManagement().sessionCreationPolicy(STATELESS);
+        http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/skill/**").hasAnyAuthority("USER_MENTOR")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+
+        http.csrf().disable();
+
+        return http.build();
+    }
 
 }

@@ -1,5 +1,6 @@
-package com.swp.hg.email;
+package com.swp.hg.service.Impl;
 
+import com.swp.hg.service.EmailSender;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,6 +2,7 @@ package com.swp.hg.service.Impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.entity.PasswordResetToken;
 import com.swp.hg.entity.Role;
 import com.swp.hg.entity.User;
@@ -31,15 +32,12 @@ import java.util.*;
 @Slf4j
 public class UserImpl implements UserService, UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
     private final ConfirmationTokenResetPasswordService confirmationTokenResetPasswordService;
+    private final MentorProfileServiceImpl mentorProfileService;
 
     @Override
     public User getById(int id) {
@@ -94,17 +92,15 @@ public class UserImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user;
-        int userId;
 
         if (Validate.validateEmail(username)) {
             user = userRepository.findByEmail(username);
             username = user.getUsername();
-            userId = user.getId();
         } else {
             user = userRepository.findUserByUsername(username);
             username = user.getUsername();
-            userId = user.getId();
         }
+
 
         if (user == null) {
             log.error("User not found in the database");
@@ -121,31 +117,10 @@ public class UserImpl implements UserService, UserDetailsService {
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        Set<Role> set = new HashSet<Role>();
 
-        if (user.getRoles().contains(new Role(1, "USER_ADMIN"))) {
-            set.add(new Role(1, "USER_ADMIN"));
-        } else if (user.getRoles().contains(new Role(2, "USER_MENTOR"))) {
-            set.add(new Role(2, "USER_MENTOR"));
-        } else {
-            set.add(new Role(3, "USER_MENTEE"));
-        }
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        set.forEach(i -> authorities.add(new SimpleGrantedAuthority(i.getName())));
-
-        Map<String, String> map = new HashMap<>();
-
-        map.put("username", user.getUsername());
-        map.put("name", user.getFullname());
-
-        String userPayload = "";
-        try {
-            userPayload = new ObjectMapper().writeValueAsString(map);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return new org.springframework.security.core.userdetails.User(userPayload, user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.swp.hg.entity.Request;
 import com.swp.hg.repository.RequestRepository;
 import com.swp.hg.response.ApiResponse;
 import com.swp.hg.service.Impl.RequestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +14,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/request")
+@CrossOrigin
+@RequiredArgsConstructor
 public class RequestController {
 
     private final RequestService requestService;
 
     private final RequestRepository requestRepository;
-
-    public RequestController(RequestService requestService, RequestRepository requestRepository) {
-        this.requestService = requestService;
-        this.requestRepository = requestRepository;
-    }
 
     //list all request (for Admin)
     @GetMapping("/getall")

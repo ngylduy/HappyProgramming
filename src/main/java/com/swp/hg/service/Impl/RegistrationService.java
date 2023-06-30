@@ -1,9 +1,8 @@
 package com.swp.hg.service.Impl;
 
 
-import com.swp.hg.dto.RegistrationRequest;
 import com.swp.hg.dto.UserDTO;
-import com.swp.hg.email.EmailSender;
+import com.swp.hg.service.EmailSender;
 import com.swp.hg.entity.User;
 import com.swp.hg.repository.UserRepository;
 import com.swp.hg.service.UserService;
