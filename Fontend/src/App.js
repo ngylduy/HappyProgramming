@@ -6,7 +6,6 @@ import {BrowserRouter , Routes ,Route} from 'react-router-dom'
 import Register from './screens/Register';
 import Rating from './screens/Rating';
 import Dashboard from './screens/Dashboard';
-import Mentee from './screens/ManagerSkill';
 import Mentor from './screens/Mentor';
 import Analytics from './screens/Analytics';
 import Profile from './screens/Profile';
@@ -18,6 +17,7 @@ import EditSkill from './screens/EditSkill';
 import ManagerUser from './screens/MannagerUser';
 import ManagerRequest from './screens/ManagerRequest';
 import AddRequest from './screens/AddRequest';
+import ManagerSkill from './screens/ManagerSkill';
 
 
 
@@ -32,7 +32,7 @@ function App() {
      <Route path='/register' element={<Register/>}/>
      <Route path='/rating' element={<Rating/>}/>
      <Route path='/dashboard' element={<Dashboard/>}/>
-     <Route path='/managerskill' element={<Mentee/>}/>
+     <Route path='/managerskill' element={<ManagerSkill/>}/>
      <Route path='/skill/add' element={<AddSkill/>}/>
      <Route path='/mentor' element={<Mentor/>}/>
      <Route path='/analytics' element={<Analytics/>}/>

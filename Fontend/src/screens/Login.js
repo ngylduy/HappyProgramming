@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import TemplateLogin from '../template/TemplateLogin';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
@@ -69,7 +69,7 @@ function Login() {
                 // }
                 navigate('/');
               }
-              toast.success('Đăng nhập thành công');
+              toast.success('Login success');
             } else {
               throw new Error(`Unexpected status code ${response.status}`);
             }
@@ -88,7 +88,7 @@ function Login() {
 
     return (
         <TemplateLogin>
-            <ToastContainer/>
+            
             <div className="container1">
                 <div className="row px-3">
                     <div className="col-lg-10 col-xl-9 card flex-row mx-auto px-0">

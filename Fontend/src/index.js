@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import '../node_modules/startbootstrap-sb-admin-2/css/sb-admin-2.min.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer } from 'react-toastify';
 
 
 
@@ -18,9 +19,12 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
+  <>
+  <ToastContainer/>
   <React.StrictMode>
     <App />
   </React.StrictMode>
+  </>
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

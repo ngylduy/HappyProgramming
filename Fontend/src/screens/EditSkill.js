@@ -1,6 +1,7 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { useEffect, useRef, useState } from "react";
+import { useEffect,  useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const EditSkill = () => {
     const { id } = useParams();
@@ -41,7 +42,7 @@ const EditSkill = () => {
                 body: JSON.stringify(updatedSkill),
             })
             .then(() => {
-                alert("Update successful");
+                toast.success("Update successful");
                 navigate("/managerskill");
             })
             .catch((error) => {
@@ -51,7 +52,7 @@ const EditSkill = () => {
     };
 
     return (
-        <Col className="offset-md-2 col-md-8" style={{ border: "1px solid red" }}>
+        <Col className="offset-md-2 col-md-8" style={{ border: "1px solid red",marginTop:"100px", padding:'30px' }}>
             <Row>
                 <Col style={{ textAlign: "center" }}>
                     <h3>Edit Skill</h3>
@@ -89,11 +90,13 @@ const EditSkill = () => {
                             </Form.Group>
                         </Row>
                         <Row>
-                            <Col className="col-md-12" style={{ textAlign: "center" }}>
-                                <Button className="btn btn-primary" type="submit">
-                                    Edit
+                            <Col className="col-md-12" style={{ textAlign: "center", padding:'25px'}}>
+                             &nbsp;&nbsp;&nbsp;&nbsp;
+                                <Button className="btn btn-success" type="submit">
+                                    Save
                                 </Button>
-                                <Link to={"/"} className="btn btn-danger">
+                                &nbsp;&nbsp;&nbsp;
+                                <Link to={"/managerskill"} className="btn btn-danger">
                                     Back Home
                                 </Link>
                             </Col>

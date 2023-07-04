@@ -1,6 +1,7 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 
 const AddSkill = () => {
@@ -40,7 +41,7 @@ const AddSkill = () => {
                 body: JSON.stringify(skill)
             })
                 .then(() => {
-                    alert("add susses.")
+                    toast.success("add susses.")
                     navigate("/managerskill")
                 })
         }
@@ -50,7 +51,7 @@ const AddSkill = () => {
 
     return (
         <Row>
-            <Col className="offset-md-2 col-md-8" style={{ border: '1px solid red' }}>
+            <Col className="offset-md-2 col-md-8" style={{ border: '1px solid red',marginTop:"100px", padding:'30px' }} >
                 <Row>
                     <Col style={{ textAlign: 'center' }}>
                         <h3>Create new Skill</h3>
@@ -77,9 +78,11 @@ const AddSkill = () => {
 
 
                             <Row>
-                                <Col style={{ textAlign: 'center' }}>
-                                    <Button className="btn btn-primary" type="submit">Add</Button>|
-                                    <Link to={'/'} className="btn btn-danger">Back to List</Link>
+                                <Col style={{ textAlign: 'center' ,padding:'25px'}}>
+                                &emsp; 
+                                    <Button className="btn btn-success" type="submit">Add</Button>
+                                    &emsp; 
+                                    <Link to={'/managerskill'} className="btn btn-danger">Back to List</Link>
                                 </Col>
                             </Row>
                         </Form>

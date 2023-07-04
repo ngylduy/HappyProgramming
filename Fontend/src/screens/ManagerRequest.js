@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TemplateAdmin from "../template/TemplateAdmin"
 
 import { PencilSquare, Trash3Fill } from "react-bootstrap-icons";
-import { Col, Table, Row } from "react-bootstrap";
+import { Col, Table, Row , Pagination} from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 
@@ -17,7 +17,9 @@ import { Link } from "react-router-dom";
 
 
 function ManagerRequest() {
-    const [token, setToken] = useState(sessionStorage.getItem('token'));
+    const [token] = useState(sessionStorage.getItem('token'));
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(5);
 
     useEffect(() => {
         if (token) {
@@ -45,7 +47,14 @@ function ManagerRequest() {
 
         }
     }
-    
+     // Tính toán số trang
+     const totalPages = Math.ceil(request.length / usersPerPage);
+
+     // Lấy index bắt đầu và kết thúc của list user hiện tại
+     const indexOfLastUser = currentPage * usersPerPage;
+     const indexOfFirstUser = indexOfLastUser - usersPerPage;
+     const currentRequest = request.slice(indexOfFirstUser, indexOfLastUser);
+ 
 
         useEffect(() => {
             fetch(`http://localhost:8080/api/request/getall`)
@@ -88,7 +97,7 @@ function ManagerRequest() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {request.map((r) => (
+                                        {currentRequest.map((r) => (
                                             <tr key={r.requestID}>
                                                 <td >{r.requestID}</td>
                                                 <td >{r.content}</td>
@@ -115,6 +124,30 @@ function ManagerRequest() {
                                         ))}
                                     </tbody>
                                 </Table>
+                                <Pagination>
+                                <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />
+                                <Pagination.Prev
+                                    onClick={() => setCurrentPage(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                />
+                                {Array.from({ length: totalPages }, (_, index) => (
+                                    <Pagination.Item
+                                        key={index + 1}
+                                        active={index + 1 === currentPage}
+                                        onClick={() => setCurrentPage(index + 1)}
+                                    >
+                                        {index + 1}
+                                    </Pagination.Item>
+                                ))}
+                                <Pagination.Next
+                                    onClick={() => setCurrentPage(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                />
+                                <Pagination.Last
+                                    onClick={() => setCurrentPage(totalPages)}
+                                    disabled={currentPage === totalPages}
+                                />
+                            </Pagination>
                             </Col>
                         </Row>
                     </Col>
