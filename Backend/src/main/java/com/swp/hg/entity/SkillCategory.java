@@ -1,18 +1,14 @@
 package com.swp.hg.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "SkillCategory")
 public class SkillCategory {
     @Id
@@ -24,16 +20,13 @@ public class SkillCategory {
     private String skillName;
 
     @Column (name = "status")
+    @Getter
     private boolean status;
 
     @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Collection<RequestSkill> requestSkills;
 
     @OneToMany(mappedBy = "skillCategory", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Collection<MentorSkill> mentorSkills;
 }
 

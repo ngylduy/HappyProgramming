@@ -1,13 +1,21 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "MentorSkill")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "mentorSkillID")
 public class MentorSkill {
 
     @Id
@@ -22,13 +30,11 @@ public class MentorSkill {
 
     @ManyToOne
     @JoinColumn(name = "mentorID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private MentorProfile mentorProfile;
 
     @ManyToOne
     @JoinColumn(name = "skillID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private SkillCategory skillCategory;
 }

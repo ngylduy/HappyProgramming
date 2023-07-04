@@ -1,12 +1,12 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -37,20 +37,15 @@ public class Request {
     private int mentorStatus;
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Collection<RequestSkill> requestSkills;
-
 
     @ManyToOne
     @JoinColumn(name = "menteeID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private User users;
 
     @ManyToOne
     @JoinColumn(name = "mentorID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private MentorProfile mentorProfile;
 }

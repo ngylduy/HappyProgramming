@@ -1,10 +1,9 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Data
@@ -18,13 +17,11 @@ public class RequestSkill {
 
     @ManyToOne
     @JoinColumn(name = "requestID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private Request request;
 
     @ManyToOne
     @JoinColumn(name = "skillID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private SkillCategory skillCategory;
 }

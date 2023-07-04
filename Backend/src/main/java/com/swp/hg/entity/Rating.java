@@ -1,7 +1,8 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
 @Data
@@ -15,13 +16,23 @@ public class Rating {
 
     @ManyToOne
     @JoinColumn(name = "menteeID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private User menteeRating;
 
     @ManyToOne
     @JoinColumn(name = "mentorID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private MentorProfile mentorProfile;
+
+    public Rating() {
+
+    }
+
+    public Rating(int rateID, String comment, int star, User menteeRating, MentorProfile mentorProfile) {
+        this.rateID = rateID;
+        this.comment = comment;
+        this.star = star;
+        this.menteeRating = menteeRating;
+        this.mentorProfile = mentorProfile;
+    }
 }

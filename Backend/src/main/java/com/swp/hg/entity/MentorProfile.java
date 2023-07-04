@@ -1,7 +1,11 @@
 package com.swp.hg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Collection;
 
@@ -33,22 +37,18 @@ public class MentorProfile {
 
     @ManyToOne
     @JoinColumn(name = "userID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private User mentorProfile;
 
     @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonManagedReference
     private Collection<Rating> ratings;
 
     @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private Collection<MentorSkill> mentorSkills;
 
     @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonBackReference
     private Collection<Request> requests;
 }
