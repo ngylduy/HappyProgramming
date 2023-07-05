@@ -87,7 +87,7 @@ const ManagerUser = () => {
                                     ))}
                                 </tbody>
                             </Table>
-                            <Pagination>
+                            <Pagination style={{justifyContent: "flex-end"}}>
                                 <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />
                                 <Pagination.Prev
                                     onClick={() => setCurrentPage(currentPage - 1)}

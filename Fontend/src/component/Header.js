@@ -18,7 +18,7 @@ function Navbar() {
     const [users, setUsers] = useState([]);
     const [stname, setToken] = useState(sessionStorage.getItem('token'));
     const [skill,setSkill] =useState([]);
-
+    const [role, setRole] = useState('');
     useEffect(() => {
         if (stname) {
             console.log('Token is stored in localStorage:', stname);
@@ -46,6 +46,7 @@ function Navbar() {
                 });
                 console.log(response.data)
                 setUsers(response.data);
+                setRole(response.data.roles[0].name);
             } catch (error) {
                 console.error(error);
             }
@@ -59,11 +60,16 @@ function Navbar() {
         }
 
     }, [token]);
+    const history = useNavigate()
 
     // Hàm để hiển thị/ẩn modal
     const toggleModal = () => {
         setShowModal(!showModal);
     }
+    const handleSkillClick = (skillID) => {
+        history(`/listmentor/skill/${skillID}`);
+        window.location.reload();
+     };
 
     return (
         <>
@@ -109,7 +115,12 @@ function Navbar() {
                                 </Row>
                                 <NavDropdown title="Skill" style={{ textDecoration: "none", fontSize: "20px" }}>
                                     {skill.map((s)=>(
-                                             <NavDropdown.Item>{s.skillName}</NavDropdown.Item>
+                                            <Link
+                                            className="dropdown-item"
+                                            onClick={() => handleSkillClick(s.skillID)}
+                                        >
+                                            {s.skillName}
+                                        </Link>
                                     ))}
                                     
                                    
@@ -121,6 +132,14 @@ function Navbar() {
                                         <>
                                             <Link className="dropdown-item" to="/11" style={{ textDecoration: "none", fontSize: "20px" }}>Profile</Link>
                                             <NavDropdown.Item onClick={toggleModal} style={{ textDecoration: "none", fontSize: "20px" }}>Logout</NavDropdown.Item>
+                                            { role === "USER_ADMIN" ?(
+                                                <Link className="dropdown-item" to="/managerskill" style={{ textDecoration: "none", fontSize: "20px" }}>Manager</Link>
+                                            ):(
+                                               <span></span>
+                                            )
+
+                                            }
+                                            
                                         </>
                                     ) : (
                                         <>

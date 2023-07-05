@@ -137,6 +137,10 @@ export default function ProfileUser() {
                                         <Link to={"/"} className="btn btn-danger">
                                             Edit
                                         </Link>
+                                        &emsp;
+                                        <Link to={"/changepass"} className="btn btn-warning">
+                                            Change Password
+                                        </Link>
                                     </Col>
 
                                 </Row>
