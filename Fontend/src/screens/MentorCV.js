@@ -1,12 +1,40 @@
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/profile.css"
 
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
+import axios from "axios";
 
 const MentorCV = () => {
+    const token = sessionStorage.getItem('token')
+    const [users, setUsers] = useState([]);
+    const [stname, setToken] = useState(sessionStorage.getItem('token'));
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/api/user/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log(response.data)
+                setUsers(response.data);
+                
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        if (token) {
+            setToken(token);
+            fetchUsers();
+        } else {
+            setUsers([]);
+        }
+
+    }, [token]);
     
 
     const { userid } = useParams();
@@ -61,8 +89,9 @@ const MentorCV = () => {
                                             <p className="text-muted font-size-sm">
                                                 {mentor.mentorProfile.address}
                                             </p>}
-                                        <button className="btn btn-primary">Send Request</button>
-                                        
+                                            {mentor && mentor.mentorProfile &&
+                                        <Link to={`/request/add/`+mentor.mentorID+'/'+users.id} className="btn btn-primary">Send Request</Link>
+                                            }
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +224,7 @@ const MentorCV = () => {
                                             </span>
                                         ) : (
                                             <span style={{ color: "red" }}>
-                                                <FemaleIcon />
+                                                <FemaleIcon style={{ width: "2em", height: "40px" }}/>
                                             </span>
                                         )
                                     }</div>

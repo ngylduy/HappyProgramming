@@ -44,7 +44,7 @@ function App() {
      <Route path='/changepass' element={<ChangePass/>}/>
      <Route path='/skill/edit/:id' element={<EditSkill/>}/>
      <Route path='/managerrequest' element={<ManagerRequest/>}/>
-     <Route path='/request/add' element={<AddRequest/>}/>
+     <Route path='/request/add/:mentorID/:id' element={<AddRequest/>}/>
      <Route path='/manageruser' element={<ManagerUser/>}/>
      <Route path='/mentor/cv/:userid' element={<MentorCV/>}/>
      <Route path='/listmentor/skill/:userid' element={<ListMentorSkill/>}/>
