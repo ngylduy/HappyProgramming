@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import TemplateAdmin from "../template/TemplateAdmin"
+
 
 import { PencilSquare, Trash3Fill } from "react-bootstrap-icons";
 import { Col, Table, Row , Pagination} from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import TemplateUser from "../template/TemplateUser";
 
 
 
@@ -16,7 +17,9 @@ import { Link } from "react-router-dom";
 
 
 
-function ManagerRequest() {
+function ManagerRequestUser() {
+    const {id} =useParams();
+    console.log(id)
     const [token] = useState(sessionStorage.getItem('token'));
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
@@ -31,10 +34,10 @@ function ManagerRequest() {
     
 
     const [request, setRequest] = useState([]);
-    const handleDelete = (id) => {
+    const handleDelete = (requestID) => {
         
         if (window.confirm("Are you sure you want to delete this request?")) {
-            fetch(`http://localhost:8080/api/${id}`, {
+            fetch(`http://localhost:8080/api/request/delete/${requestID}`, {
                 method: "DELETE"
             }).then(() => {
                 alert("delete successfully");
@@ -57,7 +60,7 @@ function ManagerRequest() {
  
 
         useEffect(() => {
-            fetch(`http://localhost:8080/api/request/getall`)
+            fetch(`http://localhost:8080/api/request/getbyuser/${id}`)
                 .then((resp) => resp.json())
                 .then((data) => {
                     setRequest(data);
@@ -69,7 +72,7 @@ function ManagerRequest() {
                 });
         }, [])
         return (
-            <TemplateAdmin>
+            <TemplateUser>
                 <Row>
                     <Col xs={12}>
                         <Row>
@@ -79,7 +82,7 @@ function ManagerRequest() {
                         </Row>
                         <Row>
                             <Col style={{ textAlign: "right" }}>
-                                <h5><Link to={"/skill/add"}>Create Request</Link></h5>
+                                <h5><Link to={"/listmentor"}>Create Request</Link></h5>
                                 
                             </Col>
                         </Row>
@@ -154,8 +157,8 @@ function ManagerRequest() {
                 </Row>
 
 
-            </TemplateAdmin>
+            </TemplateUser>
         );
     }
 
-    export default ManagerRequest;
+    export default ManagerRequestUser;

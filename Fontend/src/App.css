@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  
+
 }
 
 .App-logo {
@@ -13,7 +13,8 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-.banner1{
+
+.banner1 {
   margin-top: 100px;
 
 }
@@ -37,10 +38,12 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -63,21 +66,26 @@ nav {
   background-image: linear-gradient(to right, #f7f8f8, #beeebe);
   backface-visibility: 0.5%;
 }
+
 .webname {
   color: red;
   animation: mymove 5s infinite;
 }
+
 @keyframes mymove {
   from {
     color: red;
   }
+
   to {
     color: yellow;
   }
+
   to {
     color: red;
   }
 }
+
 .lnv {
   text-decoration: none;
   color: #38756e;
@@ -90,14 +98,17 @@ nav {
 .nv {
   text-decoration: none;
   word-spacing: 5px;
-  
+
 }
+
 .nv :hover {
   color: black;
   border-radius: 0px;
   text-decoration: none;
-  -ms-transform: scale(1.2); /* IE 9 */
-  -webkit-transform: scale(1.2); /* Safari 3-8 */
+  -ms-transform: scale(1.2);
+  /* IE 9 */
+  -webkit-transform: scale(1.2);
+  /* Safari 3-8 */
   transform: scale(1.2);
   transition: transform 0.7s;
 }
@@ -116,13 +127,15 @@ nav {
   padding: 5px;
   padding-inline: 10px;
   margin-left: 10px;
-  
-  
+
+
 }
+
 .buttons:hover {
-  background-image:linear-gradient(to right,#337069 , #42b9ab);
+  background-image: linear-gradient(to right, #337069, #42b9ab);
   color: white;
 }
+
 /******/
 .section {
   display: grid;
@@ -131,8 +144,9 @@ nav {
   padding: 50px 0px 50px 0px;
   background-image: linear-gradient(to right, #f7f8f8, #beeebe);
   height: 65vh;
-  
+
 }
+
 .introduce {
   animation: introduce 0.7s linear;
   margin-left: 100px;
@@ -143,6 +157,7 @@ nav {
     transform: translateY(-70px);
     opacity: 0;
   }
+
   100% {
     transform: translateX(0px);
   }
@@ -162,6 +177,7 @@ nav {
     transform: translateY(70px);
     opacity: 0;
   }
+
   100% {
     transform: translateX(0px);
   }
@@ -173,12 +189,15 @@ nav {
   transform: translateY(-50%);
   top: 50%;
 }
+
 .letter-M {
   left: 10%;
 }
+
 .letter-N {
   right: 10%;
 }
+
 .moon {
   background-color: #f5f5f5;
   height: 350px;
@@ -195,13 +214,16 @@ nav {
   animation: moon 3s infinite;
   animation-timing-function: linear;
 }
+
 @keyframes moon {
   0% {
     top: 0%;
   }
+
   50% {
     top: -20%;
   }
+
   100% {
     top: 0%;
   }
@@ -215,6 +237,7 @@ nav {
   border-radius: 50%;
 
 }
+
 .avtart img {
   top: 0;
   left: 0;
@@ -222,6 +245,7 @@ nav {
   height: 100%;
   opacity: 0.9;
 }
+
 .moon::after {
   content: "";
   position: absolute;
@@ -234,6 +258,7 @@ nav {
 
   box-shadow: 2.6em -1.8em 0 -5px #e6e6e6, 1.9em -5.1em 0 0.4em #e6e6e6;
 }
+
 .orbit {
   position: absolute;
   top: -25%;
@@ -243,17 +268,20 @@ nav {
   border-radius: 50%;
   animation: spin 4s infinite linear;
 }
+
 @keyframes spin {
   100% {
     transform: rotate(360deg);
   }
 }
+
 .orbit p {
   position: absolute;
   font-size: 30px;
   top: 2.7rem;
   left: 2.7rem;
 }
+
 .rob {
   position: absolute;
   top: 6.3rem !important;
@@ -262,6 +290,7 @@ nav {
   font-size: 30px;
   transform: rotate(180deg);
 }
+
 .luxurious {
   position: absolute;
   font-size: 30px;
@@ -269,44 +298,54 @@ nav {
   right: 4rem;
   color: #1bf1e7;
 }
+
 .hello {
   font-size: 35px;
   font-weight: 700;
 }
+
 .name {
   font-size: 55px;
   font-weight: 700;
   animation: name 0.8s linear;
 }
+
 @keyframes name {
   0% {
     transform: translateX(-50px);
     opacity: 0;
   }
+
   100% {
     transform: translateX(0px);
   }
 }
+
 .introduce-text {
   font-size: 35px;
   font-weight: 700;
 }
+
 .describe {
   animation: describe 0.8s linear;
 }
+
 @keyframes describe {
   0% {
     transform: translateX(50px);
     opacity: 0;
   }
+
   100% {
     transform: translateX(0px);
   }
 }
+
 .animation-text {
   color: #1bf1e7;
   position: relative;
 }
+
 .animation-text::before {
   content: " ";
   position: absolute;
@@ -318,11 +357,14 @@ nav {
   border-left: 2px solid #1bf1e7;
   animation: animate 2.95s steps(12) infinite;
 }
+
 @keyframes animate {
+
   40%,
   60% {
     left: 100%;
   }
+
   100% {
     left: 0%;
   }
@@ -333,6 +375,7 @@ nav {
   margin-top: 35px;
   gap: 35px;
 }
+
 .icon {
   font-size: 35px;
   border: 2px solid #1bf1e7;
@@ -346,6 +389,7 @@ nav {
   cursor: pointer;
   transition: all 0.4s;
 }
+
 .icon:hover {
   opacity: 0.8;
   transform: scale(1.2);
@@ -360,7 +404,8 @@ nav {
   border-radius: 18px;
   background-color: #1bf1e7;
   border: none;
-  box-shadow: 0 0 8px 2px #1bf1e7; /* the shadow */
+  box-shadow: 0 0 8px 2px #1bf1e7;
+  /* the shadow */
   cursor: pointer;
   font-weight: 600;
   font-size: 18px;
@@ -372,31 +417,38 @@ nav {
   opacity: 0.8;
   transform: scale(1.1);
 }
+
 /*//////slibar*/
-.content{
+.content {
   margin-top: 89px;
 }
-.profile h3{
-  
+
+.profile h3 {
+
   background-color: #bfcac8;
   padding: 20px;
 }
+
 .custom-border-card {
-	border-bottom: 2px solid #1e88e5;
+  border-bottom: 2px solid #1e88e5;
 }
-.card{
+
+.card {
   margin: 40px;
 }
-.breadcrumb-bar{
+
+.breadcrumb-bar {
   margin-top: 89px;
   background-color: #bfcac8;
   padding: 20px;
 }
-.card-body{
-padding: 20px;
-border: 1px solid rgb(236, 229, 229);
+
+.card-body {
+  padding: 20px;
+  border: 1px solid rgb(236, 229, 229);
 
 }
+
 .booking-user-img img {
   border-radius: 50%;
   height: 100px;
@@ -405,7 +457,8 @@ border: 1px solid rgb(236, 229, 229);
   margin-left: auto;
   margin-right: auto;
 }
-.profile-det-info a{
+
+.profile-det-info a {
   color: rgb(66, 66, 175);
   margin-left: 27%;
   background-color: rgb(253, 251, 249);
@@ -415,17 +468,20 @@ border: 1px solid rgb(236, 229, 229);
   font-size: 20px;
 }
 
-.mentee-details h6{
+.mentee-details h6 {
   margin-left: 30%;
   font-size: 16px;
 }
-.mentee-details h5{
+
+.mentee-details h5 {
   margin-left: 25%;
   font-size: 16px;
 }
-.mentee-info{
+
+.mentee-info {
   margin-top: 20px;
 }
+
 .mentee-info ul li {
   position: relative;
   font-size: .875rem;
@@ -434,13 +490,14 @@ border: 1px solid rgb(236, 229, 229);
   text-transform: capitalize;
   margin-bottom: 10px;
 }
+
 .mentee-info ul li span {
   color: #757575;
   float: right;
   font-weight: 400;
 }
-.list{
+
+.list {
   margin-top: 30px;
 }
-
 

@@ -103,7 +103,7 @@ function Login() {
                                     <input
                                         type="text"
                                         name=""
-                                        placeholder="Email Address"
+                                        placeholder="Username "
                                         tabIndex={10}
                                         required=""
                                         value={username}

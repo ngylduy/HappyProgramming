@@ -19,6 +19,7 @@ function Navbar() {
     const [stname, setToken] = useState(sessionStorage.getItem('token'));
     const [skill,setSkill] =useState([]);
     const [role, setRole] = useState('');
+    const [mentor,setMentor] = useState('')
     useEffect(() => {
         if (stname) {
             console.log('Token is stored in localStorage:', stname);
@@ -47,6 +48,17 @@ function Navbar() {
                 console.log(response.data)
                 setUsers(response.data);
                 setRole(response.data.roles[0].name);
+                const userID = response.data.id;
+                if (response.data.roles[0].name === "USER_MENTOR") {
+                    fetch(`http://localhost:8080/api/mentor/${userID}`)
+                      .then((res) => res.json())
+                      .then((data) => {
+                        setMentor(data);
+                        console.log(data);
+                      });
+                  } else {
+                    // Xử lý khi userID không phải là mentor
+                    console.log("userID không phải là mentor");}
             } catch (error) {
                 console.error(error);
             }
@@ -99,7 +111,7 @@ function Navbar() {
                         <Row>
                             <div  style={{ fontSize: "20px", marginRight: "200px", color: "#FF33FF" }}>
                                 {users.fullname ? (
-                                    <p>Xin chào, {users.fullname}!</p>
+                                    <p>Hello, {users.fullname} !</p>
                                 ) : (
                                     <p></p>
                                 )}
@@ -110,7 +122,7 @@ function Navbar() {
                                         <NavLink to="/" className={({ isActive }) => (isActive ? 'link-acvtive' : 'link')} style={{ textDecoration: "none", fontSize: "20px" }}>Home</NavLink>
                                     </li>
                                     <li className="lnv nav-item font">
-                                        <Link to="/about" style={{ textDecoration: "none", fontSize: "20px" }}>About</Link>
+                                        <Link to="/listmentor" style={{ textDecoration: "none", fontSize: "20px" }}>Find Mentor</Link>
                                     </li>
                                 </Row>
                                 <NavDropdown title="Skill" style={{ textDecoration: "none", fontSize: "20px" }}>
@@ -131,7 +143,7 @@ function Navbar() {
                                     {token ? (
                                         <>
                                             <Link className="dropdown-item" to="/11" style={{ textDecoration: "none", fontSize: "20px" }}>Profile</Link>
-                                            <NavDropdown.Item onClick={toggleModal} style={{ textDecoration: "none", fontSize: "20px" }}>Logout</NavDropdown.Item>
+                                            
                                             { role === "USER_ADMIN" ?(
                                                 <Link className="dropdown-item" to="/managerskill" style={{ textDecoration: "none", fontSize: "20px" }}>Manager</Link>
                                             ):(
@@ -139,6 +151,21 @@ function Navbar() {
                                             )
 
                                             }
+                                            { role === "USER_MENTEE" ?(
+                                                <Link className="dropdown-item" to={`/requestuser/`+users.id} style={{ textDecoration: "none", fontSize: "20px" }}>My Request</Link>
+                                            ):(
+                                               <span></span>
+                                            )
+
+                                            }
+                                            { role === "USER_MENTOR" ?(
+                                                <Link className="dropdown-item" to={`/requestmentor/`+mentor.mentorID} style={{ textDecoration: "none", fontSize: "20px" }}>Manager Mentor</Link>
+                                            ):(
+                                               <span></span>
+                                            )
+
+                                            }
+                                            <NavDropdown.Item onClick={toggleModal} style={{ textDecoration: "none", fontSize: "20px" }}>Logout</NavDropdown.Item>
                                             
                                         </>
                                     ) : (

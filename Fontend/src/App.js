@@ -20,6 +20,8 @@ import AddRequest from './screens/AddRequest';
 import ManagerSkill from './screens/ManagerSkill';
 import MentorCV from './screens/MentorCV';
 import ListMentorSkill from './screens/ListMentorSkill';
+import ManagerRequestUser from './screens/ManagerRequestUser';
+import ManagerRequestMentor from './screens/ManagerRequestMentor';
 
 
 
@@ -48,6 +50,9 @@ function App() {
      <Route path='/manageruser' element={<ManagerUser/>}/>
      <Route path='/mentor/cv/:userid' element={<MentorCV/>}/>
      <Route path='/listmentor/skill/:userid' element={<ListMentorSkill/>}/>
+     <Route path='/requestuser/:id' element={<ManagerRequestUser/>}/>
+     <Route path='/requestmentor/:mentorID' element={<ManagerRequestMentor/>}/>
+
      
 
 

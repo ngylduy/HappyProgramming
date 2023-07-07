@@ -4,7 +4,7 @@ import Navbar from "../component/Header";
 
 export default function ProfileTemplate({title="", children}){
     return(
-        <div className = "">
+        <div className = "container-fluid">
             <Navbar/>
             
             

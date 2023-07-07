@@ -5,7 +5,7 @@ import Navbar from "../component/Header";
 
 export default function HomPage({title="", children}){
     return(
-        <div className = "">
+        <div className = "container-fluid">
             <Navbar/>
             <div className="banner1">
             <Banner/>
