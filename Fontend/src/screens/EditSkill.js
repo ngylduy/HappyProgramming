@@ -16,6 +16,7 @@ const EditSkill = () => {
                 console.log(data.skillName)
                 setSkillName(data.skillName || '');
                 setStatus(data.status || '');
+               
             });
     }, [id]);
 

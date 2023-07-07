@@ -142,7 +142,7 @@ function Navbar() {
                                 <NavDropdown title="Setting" style={{ textDecoration: "none", fontSize: "20px" }}>
                                     {token ? (
                                         <>
-                                            <Link className="dropdown-item" to="/11" style={{ textDecoration: "none", fontSize: "20px" }}>Profile</Link>
+                                            <Link className="dropdown-item" to="/profile" style={{ textDecoration: "none", fontSize: "20px" }}>Profile</Link>
                                             
                                             { role === "USER_ADMIN" ?(
                                                 <Link className="dropdown-item" to="/managerskill" style={{ textDecoration: "none", fontSize: "20px" }}>Manager</Link>

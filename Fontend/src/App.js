@@ -22,6 +22,9 @@ import MentorCV from './screens/MentorCV';
 import ListMentorSkill from './screens/ListMentorSkill';
 import ManagerRequestUser from './screens/ManagerRequestUser';
 import ManagerRequestMentor from './screens/ManagerRequestMentor';
+import EditRequestUser from './screens/EditRequestUser';
+import UpdateUserProfile from './screens/UpdateUserProfile';
+import UpdateCVMentor from './screens/UpdateCVMentor';
 
 
 
@@ -52,10 +55,9 @@ function App() {
      <Route path='/listmentor/skill/:userid' element={<ListMentorSkill/>}/>
      <Route path='/requestuser/:id' element={<ManagerRequestUser/>}/>
      <Route path='/requestmentor/:mentorID' element={<ManagerRequestMentor/>}/>
-
-     
-
-
+     <Route path='/requestuser/edit/:id/:requestID' element={<EditRequestUser/>}/>
+     <Route path='/update/userprofile' element={<UpdateUserProfile/>}/>
+     <Route path='/update/cvmentor' element={<UpdateCVMentor/>}/>
      </Routes>   
     </BrowserRouter>
    

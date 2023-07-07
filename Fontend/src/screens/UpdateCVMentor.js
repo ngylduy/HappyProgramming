@@ -4,24 +4,19 @@ import axios from "axios";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 
-const Profile = () => {
+const UpdateCVMentor = () => {
 
 
     const [users, setUsers] = useState([]);
     const [token, setToken] = useState(sessionStorage.getItem('token'));
     const [role, setRole] = useState('');
     const [mentor, setMentor] = useState([]);
-    // useEffect(()=>{
-    //     fetch(`http://localhost:8080/api/mentor/${id}`)
-    //     .then((res)=>res.json())
-    //     .then((data)=>{
-    //         setMentor(data);
-    //         console.log(data);
-    //     })
-    // })
+    const [avatar, setAvatar] = useState('');
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -41,7 +36,8 @@ const Profile = () => {
                         .then((res) => res.json())
                         .then((data) => {
                             setMentor(data);
-                            console.log(data);
+                            
+                            setAvatar(data.avatar)
                         });
                 } else {
                     // Xử lý khi userID không phải là mentor
@@ -59,7 +55,31 @@ const Profile = () => {
             setUsers([]);
         }
     }, [token]);
+    const handleSave = () => {
+        // Gửi dữ liệu chỉnh sửa lên server, sử dụng axios hoặc phương thức HTTP tương ứng
+        // Ví dụ:
+        axios
+            .put(`http://localhost:8080/api/user/save/${users.id}`, {
 
+            })
+            .then((response) => {
+                // Xử lý sau khi lưu thành công
+                toast.success('Update successful')
+                navigator('/profile')
+                console.log(response.data)
+
+            })
+            .catch((error) => {
+                // Xử lý khi có lỗi xảy ra
+                console.error(error);
+            });
+    };
+    const handleAvatarChange = (event) => {
+        const file = event.target.files[0];
+        // Xử lý tải lên file và cập nhật giá trị avatar
+        // ...
+      };
+    
 
 
 
@@ -69,17 +89,7 @@ const Profile = () => {
         <div className="container">
             <div className="main-body">
                 {/* Breadcrumb */}
-                <nav aria-label="breadcrumb" className="main-breadcrumb">
-                    <ol className="breadcrumb">
-                        <li className="breadcrumb-item">
-                            <Link to={'/'}>HOME</Link>
-                        </li>
 
-                        <li className="breadcrumb-item active" aria-current="page">
-                            User Profile
-                        </li>
-                    </ol>
-                </nav>
                 {/* /Breadcrumb */}
                 <div className="row gutters-sm">
                     <div className="col-md-4 mb-3">
@@ -87,19 +97,18 @@ const Profile = () => {
                             <div className="card-body">
                                 <div className="d-flex flex-column align-items-center text-center">
                                     {role === "USER_MENTOR" ? (
-                                        <img
-                                            src={mentor.avatar}
-                                            alt="Admin"
-                                            className="rounded-circle"
-                                            width={150}
-
-                                        />
+                                        <div>
+                                            <img
+                                                src={avatar}
+                                                alt="Admin"
+                                                className="rounded-circle"
+                                                width={150}
+                                            />
+                                            <input type="file" onChange={handleAvatarChange} style={{marginLeft:'100px',padding:'20px'}}/>
+                                        </div>
                                     ) : (
                                         <span></span>
-                                    )
-
-                                    }
-
+                                    )}
                                     <div className="mt-3">
                                         <h4>{users.username}</h4>
                                         <p className="text-secondary mb-1">Full Stack Developer</p>
@@ -236,7 +245,7 @@ const Profile = () => {
                                             </span>
                                         ) : (
                                             <span style={{ color: "red" }}>
-                                                <FemaleIcon style={{ width: "2em", height: "40px" }}/>
+                                                <FemaleIcon style={{ width: "2em", height: "40px" }} />
                                             </span>
                                         )
                                     }</div>
@@ -263,164 +272,24 @@ const Profile = () => {
                                 <hr />
                                 <div className="row">
                                     <div className="col-sm-6">
-                                        <Link
-                                            className="btn btn-info "
-                                            // target="__blank"
-                                            to={'/update/userprofile'}
-                                        >
-                                            Edit
-                                        </Link>
+                                        <button className="btn btn-info" onClick={handleSave}>
+                                            Save
+                                        </button>
                                     </div>
-                                    <div className="col-sm-6">
-                                        {role === "USER_MENTOR" ? (
-                                            <Link
-                                                className="btn btn-info "
-                                                // target="__blank"
-                                                to={'/update/cvmentor'}
-                                            >
-                                                Edit CV
-                                            </Link>
-                                        ) : (
-                                            <span></span>
-                                        )
 
-                                        }
+
+                                    <div className="col-sm-6">
+                                        <button className="btn btn-primary" >
+                                            <Link style={{ color: 'white' }} to={'/profile'}>Back</Link>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="row gutters-sm">
-                            <div className="col-sm-6 mb-3">
-                                <div className="card h-100">
-                                    <div className="card-body">
-                                        <h6 className="d-flex align-items-center mb-3">
-                                            <i className="material-icons text-info mr-2">assignment</i>
-                                            Project Status
-                                        </h6>
-                                        <small>Web Design</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "80%" }}
-                                                aria-valuenow={80}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                        <small>Website Markup</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "72%" }}
-                                                aria-valuenow={72}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                        <small>One Page</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "89%" }}
-                                                aria-valuenow={89}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                        <small>Mobile Template</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "55%" }}
-                                                aria-valuenow={55}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                        <small>Backend API</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "66%" }}
-                                                aria-valuenow={66}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-sm-6 mb-3">
-                                <div className="card h-100">
-                                    <div className="card-body">
-                                        <h6 className="d-flex align-items-center mb-3">
-                                            <i className="material-icons text-info mr-2">assignment</i>
-                                            Project Status
-                                        </h6>
-                                        <small>Web Design</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "80%" }}
-                                                aria-valuenow={80}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                        <small>Website Markup</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "72%" }}
-                                                aria-valuenow={72}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                        <small>One Page</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "89%" }}
-                                                aria-valuenow={89}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                        <small>Mobile Template</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "55%" }}
-                                                aria-valuenow={55}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                        <small>Backend API</small>
-                                        <div className="progress mb-3" style={{ height: 5 }}>
-                                            <div
-                                                className="progress-bar bg-primary"
-                                                role="progressbar"
-                                                style={{ width: "66%" }}
-                                                aria-valuenow={66}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -430,4 +299,4 @@ const Profile = () => {
     );
 }
 
-export default Profile;
+export default UpdateCVMentor;

@@ -109,7 +109,7 @@ function ManagerRequestUser() {
                                                 <td>{r.title}</td>
                                                 <td >
                                                     {
-                                                        <Link styles={{color:"blue"}} to={'/skill/edit/' + r.skillID}><PencilSquare /></Link>
+                                                        <Link styles={{color:"blue"}} to={'/requestuser/edit/'+id+'/' + r.requestID}><PencilSquare /></Link>
                                                     }
                                                 </td>
                                                 <td >
