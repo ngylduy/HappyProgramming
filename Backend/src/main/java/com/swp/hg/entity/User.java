@@ -37,8 +37,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "menteeRating", cascade = CascadeType.ALL)
     private Collection<Rating> ratings;
 
-    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
-    private Collection<MentorProfile> mentorProfiles;
+//    @OneToMany(mappedBy = "mentorProfile", cascade = CascadeType.ALL)
+//    private Collection<MentorProfile> mentorProfiles;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private Collection<Request> requests;

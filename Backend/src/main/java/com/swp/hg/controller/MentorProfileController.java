@@ -54,6 +54,10 @@ public class MentorProfileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+    @GetMapping("/{userid}")
+    public ResponseEntity<MentorProfile> getMentorProfileByUserId(@PathVariable int userid ){
+        return  ResponseEntity.ok().body(mentorProfileService.getById(userid));
+    }
 
 
     //delete mentor CV
@@ -91,6 +95,10 @@ public class MentorProfileController {
     public ResponseEntity<?> updateMentorRegistStatus(@RequestBody MentorRegistDTO registDTO) {
         mentorRegistService.updateMentorRegistStatus(registDTO);
         return ResponseEntity.ok(new ApiResponse(true, "Mentor regist status updated successfully"));
+    }
+    @GetMapping("/skill/{id}")
+    public ResponseEntity<List<MentorProfile>> getMentorsBySkillID(@PathVariable int id) {
+        return ResponseEntity.ok().body(mentorProfileRepo.findMentorBySkillId(id));
     }
 
 }

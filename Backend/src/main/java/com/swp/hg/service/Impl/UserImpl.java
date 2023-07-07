@@ -2,6 +2,8 @@ package com.swp.hg.service.Impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swp.hg.dto.ResultDTO;
+import com.swp.hg.dto.UserDTO;
 import com.swp.hg.entity.PasswordResetToken;
 import com.swp.hg.entity.Role;
 import com.swp.hg.entity.User;
@@ -45,7 +47,24 @@ public class UserImpl implements UserService, UserDetailsService {
     public User getById(int id) {
         return userRepository.findById(id).orElse(null);
     }
+    @Override
+    public ResultDTO<User> updateUser(UserDTO user) {
+        ResultDTO<User> resultDTO = new ResultDTO<>();
+        User newUser = getById(user.getId());
+        newUser.setAddress(user.getAddress());
+        newUser.setDob(user.getDob());
+        newUser.setFullname(user.getFullname());
+        newUser.setGender(user.isGender());
+        newUser.setPhone(user.getPhone());
 
+        userRepository.save(newUser);
+
+        resultDTO.setStatus(true);
+        resultDTO.setData(newUser);
+        resultDTO.setMessage("Saved Successfully");
+
+        return resultDTO;
+    }
     @Override
     public List<User> getListUserByRole(String role_name) {
         return userRepository.findAllByRolesName(role_name);

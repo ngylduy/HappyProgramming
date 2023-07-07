@@ -48,7 +48,15 @@ public class RequestService {
             return null;
         }
     }
-
+    //get request by request id
+    public Request getRequestByRequestId(int id){
+        try{
+            Request request = requestRepository.findByRequestID(id);
+            return request;
+        }catch (Exception e){
+            return null;
+        }
+    }
     //list request by id
     public List<Request> getALlRequestById(List<Integer> id){
         try {
@@ -77,7 +85,7 @@ public class RequestService {
     }
 
     //add request
-    public ApiResponse addRequest(int userID, RequestDTO requestDTO){
+    public ApiResponse addRequest(int mentorID,int userID, RequestDTO requestDTO){
         try {
             Request request = new Request();
 
@@ -99,7 +107,7 @@ public class RequestService {
             request.setLink(requestDTO.getLink());
             User user = userRepository.findById(userID).orElse(null);
             request.setUsers(user);
-            MentorProfile mentorProfile = mentorProfileRepo.findById(requestDTO.getMentorId()).orElse(null);
+            MentorProfile mentorProfile = mentorProfileRepo.findById(mentorID).orElse(null);
             request.setMentorProfile(mentorProfile);
             request.setMentorStatus(MentorStatusConfig.PENDING.getValue());
             request.setStatus(StatusRequestConfig.PROCESSING.getValue());

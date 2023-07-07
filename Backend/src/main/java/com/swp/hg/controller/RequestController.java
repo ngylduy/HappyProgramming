@@ -31,10 +31,11 @@ public class RequestController {
         return requestService.getALlRequest();
     }
 
-    //get request by  id (for mentee or admin)
+
+    //get request by  request id
     @GetMapping("/{id}")
-    public List<Request> getRequestByID(@PathVariable List<Integer> id){
-        return requestService.getALlRequestById(id);
+    public Request getRequestByRequestId(@PathVariable int id){
+        return requestService.getRequestByRequestId(id);
     }
 
     //get list request by mentor id
@@ -50,9 +51,9 @@ public class RequestController {
     }
 
     //add new request by user id
-    @PostMapping("/add/{userid}")
-    public ResponseEntity<ApiResponse> addRequest(@PathVariable int userid, @RequestBody RequestDTO requestDTO) {
-        ApiResponse apiResponse = requestService.addRequest(userid,requestDTO);
+    @PostMapping("/add/{mentorid}/{userid}")
+    public ResponseEntity<ApiResponse> addRequest(@PathVariable int mentorid , @PathVariable int userid, @RequestBody RequestDTO requestDTO) {
+        ApiResponse apiResponse = requestService.addRequest(mentorid,userid,requestDTO);
         if(apiResponse.isSuccess()){
             return ResponseEntity.ok(apiResponse);
         }else{
