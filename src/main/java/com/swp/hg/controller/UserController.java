@@ -33,7 +33,7 @@ public class UserController {
             return ResponseEntity.ok(userDetails);
         } else {
             User user = userService.getUser((String) principal);
-            return ResponseEntity.ok().body(user);
+            return ResponseEntity.ok(user);
         }
     }
 
