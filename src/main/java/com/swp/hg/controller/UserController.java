@@ -34,17 +34,8 @@ public class UserController {
             UserDetails userDetails = (UserDetails) principal;
             return ResponseEntity.ok(userDetails);
         } else {
-            String jsonString = principal.toString();
-            String username;
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode jsonNode = objectMapper.readTree(jsonString);
-                username = jsonNode.get("username").asText();
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().build();
-            }
-            User user = userService.getUser(username);
-            return ResponseEntity.ok(user);
+            User user = userService.getUser((String) principal);
+            return ResponseEntity.ok().body(user);
         }
     }
 

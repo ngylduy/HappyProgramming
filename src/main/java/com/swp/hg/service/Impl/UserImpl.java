@@ -7,6 +7,7 @@ import com.swp.hg.dto.UserDTO;
 import com.swp.hg.entity.PasswordResetToken;
 import com.swp.hg.entity.Role;
 import com.swp.hg.entity.User;
+import com.swp.hg.repository.RoleCustomRepo;
 import com.swp.hg.repository.RoleRepository;
 import com.swp.hg.repository.UserRepository;
 import com.swp.hg.service.UserService;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,11 +44,13 @@ public class UserImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
     private final ConfirmationTokenResetPasswordService confirmationTokenResetPasswordService;
+    private final RoleCustomRepo roleCustomRepo;
 
     @Override
     public User getById(int id) {
         return userRepository.findById(id).orElse(null);
     }
+
     @Override
     public ResultDTO<User> updateUser(UserDTO user) {
         ResultDTO<User> resultDTO = new ResultDTO<>();
@@ -65,6 +69,7 @@ public class UserImpl implements UserService, UserDetailsService {
 
         return resultDTO;
     }
+
     @Override
     public List<User> getListUserByRole(String role_name) {
         return userRepository.findAllByRolesName(role_name);
@@ -113,16 +118,13 @@ public class UserImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user;
-        int userId;
 
         if (Validate.validateEmail(username)) {
             user = userRepository.findByEmail(username);
             username = user.getUsername();
-            userId = user.getId();
         } else {
             user = userRepository.findUserByUsername(username);
             username = user.getUsername();
-            userId = user.getId();
         }
 
         if (user == null) {
@@ -138,19 +140,20 @@ public class UserImpl implements UserService, UserDetailsService {
             log.error("Account is enabled");
             throw new UsernameNotFoundException("Account is enabled, verify");
         }
-
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        Set<Role> set = new HashSet<Role>();
-
-        if (user.getRoles().contains(new Role(1, "USER_ADMIN"))) {
-            set.add(new Role(1, "USER_ADMIN"));
-        } else if (user.getRoles().contains(new Role(2, "USER_MENTOR"))) {
-            set.add(new Role(2, "USER_MENTOR"));
-        } else {
-            set.add(new Role(3, "USER_MENTEE"));
+        List<Role> role = null;
+        if (user != null) {
+            role = roleCustomRepo.getRole(user);
         }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        set.forEach(i -> authorities.add(new SimpleGrantedAuthority(i.getName())));
+
+        Set<Role> set = new HashSet<>();
+
+        role.stream().forEach(c -> set.add(new Role(c.getName())));
+
+        user.setRoles(set);
+
+        set.stream().forEach(i -> authorities.add(new SimpleGrantedAuthority(i.getName())));
 
         Map<String, String> map = new HashMap<>();
 
@@ -165,6 +168,24 @@ public class UserImpl implements UserService, UserDetailsService {
         }
 
         return new org.springframework.security.core.userdetails.User(userPayload, user.getPassword(), authorities);
+    }
+
+    public User takeUserByUsername(String username) {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            log.error("User not found in the database");
+            throw new UsernameNotFoundException("User not found in the database");
+        } else if (!user.isStatus()) {
+            log.error("User is deactivate");
+            throw new UsernameNotFoundException("User is deactivate");
+        } else {
+            log.info("User found in the database: {}", username);
+        }
+        if (!user.isEnabled()) {
+            log.error("Account is enabled");
+            throw new UsernameNotFoundException("Account is enabled, verify");
+        }
+        return user;
     }
 
     @Override

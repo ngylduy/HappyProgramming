@@ -28,10 +28,9 @@ public class SecurityConfig {
          http.sessionManagement().sessionCreationPolicy(STATELESS);
          http.authorizeRequests()
                  .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                 .requestMatchers("/api/**").permitAll()
-//                 .requestMatchers("/api/rating").permitAll()
-//                 .requestMatchers(HttpMethod.GET, "/api/skill").permitAll()
-//                 .requestMatchers("/api/skill").hasAnyAuthority("USER_MENTEE")
+                 .requestMatchers("/api/auth/**").permitAll()
+                 .requestMatchers("/api/rating").permitAll()
+                 .requestMatchers(HttpMethod.GET, "/api/skill").hasAnyAuthority("USER_ADMIN")
                  .and()
                  .csrf().disable()
                  .authorizeRequests()
