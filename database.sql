@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `confirmation_token` (
   CONSTRAINT `FKhjrtky9wbd6lbk7mu9tuddqgn` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table happyprogramming.confirmation_token: ~2 rows (approximately)
+-- Dumping data for table happyprogramming.confirmation_token: ~3 rows (approximately)
 INSERT INTO `confirmation_token` (`id`, `confirmed_at`, `created_at`, `expires_at`, `token`, `user_id`) VALUES
 	(1, '2023-06-24 14:22:03.869640', '2023-06-24 14:21:41.840574', '2023-06-24 14:36:41.840574', '65e15c79-09b8-492f-9c97-a813e777a951', 1),
 	(2, '2023-06-24 14:26:02.510077', '2023-06-24 14:25:29.756537', '2023-06-24 14:40:29.756537', '0444748b-7723-4676-aa6a-bf9d311aa7c9', 1),
@@ -53,27 +53,23 @@ CREATE TABLE IF NOT EXISTS `mentor_profile` (
   PRIMARY KEY (`mentorid`),
   KEY `FKggsxu0vvlx7txmcyl555cl68i` (`userid`),
   CONSTRAINT `FKggsxu0vvlx7txmcyl555cl68i` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table happyprogramming.mentor_profile: ~1 rows (approximately)
-INSERT INTO `mentor_profile` (`mentorid`, `git_hub`, `linked_in`, `profession`, `avatar`, `introduction`, `userid`) VALUES
-	(1, 'GitHub URL', 'Linked URL', 'AI', 'Avatar URL', 'About mentor', 2);
+-- Dumping data for table happyprogramming.mentor_profile: ~0 rows (approximately)
 
 -- Dumping structure for table happyprogramming.mentor_regist
 DROP TABLE IF EXISTS `mentor_regist`;
 CREATE TABLE IF NOT EXISTS `mentor_regist` (
   `registid` int NOT NULL AUTO_INCREMENT,
-  `date` datetime(6) DEFAULT NULL,
+  `date` date DEFAULT NULL,
   `status` int DEFAULT NULL,
   `menteeid` int DEFAULT NULL,
   PRIMARY KEY (`registid`),
   KEY `FKi9s84d1qmwanvw05dwpl3w68q` (`menteeid`),
   CONSTRAINT `FKi9s84d1qmwanvw05dwpl3w68q` FOREIGN KEY (`menteeid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table happyprogramming.mentor_regist: ~0 rows (approximately)
-INSERT INTO `mentor_regist` (`registid`, `date`, `status`, `menteeid`) VALUES
-	(1, '2023-06-27 22:04:24.993814', 1, 2);
 
 -- Dumping structure for table happyprogramming.mentor_skill
 DROP TABLE IF EXISTS `mentor_skill`;
@@ -104,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `password_reset_token` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table happyprogramming.password_reset_token: ~4 rows (approximately)
+-- Dumping data for table happyprogramming.password_reset_token: ~5 rows (approximately)
 INSERT INTO `password_reset_token` (`id`, `confirmed_at`, `created_at`, `expires_at`, `token`, `user_id`) VALUES
 	(1, '2023-06-23 18:06:12.312661', '2023-06-23 18:04:07.831124', '2023-06-23 18:19:07.831124', '0a74de67-89d9-4653-bdf4-f1f40dd1099a', 1),
 	(2, NULL, '2023-06-23 18:08:27.721701', '2023-06-23 18:23:27.721701', '90b8b709-3b36-4f9f-bf2c-82a013b347dc', 1),
@@ -187,9 +183,9 @@ CREATE TABLE IF NOT EXISTS `skill_category` (
   `skill_name` varchar(255) DEFAULT NULL,
   `status` bit(1) DEFAULT NULL,
   PRIMARY KEY (`skillid`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table happyprogramming.skill_category: ~8 rows (approximately)
+-- Dumping data for table happyprogramming.skill_category: ~7 rows (approximately)
 INSERT INTO `skill_category` (`skillid`, `skill_name`, `status`) VALUES
 	(1, 'JavaScript', b'1'),
 	(2, 'HTML', b'1'),
@@ -197,8 +193,7 @@ INSERT INTO `skill_category` (`skillid`, `skill_name`, `status`) VALUES
 	(4, 'Ruby', b'1'),
 	(5, 'Java', b'1'),
 	(6, 'C#', b'1'),
-	(7, 'ReactJS', b'1'),
-	(8, 'new skill', b'1');
+	(7, 'ReactJS', b'1');
 
 -- Dumping structure for table happyprogramming.user
 DROP TABLE IF EXISTS `user`;
@@ -237,10 +232,10 @@ CREATE TABLE IF NOT EXISTS `user_role` (
 
 -- Dumping data for table happyprogramming.user_role: ~4 rows (approximately)
 INSERT INTO `user_role` (`user_id`, `role_id`) VALUES
-	(3, 3),
+	(2, 3),
+	(3, 2),
 	(4, 3),
-	(1, 1),
-	(2, 2);
+	(1, 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -36,7 +36,10 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         }
         return dto;
     }
-
+    @Override
+    public List<MentorProfile> getMentors() {
+        return mentorProfileRepo.findAll();
+    }
     @Override
     public MentorProfile getById(int id) {
         return mentorProfileRepo.findMentorProfilesByUserID(id);

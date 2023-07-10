@@ -5,7 +5,6 @@ import com.swp.hg.entity.Request;
 import com.swp.hg.repository.RequestRepository;
 import com.swp.hg.response.ApiResponse;
 import com.swp.hg.service.Impl.RequestService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +14,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/request")
 @CrossOrigin
-@RequiredArgsConstructor
 public class RequestController {
 
     private final RequestService requestService;
 
     private final RequestRepository requestRepository;
+
+    public RequestController(RequestService requestService, RequestRepository requestRepository) {
+        this.requestService = requestService;
+        this.requestRepository = requestRepository;
+    }
 
     //list all request (for Admin)
     @GetMapping("/getall")
@@ -28,10 +31,11 @@ public class RequestController {
         return requestService.getALlRequest();
     }
 
-    //get request by  id (for mentee or admin)
+
+    //get request by  request id
     @GetMapping("/{id}")
-    public List<Request> getRequestByID(@PathVariable List<Integer> id){
-        return requestService.getALlRequestById(id);
+    public Request getRequestByRequestId(@PathVariable int id){
+        return requestService.getRequestByRequestId(id);
     }
 
     //get list request by mentor id
@@ -47,9 +51,9 @@ public class RequestController {
     }
 
     //add new request by user id
-    @PostMapping("/add/{userid}")
-    public ResponseEntity<ApiResponse> addRequest(@PathVariable int userid, @RequestBody RequestDTO requestDTO) {
-        ApiResponse apiResponse = requestService.addRequest(userid,requestDTO);
+    @PostMapping("/add/{mentorid}/{userid}")
+    public ResponseEntity<ApiResponse> addRequest(@PathVariable int mentorid , @PathVariable int userid, @RequestBody RequestDTO requestDTO) {
+        ApiResponse apiResponse = requestService.addRequest(mentorid,userid,requestDTO);
         if(apiResponse.isSuccess()){
             return ResponseEntity.ok(apiResponse);
         }else{

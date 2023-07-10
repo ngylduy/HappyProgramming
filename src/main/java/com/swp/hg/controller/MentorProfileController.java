@@ -4,6 +4,7 @@ import com.swp.hg.dto.MentorCVDTO;
 import com.swp.hg.dto.MentorProfileDTO;
 import com.swp.hg.dto.MentorRegistDTO;
 import com.swp.hg.dto.SearchResultDTO;
+import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.repository.MentorProfileRepo;
 import com.swp.hg.response.ApiResponse;
 import com.swp.hg.service.Impl.MentorCVService;
@@ -14,10 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/mentor")
 @RequiredArgsConstructor
-@CrossOrigin
 public class MentorProfileController {
 
     private final MentorProfileService mentorProfileService;
@@ -27,6 +29,10 @@ public class MentorProfileController {
     private final MentorProfileRepo mentorProfileRepo;
 
     private final MentorRegistService mentorRegistService;
+    @GetMapping("/all")
+    public ResponseEntity<List<MentorProfile>> getMentors() {
+        return ResponseEntity.ok().body(mentorProfileService.getMentors());
+    }
 
     @PostMapping("/searchmentor")
     public ResponseEntity<SearchResultDTO<MentorProfileDTO>> search(@RequestBody MentorProfileDTO mentorProfileDTO) {
@@ -48,6 +54,11 @@ public class MentorProfileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+    @GetMapping("/{userid}")
+    public ResponseEntity<MentorProfile> getMentorProfileByUserId(@PathVariable int userid ){
+        return  ResponseEntity.ok().body(mentorProfileService.getById(userid));
+    }
+
 
     //delete mentor CV
     @DeleteMapping("/delete/{userid}")
@@ -84,6 +95,10 @@ public class MentorProfileController {
     public ResponseEntity<?> updateMentorRegistStatus(@RequestBody MentorRegistDTO registDTO) {
         mentorRegistService.updateMentorRegistStatus(registDTO);
         return ResponseEntity.ok(new ApiResponse(true, "Mentor regist status updated successfully"));
+    }
+    @GetMapping("/skill/{id}")
+    public ResponseEntity<List<MentorProfile>> getMentorsBySkillID(@PathVariable int id) {
+        return ResponseEntity.ok().body(mentorProfileRepo.findMentorBySkillId(id));
     }
 
 }

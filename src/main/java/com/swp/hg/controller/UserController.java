@@ -1,10 +1,13 @@
 package com.swp.hg.controller;
 
+import com.swp.hg.dto.ResultDTO;
+import com.swp.hg.dto.UserDTO;
 import com.swp.hg.entity.Role;
 import com.swp.hg.entity.User;
 import com.swp.hg.service.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,10 +53,11 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-    @PostMapping("/role/save")
-    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
+    @PutMapping("/save/{id}")
+    public ResponseEntity<?> saveUsers(@RequestBody UserDTO user, @PathVariable int id) {
+        user.setId(id);
+        ResultDTO<User> userResultDTO = userService.updateUser(user);
+        return new ResponseEntity<ResultDTO<User>>(userResultDTO, HttpStatus.OK);
     }
 
     @PostMapping("/role/addtouser")
