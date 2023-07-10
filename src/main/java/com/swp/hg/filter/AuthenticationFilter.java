@@ -34,8 +34,9 @@ public class AuthenticationFilter {
                     authenticationRequest.getPassword()
             )
         );
-        UserDetails user = userImpl.loadUserByUsername(authenticationRequest.getUsername());
 
+        UserDetails user = userImpl.loadUserByUsername(authenticationRequest.getUsername());
+//        User user = userRepository.findByUsername(authenticationRequest.getUsername()).get();
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
