@@ -1,5 +1,7 @@
 package com.swp.hg.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swp.hg.dto.ResultDTO;
 import com.swp.hg.dto.UserDTO;
 import com.swp.hg.entity.Role;
@@ -32,8 +34,17 @@ public class UserController {
             UserDetails userDetails = (UserDetails) principal;
             return ResponseEntity.ok(userDetails);
         } else {
-            User user = userService.getUser((String) principal);
-            return ResponseEntity.ok().body(user);
+            String jsonString = principal.toString();
+            String username;
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = objectMapper.readTree(jsonString);
+                username = jsonNode.get("username").asText();
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().build();
+            }
+            User user = userService.getUser(username);
+            return ResponseEntity.ok(user);
         }
     }
 

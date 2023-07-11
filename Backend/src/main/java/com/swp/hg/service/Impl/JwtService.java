@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.swp.hg.entity.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 public class JwtService {
     private static final String SECRET = "123";
 
-    public String createToken(User user, Collection<SimpleGrantedAuthority> authorities) {
+    public String createToken(UserDetails user, Collection<SimpleGrantedAuthority> authorities) {
 
         Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
         return JWT.create()
@@ -25,7 +26,7 @@ public class JwtService {
 
     }
 
-    public String createRefreshToken(User user, Collection<SimpleGrantedAuthority> authorities) {
+    public String createRefreshToken(UserDetails user, Collection<SimpleGrantedAuthority> authorities) {
 
         Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
         return JWT.create()

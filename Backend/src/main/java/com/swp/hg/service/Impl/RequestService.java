@@ -16,6 +16,17 @@ import java.util.List;
 
 @Service
 public class RequestService {
+    //update request by mentor
+    public ApiResponse updateStatus(int requestId, int status){
+        Request request = requestRepository.findByRequestID(requestId);
+        if(request!=null){
+            request.setStatus(status);
+            requestRepository.save(request);
+            return new ApiResponse(true,"Update Request successfully");
+        }else{
+            return new ApiResponse(false,"Fail to update request");
+        }
+    }
 
 
     private final RequestRepository requestRepository;

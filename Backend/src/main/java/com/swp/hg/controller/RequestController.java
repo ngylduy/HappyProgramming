@@ -15,6 +15,15 @@ import java.util.List;
 @RequestMapping("/api/request")
 @CrossOrigin
 public class RequestController {
+    @PutMapping("/{requestId}/{status}")
+    public ResponseEntity<ApiResponse>updateRequestByMentor(@PathVariable int requestId,@PathVariable int status){
+        ApiResponse apiResponse = requestService.updateStatus(requestId,status);
+        if(apiResponse.isSuccess()){
+            return ResponseEntity.ok(apiResponse);
+        }else{
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
+    }
 
     private final RequestService requestService;
 

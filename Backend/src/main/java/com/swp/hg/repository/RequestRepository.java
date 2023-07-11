@@ -1,7 +1,9 @@
 package com.swp.hg.repository;
 
+import com.swp.hg.dto.RequestDTO;
 import com.swp.hg.entity.Request;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +18,8 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
     //get list request by user id
     List<Request> findByUsersId(int id);
 
+    @Query(value ="select * from request", nativeQuery = true)
+    List<Request> getAllRequest();
 
     //get Request
     Request getRequestsByRequestID(int id);
