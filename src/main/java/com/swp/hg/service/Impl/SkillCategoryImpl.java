@@ -49,7 +49,7 @@ public class SkillCategoryImpl implements SkillCategoryService {
                 resultDTO.setMessage("Updated Successfully");
             }
             skillCategoryRepository.save(skillCategory);
-        } catch (Exception e){
+        } catch (Exception e) {
             resultDTO.setStatus(false);
             resultDTO.setMessage(e.getMessage());
         }
@@ -60,15 +60,22 @@ public class SkillCategoryImpl implements SkillCategoryService {
     public ResultDTO<SkillCategory> delete(int id) {
         ResultDTO<SkillCategory> resultDTO = new ResultDTO<>();
         SkillCategory skillCategory = getById(id);
-        if (skillCategory != null){
+        if (skillCategory != null) {
             skillCategoryRepository.deleteById(id);
             resultDTO.setStatus(true);
             resultDTO.setData(getById(id));
             resultDTO.setMessage("Deleted Successfully");
-        }else  {
+        } else {
             resultDTO.setStatus(false);
             resultDTO.setMessage("Skill Category Not Found");
         }
         return resultDTO;
     }
+
+    @Override
+    public int getTotalSkills() {
+        return skillCategoryRepository.findAll().size();
+    }
+
+
 }

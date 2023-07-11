@@ -11,4 +11,5 @@ public interface SkillCategoryService {
     SkillCategory getById(int id);
     ResultDTO<SkillCategory> saveOrUpdate(SkillCategoryDTO skillCategoryDTO);
     ResultDTO<SkillCategory> delete(int id);
+    public int getTotalSkills();
 }
