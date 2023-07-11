@@ -2,36 +2,22 @@
 
 Project của nhóm 4 - Lớp SE1725 - Môn SWP391
 
-## Installation
+## Introduction
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+This project is aimed at developing an online Happy Programming system which mainly to allow
+mentors, mentees and other actorsto connect online and support mentee to learn programming. This
+system support for the below types of user
+- Guest: unregistered users
+- Registered User: The user that has registered an account
+- Mentee: The registered user wishes to hire mentors
+- Registered Mentor: The registered user that has registered to be a mentor
+- Admin: the organization leader/manager, acts as the system administrator
 
-```bash
-pip install foobar
-```
+## Member
 
-## Usage
+- Nguyễn Lương Duy
+- Phạm Anh Duy
+- Lê Quang Huy
+- Trịnh Minh Phúc
+- Lê Minh Cương
 
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
