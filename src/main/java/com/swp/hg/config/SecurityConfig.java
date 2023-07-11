@@ -36,8 +36,8 @@ public class SecurityConfig {
                  .and()
                  .csrf().disable()
                  .authorizeRequests()
-                 .anyRequest()
-                 .authenticated()
+//                 .anyRequest()
+//                 .authenticated()
                  .and()
                  .authenticationProvider(authenticationProvider)
                  .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
