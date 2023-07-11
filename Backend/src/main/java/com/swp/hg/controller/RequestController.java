@@ -54,6 +54,7 @@ public class RequestController {
                 User mentee = userService.getById(request.getUsers().getId());
                 MentorProfile mentor = mentorProfileService.getByMentorID(request.getMentorProfile().getMentorID());
 
+
                 RequestResponse response = new RequestResponse();
                 response.setRequestId(request.getRequestID());
                 response.setDate(request.getDate());
@@ -61,6 +62,7 @@ public class RequestController {
                 response.setLink(request.getLink());
                 response.setTitle(request.getTitle());
                 response.setContent(request.getContent());
+                response.setRequestSkills(request.getRequestSkills());
                 response.setMentorStatus(request.getMentorStatus());
                 response.setMenteeId(mentee != null ? mentee.getId() : null);
                 response.setMentorId(mentor != null ? mentor.getMentorID() : null);
@@ -106,6 +108,7 @@ public class RequestController {
         response.setStatus(request.getStatus());
         response.setLink(request.getLink());
         response.setTitle(request.getTitle());
+        response.setRequestSkills(request.getRequestSkills());
         response.setContent(request.getContent());
         response.setMentorStatus(request.getMentorStatus());
         response.setMenteeId(request.getUsers().getId());

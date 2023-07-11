@@ -4,14 +4,17 @@ import com.swp.hg.dto.RequestDTO;
 import com.swp.hg.entity.*;
 import com.swp.hg.repository.*;
 import com.swp.hg.response.ApiResponse;
-import com.swp.hg.service.RequestService;
+import com.swp.hg.service.Impl.RequestService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,13 +49,14 @@ public class TestAddRequest {
     public void testAddRequest_Success() {
         // Mock input data
         int userID = 1;
+        int mentorID=1;
 
         // Create a mocked RequestDTO object
         RequestDTO requestDTO = Mockito.mock(RequestDTO.class);
         when(requestDTO.getTitle()).thenReturn("Test Title");
         when(requestDTO.getContent()).thenReturn("Test Content");
         when(requestDTO.getLink()).thenReturn("Test Link");
-        when(requestDTO.getMentorid()).thenReturn(1);
+        when(requestDTO.getMentorId()).thenReturn(1);
         when(requestDTO.getSkillId()).thenReturn(Collections.singletonList(1));
 
         // Mock user object
@@ -61,7 +65,7 @@ public class TestAddRequest {
 
         // Mock mentor profile object
         MentorProfile mentorProfile = Mockito.mock(MentorProfile.class);
-        when(mentorProfileRepo.findById(requestDTO.getMentorid())).thenReturn(Optional.of(mentorProfile));
+        when(mentorProfileRepo.findById(requestDTO.getMentorId())).thenReturn(Optional.of(mentorProfile));
 
         // Mock skill category object
         SkillCategory skillCategory = Mockito.mock(SkillCategory.class);
@@ -80,7 +84,7 @@ public class TestAddRequest {
         when(requestSkillRepository.save(any(RequestSkill.class))).thenReturn(requestSkill);
 
         // Invoke the method
-        ApiResponse response = requestService.addRequest(userID, requestDTO);
+        ApiResponse response = requestService.addRequest(userID,mentorID, requestDTO);
 
         // Assert the response
         assertTrue(response.isSuccess());
@@ -93,10 +97,11 @@ public class TestAddRequest {
     public void testAddRequest_NullTitleAndContent() {
         // Mock input data
         int userID = 1;
+        int mentorID=1;
         RequestDTO requestDTO = new RequestDTO();
 
         // Invoke the method
-        ApiResponse response = requestService.addRequest(userID, requestDTO);
+        ApiResponse response = requestService.addRequest(userID,mentorID, requestDTO);
 
         // Assert the response
         assertFalse(response.isSuccess());

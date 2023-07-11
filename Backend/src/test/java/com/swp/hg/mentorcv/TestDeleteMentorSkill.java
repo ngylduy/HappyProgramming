@@ -3,9 +3,9 @@ package com.swp.hg.mentorcv;
 import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.entity.MentorSkill;
 import com.swp.hg.repository.MentorProfileRepo;
-import com.swp.hg.repository.MentorProfileRepository;
 import com.swp.hg.repository.MentorSkillRepository;
-import com.swp.hg.service.MentorCVService;
+import com.swp.hg.service.Impl.MentorCVService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -2,8 +2,10 @@ package com.swp.hg.service.Impl;
 
 import com.swp.hg.dto.RatingDTO;
 import com.swp.hg.dto.ResultDTO;
+import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.entity.Rating;
-import com.swp.hg.entity.SkillCategory;
+import com.swp.hg.entity.User;
+import com.swp.hg.repository.MentorProfileRepo;
 import com.swp.hg.repository.RatingRepository;
 import com.swp.hg.service.MentorProfileService;
 import com.swp.hg.service.RatingService;
@@ -22,13 +24,16 @@ public class RatingImpl implements RatingService {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private MentorProfileService mentorProfileService;
+//    @Autowired
+//    private MentorProfileService mentorProfileService;
 
-    public RatingImpl(RatingRepository ratingRepository, UserService userService, MentorProfileService mentorProfileService) {
+    private MentorProfileServiceImpl mentorProfileService;
+
+    public RatingImpl(RatingRepository ratingRepository, UserService userService, MentorProfileService mentorProfileService, MentorProfileServiceImpl mentorProfileService1) {
         this.ratingRepository = ratingRepository;
         this.userService = userService;
-        this.mentorProfileService = mentorProfileService;
+//        this.mentorProfileService = mentorProfileService;
+        this.mentorProfileService = mentorProfileService1;
     }
 
     @Override
@@ -51,9 +56,13 @@ public class RatingImpl implements RatingService {
         ResultDTO<Rating> resultDTO = new ResultDTO<>();
         try {
             Rating rating = getById(ratingDTO.getRateID());
-            if (rating != null){
+            User user = userService.getById(ratingDTO.getMenteeID());
+            MentorProfile mentorProfile = mentorProfileService.getByMentorID(ratingDTO.getMentorID());
+            if (rating != null) {
                 rating.setStar(ratingDTO.getStar());
                 rating.setComment(ratingDTO.getComment());
+                rating.setMenteeRating(user);
+                rating.setMentorProfile(mentorProfile);
                 ratingRepository.save(rating);
                 resultDTO.setStatus(true);
                 resultDTO.setMessage("Rating updated successfully");
@@ -61,14 +70,13 @@ public class RatingImpl implements RatingService {
                 rating = new Rating();
                 rating.setStar(ratingDTO.getStar());
                 rating.setComment(ratingDTO.getComment());
-                rating.setMentorProfile(mentorProfileService.getById(ratingDTO.getMentorID()));
-                rating.setMenteeRating(userService.getById(ratingDTO.getMenteeID()));
+                rating.setMentorProfile(mentorProfile);
+                rating.setMenteeRating(user);
                 ratingRepository.save(rating);
                 resultDTO.setStatus(true);
                 resultDTO.setMessage("Rating added successfully");
             }
-
-        } catch (Exception e){
+        } catch (Exception e) {
             resultDTO.setStatus(false);
             resultDTO.setMessage(e.getMessage());
         }

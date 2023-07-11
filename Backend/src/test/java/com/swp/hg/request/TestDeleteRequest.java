@@ -2,7 +2,8 @@ package com.swp.hg.request;
 
 import com.swp.hg.entity.Request;
 import com.swp.hg.repository.RequestRepository;
-import com.swp.hg.service.RequestService;
+import com.swp.hg.service.Impl.RequestService;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

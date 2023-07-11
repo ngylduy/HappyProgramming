@@ -1,9 +1,9 @@
 package com.swp.hg.request;
 
 import com.swp.hg.entity.Request;
-import com.swp.hg.repository.*;
-import com.swp.hg.service.RequestService;
-import org.junit.Assert;
+import com.swp.hg.repository.RequestRepository;
+import com.swp.hg.service.Impl.RequestService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -38,9 +38,9 @@ public class GetRequestServiceTest {
     public void testGetAllRequest() {
         // Arrange
         Request request1 = new Request();
-        request1.setId(1);
+        request1.setRequestID(1);
         Request request2 = new Request();
-        request2.setId(2);
+        request2.setRequestID(2);
         List<Request> expectedRequests = Arrays.asList(request1, request2);
 
         when(requestRepository.findAll()).thenReturn(expectedRequests);

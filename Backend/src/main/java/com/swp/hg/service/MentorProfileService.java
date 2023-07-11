@@ -14,4 +14,6 @@ public interface MentorProfileService {
 
     MentorProfile getById(int id);
 
+    MentorProfile getByMentorID(int id);
+
 }

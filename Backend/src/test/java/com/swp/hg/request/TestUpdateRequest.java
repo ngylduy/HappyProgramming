@@ -1,28 +1,26 @@
 package com.swp.hg.request;
 
 import com.swp.hg.dto.RequestDTO;
-import com.swp.hg.entity.*;
+import com.swp.hg.entity.MentorProfile;
+import com.swp.hg.entity.Request;
+import com.swp.hg.entity.SkillCategory;
+import com.swp.hg.entity.User;
 import com.swp.hg.repository.*;
 import com.swp.hg.response.ApiResponse;
-import com.swp.hg.service.RequestService;
+import com.swp.hg.service.Impl.RequestService;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.web.client.ExpectedCount;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
-//import static jdk.internal.org.objectweb.asm.util.CheckClassAdapter.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.ExpectedCount.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUpdateRequest {
@@ -54,7 +52,7 @@ public class TestUpdateRequest {
         requestDTO.setTitle("New Title");
         requestDTO.setContent("New Content");
         requestDTO.setLink("New Link");
-        requestDTO.setMentorid(1);
+        requestDTO.setMentorId(1);
         requestDTO.setSkillId(Arrays.asList(1, 2, 3));
 
         // Mock repositories
@@ -62,7 +60,7 @@ public class TestUpdateRequest {
         when(userRepository.findById(userID)).thenReturn(Optional.of(user));
 
         MentorProfile mentorProfile = new MentorProfile();
-        when(mentorProfileRepo.findById(requestDTO.getMentorid())).thenReturn(Optional.of(mentorProfile));
+        when(mentorProfileRepo.findById(requestDTO.getMentorId())).thenReturn(Optional.of(mentorProfile));
 
         SkillCategory skillCategory1 = new SkillCategory();
         SkillCategory skillCategory2 = new SkillCategory();

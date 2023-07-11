@@ -16,9 +16,7 @@ public class MentorCVDTO {
     private String linkedln;
     private String github;
     private String profession;
-    //private int userid;
 
-    //mentor skill
     private String description;
     private int yearOfExp;
     List<Integer> skillId ;

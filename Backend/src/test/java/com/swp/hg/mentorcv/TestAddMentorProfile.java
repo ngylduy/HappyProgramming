@@ -5,9 +5,13 @@ import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.entity.MentorSkill;
 import com.swp.hg.entity.SkillCategory;
 import com.swp.hg.entity.User;
-import com.swp.hg.repository.*;
+import com.swp.hg.repository.MentorProfileRepo;
+import com.swp.hg.repository.MentorSkillRepository;
+import com.swp.hg.repository.SkillCategoryRepository;
+import com.swp.hg.repository.UserRepository;
 import com.swp.hg.response.ApiResponse;
-import com.swp.hg.service.MentorCVService;
+
+import com.swp.hg.service.Impl.MentorCVService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,9 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

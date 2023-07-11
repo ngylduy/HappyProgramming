@@ -2,15 +2,14 @@ package com.swp.hg.request;
 
 import com.swp.hg.entity.Request;
 import com.swp.hg.entity.RequestSkill;
-import com.swp.hg.repository.*;
-import com.swp.hg.service.RequestService;
-import org.junit.Before;
+import com.swp.hg.repository.RequestRepository;
+import com.swp.hg.repository.RequestSkillRepository;
+import com.swp.hg.service.Impl.RequestService;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 import java.util.Collection;

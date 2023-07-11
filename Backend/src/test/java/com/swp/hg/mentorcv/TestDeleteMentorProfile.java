@@ -2,7 +2,8 @@ package com.swp.hg.mentorcv;
 
 import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.repository.MentorProfileRepo;
-import com.swp.hg.service.MentorCVService;
+import com.swp.hg.service.Impl.MentorCVService;
+
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
