@@ -36,13 +36,19 @@ const MentorCV = () => {
 
     }, [token]);
     
-
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
     const { userid } = useParams();
     const [mentor, setMentor] = useState([])
     const [exp,setExp]=useState('')
     console.log(userid)
     useEffect(() => {
-        fetch("http://localhost:8080/api/mentor/" + userid)
+        fetch("http://localhost:8080/api/mentor/" + userid,role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setMentor(data);
@@ -65,7 +71,7 @@ const MentorCV = () => {
                         </li>
 
                         <li className="breadcrumb-item active" aria-current="page">
-                            User Profile
+                            Mentor CV
                         </li>
                     </ol>
                 </nav>

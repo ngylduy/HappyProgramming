@@ -20,6 +20,13 @@ function ManagerRequest() {
     const [token] = useState(sessionStorage.getItem('token'));
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
 
     useEffect(() => {
         if (token) {
@@ -57,7 +64,7 @@ function ManagerRequest() {
  
 
         useEffect(() => {
-            fetch(`http://localhost:8080/api/request/getall`)
+            fetch(`http://localhost:8080/api/request/getall`,role1)
                 .then((resp) => resp.json())
                 .then((data) => {
                     setRequest(data);

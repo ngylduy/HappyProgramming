@@ -8,6 +8,13 @@ function SideBarMentor() {
     const [users, setUsers] = useState([]);
     const [stname, setToken] = useState(sessionStorage.getItem('token'));
     const[mentor,setMentor]=useState([])
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -20,7 +27,7 @@ function SideBarMentor() {
                 setUsers(response.data);
                 const userID = response.data.id;
                 if (response.data.roles[0].name === "USER_MENTOR") {
-                    fetch(`http://localhost:8080/api/mentor/${userID}`)
+                    fetch(`http://localhost:8080/api/mentor/${userID}`,role1)
                       .then((res) => res.json())
                       .then((data) => {
                         setMentor(data);

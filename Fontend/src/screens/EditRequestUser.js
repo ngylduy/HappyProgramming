@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const EditRequestUser = () => {
+    const [token] = useState(sessionStorage.getItem('token'));
     const { requestID, id } = useParams();
 
     const [skill, setSkill] = useState([]);
@@ -27,7 +28,7 @@ const EditRequestUser = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/request/${requestID}`)
+        fetch(`http://localhost:8080/api/request/${requestID}`,role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setTitle(data?.title || '');
@@ -39,7 +40,7 @@ const EditRequestUser = () => {
             );
     }, [requestID]);
     useEffect(() => {
-        fetch(`http://localhost:8080/api/skill`)
+        fetch(`http://localhost:8080/api/skill`,role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setSkill(data);
@@ -48,6 +49,13 @@ const EditRequestUser = () => {
                 console.log(err.message);
             });
     }, []);
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
 
     const navigate = useNavigate();
 
@@ -59,6 +67,7 @@ const EditRequestUser = () => {
           return;
         } else {
           const updatedRequest = {
+            mentorId:3,
             content: content,
             link: link,
             title: title,
@@ -67,7 +76,9 @@ const EditRequestUser = () => {
       
           fetch(`http://localhost:8080/api/request/update/${id}/${requestID}`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json"
+            ,
+            Authorization: `Bearer ${token}` },
             body: JSON.stringify(updatedRequest),
           })
             .then((response) => {

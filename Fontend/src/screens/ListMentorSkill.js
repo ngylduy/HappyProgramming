@@ -6,9 +6,16 @@ const ListMentorSkill = () => {
     const {userid} =useParams()
     const [listmentor, setListMentor] = useState([]);
     const [token] = useState(sessionStorage.getItem("token"));
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
     // const [exp,setExp]=useState('')
     useEffect(() => {
-        fetch(`http://localhost:8080/api/mentor/skill/${userid}`)
+        fetch(`http://localhost:8080/api/mentor/skill/${userid}`,role1)
             .then((res) => res.json())
             .then((data) => {
                 setListMentor(data);

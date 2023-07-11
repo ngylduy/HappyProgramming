@@ -9,7 +9,7 @@ const ListMentee = () => {
     const [token] = useState(sessionStorage.getItem("token"));
     // const [exp,setExp]=useState('')
     useEffect(() => {
-        fetch(`http://localhost:8080/api/mentor/all`)
+        fetch(`http://localhost:8080/api/mentor/all`,role1)
             .then((res) => res.json())
             .then((data) => {
                 setListMentor(data);
@@ -18,6 +18,13 @@ const ListMentee = () => {
                 console.log(data);
             })
     }, [])
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
     useEffect(() => {
         fetch("http://localhost:8080/api/user")
             .then((resp) => resp.json())

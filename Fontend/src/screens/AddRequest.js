@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 const AddRequest = () => {
     const { id, mentorID } = useParams();
+    const token = sessionStorage.getItem('token')
    
 
     const [skill, setSkill] = useState([]);
@@ -35,12 +36,14 @@ const AddRequest = () => {
             console.log(request);
             fetch(`http://localhost:8080/api/request/add/${mentorID}/${id}`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json",
+                
+                Authorization: `Bearer ${token}`, },
                 body: JSON.stringify(request)
             })
                 .then(() => {
                     alert("Add success.");
-                    navigate("/managerskill");
+                    navigate("/requestuser/"+id);
                 });
         }
     }

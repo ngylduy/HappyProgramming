@@ -31,9 +31,16 @@ function ManagerSkill() {
  
      // Chuyển đổi trang
      // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+     const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/skill`)
+        fetch(`http://localhost:8080/api/skill`,role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setSkill(data);
@@ -51,7 +58,11 @@ function ManagerSkill() {
     const confirmDelete = () => {
         if (deletingSkillId) {
             fetch(`http://localhost:8080/api/${deletingSkillId}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                }
             })
                 .then(() => {
                     toast.success("Delete success");
@@ -110,14 +121,14 @@ function ManagerSkill() {
                                                 >
                                                     <PencilSquare />
                                                 </Link>
-                                            </td>
-                                            <td>
-                                                <>
-                                                    <Link onClick={() => handleDelete(s.skillID)}>
-                                                        <Trash3Fill />
+                                                &emsp;
+                                                &emsp;
+                                                <Link
+                                                 onClick={() => handleDelete(s.skillID)}>
+                                                        <Trash3Fill styles={{ color: "red" }}/>
                                                     </Link>
-                                                </>
                                             </td>
+                                           
                                         </tr>
                                     ))}
                                 </tbody>

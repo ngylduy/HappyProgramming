@@ -7,6 +7,7 @@ import axios from "axios";
 
 function Navbar() {
     const token = sessionStorage.getItem('token')
+    
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false); // State để điều khiển hiển thị modal
     const handleLogout = () => {
@@ -16,19 +17,19 @@ function Navbar() {
         toast.success("Logout success");
     }
     const [users, setUsers] = useState([]);
-    const [stname, setToken] = useState(sessionStorage.getItem('token'));
+    const [token1, setToken] = useState(sessionStorage.getItem('token'));
     const [skill,setSkill] =useState([]);
     const [role, setRole] = useState('');
     const [mentor,setMentor] = useState('')
     useEffect(() => {
-        if (stname) {
-            console.log('Token is stored in localStorage:', stname);
+        if (token1) {
+            console.log('Token is stored in localStorage:', token1);
         } else {
             console.log('Token is not stored in localStorage');
         }
-    }, [stname]);
+    }, [token1]);
     useEffect(() => {
-        fetch(`http://localhost:8080/api/skill`)
+        fetch(`http://localhost:8080/api/skill`,role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setSkill(data);
@@ -37,11 +38,19 @@ function Navbar() {
                 console.log(err.message);
             });
     }, []);
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/api/user/me`, {
                     headers: {
+                        'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
                 });
@@ -49,8 +58,10 @@ function Navbar() {
                 setUsers(response.data);
                 setRole(response.data.roles[0].name);
                 const userID = response.data.id;
+                sessionStorage.getItem('role',response.data.roles[0].name)
+                console.log(role)
                 if (response.data.roles[0].name === "USER_MENTOR") {
-                    fetch(`http://localhost:8080/api/mentor/${userID}`)
+                    fetch(`http://localhost:8080/api/mentor/${userID}`,role1)
                       .then((res) => res.json())
                       .then((data) => {
                         setMentor(data);

@@ -8,7 +8,7 @@ export default function TemplateAdmin({title="", children}){
             <SideBar/>
             </Col>
             <Col md={9} xs={10}>
-            <div style={{marginTop:"90px"}}>{children}</div>
+            <div style={{marginTop:"70px"}}>{children}</div>
             </Col>
         </Row>
             

@@ -37,7 +37,9 @@ const AddSkill = () => {
             console.log(skill);
             fetch('http://localhost:8080/api/skill', {
                 method: "POST",
-                headers: { "Content-Type": "Application/JSON" },
+                headers: { "Content-Type": "Application/JSON",
+                Authorization: `Bearer ${token}`
+             },
                 body: JSON.stringify(skill)
             })
                 .then(() => {

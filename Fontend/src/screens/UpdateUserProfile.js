@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const UpdateUserProfile = () => {
     const [users, setUsers] = useState([]);
     const [token, setToken] = useState(sessionStorage.getItem("token"));
-    const navigator=useNavigate()
+    const navigator = useNavigate()
 
 
     const [fullname, setFullname] = useState("");
@@ -18,7 +18,7 @@ const UpdateUserProfile = () => {
     const [dob, setDOB] = useState("")
     const handleGenderChange = (event) => {
         setGender(event.target.value);
-      };
+    };
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -29,12 +29,12 @@ const UpdateUserProfile = () => {
                 });
 
                 setUsers(response.data);
-                
+
                 const userID = response.data.id;
                 console.log(userID);
 
                 setFullname(response.data.fullname);
-                
+
                 setPhone(response.data.phone);
                 setGender(response.data.gender);
                 setAddress(response.data.address);
@@ -53,19 +53,29 @@ const UpdateUserProfile = () => {
             setUsers([]);
         }
     }, [token]);
+   
 
     const handleSave = () => {
         // Gửi dữ liệu chỉnh sửa lên server, sử dụng axios hoặc phương thức HTTP tương ứng
         // Ví dụ:
-        axios
-            .put(`http://localhost:8080/api/user/save/${users.id}`, {
-                fullname: fullname,
-                email: email,
-                phone: phone,
-                gender: gender,
-                address: address,
-                dob: dob,
-            })
+        const UpdateProfile = {
+            fullname: fullname,
+                    email: email,
+                    phone: phone,
+                    gender: gender,
+                    address: address,
+                    dob: dob,
+        };
+    
+        
+    
+        fetch(`http://localhost:8080/api/user/save/${users.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` },
+            body: JSON.stringify(UpdateProfile),
+        })
+            
             .then((response) => {
                 // Xử lý sau khi lưu thành công
                 toast.success('Update successful')

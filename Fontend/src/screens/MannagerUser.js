@@ -15,13 +15,20 @@ const ManagerUser = () => {
             console.log("Token không được lưu trong localStorage");
         }
     }, [token]);
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
 
     const [user, setUser] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/user")
+        fetch("http://localhost:8080/api/user",role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setUser(data);
@@ -62,6 +69,8 @@ const ManagerUser = () => {
                                         <th>Gender</th>
                                         <th>Phone</th>
                                         <th>Email</th>
+                                        <th>Action</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -83,6 +92,11 @@ const ManagerUser = () => {
                                             </td>
                                             <td>{u.phone}</td>
                                             <td>{u.email}</td>
+                                            <td>{
+                                            u.status?
+                                                <span style={{color:'green'}}>Active</span>:<span style={{color:'red'}}>Inactive</span>
+                                            
+                                            }</td>
                                         </tr>
                                     ))}
                                 </tbody>

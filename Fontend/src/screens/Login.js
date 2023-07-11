@@ -46,29 +46,14 @@ function Login() {
             );
           
             if (response.status === 200) {
-              if (response.data.id === 1) {
-                sessionStorage.setItem('username', username);
-                // setUserName(response.data.username);
-                // if (rememberMe) {
-                //   localStorage.setItem('username', username);
-                //   localStorage.setItem('password', password);
-                // } else {
-                //   localStorage.removeItem('username');
-                //   localStorage.removeItem('password');
-                // }
-                navigate('/mentee');
-              } else {
-                // setUserName(response.data.username);
                 sessionStorage.setItem("token", response.data.token)
-                // if (rememberMe) {
-                //   localStorage.setItem('username', username);
-                //   localStorage.setItem('password', password);
-                // } else {
-                //   localStorage.removeItem('username');
-                //   localStorage.removeItem('password');
-                // }
+                
+                
+                
+                
+
                 navigate('/');
-              }
+              
               toast.success('Login success');
             } else {
               throw new Error(`Unexpected status code ${response.status}`);

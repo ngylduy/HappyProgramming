@@ -60,7 +60,7 @@ function ManagerRequestUser() {
  
 
         useEffect(() => {
-            fetch(`http://localhost:8080/api/request/getbyuser/${id}`)
+            fetch(`http://localhost:8080/api/request/getbyuser/${id}`,role1)
                 .then((resp) => resp.json())
                 .then((data) => {
                     setRequest(data);
@@ -71,6 +71,13 @@ function ManagerRequestUser() {
                     console.log(err);
                 });
         }, [])
+        const role1 = {
+            method:"GET",
+            headers:{
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+         }
         return (
             <TemplateUser>
                 <Row>
@@ -96,7 +103,9 @@ function ManagerRequestUser() {
                                             <th>date</th>
                                             <th >link</th>
                                             <th>title</th>
+                                            <th>Status</th>
                                             <th scope={2} >Action</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -107,18 +116,30 @@ function ManagerRequestUser() {
                                                 <td>{r.date}</td>
                                                 <td><a href={r.link}>{r.link}</a></td>
                                                 <td>{r.title}</td>
+                                                <td>{r.status === 1 ?
+                                                (<span style={{ color: "#FF9900" }}>Pending</span>) :
+                                                r.status === 2 ? (
+                                                    <span style={{ color: "red" }}>Reject</span>
+                                                ) : r.status === 0? (
+                                                    <span style={{ color: "green" }}>Accept</span>
+                                                ) : (
+                                                    <span></span>
+                                                )
+                                            }</td>
                                                 <td >
                                                     {
                                                         <Link styles={{color:"blue"}} to={'/requestuser/edit/'+id+'/' + r.requestID}><PencilSquare /></Link>
                                                     }
+                                                        &emsp;
+                                                    {
+                                                        
+                                                        <Link style={{marginRight:"30px"}} onClick={() => handleDelete(r.requestID)} ><Trash3Fill /></Link>
+                                                           
+                                                        
+                                                    }
                                                 </td>
                                                 <td >
-                                                    {
-                                                        <>
-                                                            <Link style={{marginRight:"30px"}} onClick={() => handleDelete(r.requestID)} ><Trash3Fill /></Link>
-                                                           
-                                                        </>
-                                                    }
+                                                    
                                                 </td>
 
                                                

@@ -28,6 +28,7 @@ public class AuthenticationFilter {
     private final UserImpl userImpl;
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(),
@@ -35,17 +36,25 @@ public class AuthenticationFilter {
             )
         );
 
-        UserDetails user = userImpl.loadUserByUsername(authenticationRequest.getUsername());
-//        User user = userRepository.findByUsername(authenticationRequest.getUsername()).get();
+        User user = userImpl.takeUserByUsername(authenticationRequest.getUsername());
+
+        List<Role> role = null;
+        if (user != null) {
+            role = roleCustomRepo.getRole(user);
+        }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         Set<Role> set = new HashSet<>();
 
+        role.stream().forEach(c->set.add(new Role(c.getName())));
+
+        user.setRoles(set);
+
         set.stream().forEach(i->authorities.add(new SimpleGrantedAuthority(i.getName())));
 
         var jwtToken = jwtService.createToken(user, authorities);
-        var jwtRefreshToken = jwtService.createRefreshToken(user, authorities);
+        var jwtRefreshToken = jwtService.createRefreshToken(user);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)

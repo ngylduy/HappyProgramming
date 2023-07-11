@@ -5,12 +5,13 @@ import { toast } from "react-toastify";
 
 const EditSkill = () => {
     const { id } = useParams();
+    const [token, setToken] = useState(sessionStorage.getItem('token'));
     
     const [skillName, setSkillName] = useState('');
     const [status, setStatus] = useState('1');
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/skill/${id}`)
+        fetch(`http://localhost:8080/api/skill/${id}`,role1)
             .then((resp) => resp.json())
             .then((data) => {
                 console.log(data.skillName)
@@ -19,6 +20,13 @@ const EditSkill = () => {
                
             });
     }, [id]);
+    const role1 = {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+     }
 
     const navigate = useNavigate();
 
@@ -39,7 +47,8 @@ const EditSkill = () => {
 
             fetch(`http://localhost:8080/api/skill/${id}`, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json",
+                Authorization: `Bearer ${token}` },
                 body: JSON.stringify(updatedSkill),
             })
             .then(() => {
