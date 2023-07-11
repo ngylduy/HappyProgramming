@@ -211,6 +211,10 @@ public class RequestService {
             return null;
         }
     }
+
+    public int getCountRequestByStatus(int status){
+        return requestRepository.countRequestByStatus(status);
+    }
     
 
 }

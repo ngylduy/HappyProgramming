@@ -33,4 +33,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("UPDATE User u SET u.status=true WHERE u.email = ?1")
     void enableAppUser(String email);
 
+    int countUserByStatus(boolean status);
 }

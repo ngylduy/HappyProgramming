@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SkillCategoryRepository extends JpaRepository<SkillCategory, Integer> {
+    int countSkillCategoriesByStatus(boolean status);
 }

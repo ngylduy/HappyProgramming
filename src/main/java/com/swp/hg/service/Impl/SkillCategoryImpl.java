@@ -77,5 +77,10 @@ public class SkillCategoryImpl implements SkillCategoryService {
         return skillCategoryRepository.findAll().size();
     }
 
+    @Override
+    public int getTotalSkillByStatus(boolean status) {
+        return skillCategoryRepository.countSkillCategoriesByStatus(status);
+    }
+
 
 }
