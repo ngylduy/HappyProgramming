@@ -65,16 +65,4 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
     }
-
-    private String extractJwtTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring("Bearer ".length());
-        }
-        return null;
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthoritiesFromString(List<String> authorities) {
-        return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-    }
 }
