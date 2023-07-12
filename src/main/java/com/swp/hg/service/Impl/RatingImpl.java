@@ -2,8 +2,10 @@ package com.swp.hg.service.Impl;
 
 import com.swp.hg.dto.RatingDTO;
 import com.swp.hg.dto.ResultDTO;
+import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.entity.Rating;
 import com.swp.hg.entity.SkillCategory;
+import com.swp.hg.entity.User;
 import com.swp.hg.repository.RatingRepository;
 import com.swp.hg.service.MentorProfileService;
 import com.swp.hg.service.RatingService;
@@ -50,24 +52,38 @@ public class RatingImpl implements RatingService {
     public ResultDTO<Rating> saveOrUpdate(RatingDTO ratingDTO) {
         ResultDTO<Rating> resultDTO = new ResultDTO<>();
         try {
-            Rating rating = getById(ratingDTO.getRateID());
-            if (rating != null){
+            if (ratingDTO.getRateID() != 0){
+                Rating rating = getById(ratingDTO.getRateID());
                 rating.setStar(ratingDTO.getStar());
                 rating.setComment(ratingDTO.getComment());
                 ratingRepository.save(rating);
                 resultDTO.setStatus(true);
                 resultDTO.setMessage("Rating updated successfully");
+                resultDTO.setData(rating);
             } else {
-                rating = new Rating();
+                Rating rating = new Rating();
+
                 rating.setStar(ratingDTO.getStar());
                 rating.setComment(ratingDTO.getComment());
-                rating.setMentorProfile(mentorProfileService.getById(ratingDTO.getMentorID()));
-                rating.setMenteeRating(userService.getById(ratingDTO.getMenteeID()));
+
+                MentorProfile mentorProfile = mentorProfileService.getByMentorID(ratingDTO.getMentorID());
+                if (mentorProfile != null){
+                    rating.setMentorProfile(mentorProfile);
+                } else {
+                    throw new Exception("Mentor profile not found");
+                }
+                User user = userService.getById(ratingDTO.getMenteeID());
+                MentorProfile uMentorProfile = mentorProfileService.getByMentorID(ratingDTO.getMenteeID());
+                if (uMentorProfile == null && user != null){
+                    rating.setMenteeRating(userService.getById(ratingDTO.getMenteeID()));
+                } else {
+                    throw new Exception("Mentee profile not found");
+                }
                 ratingRepository.save(rating);
                 resultDTO.setStatus(true);
                 resultDTO.setMessage("Rating added successfully");
+                resultDTO.setData(rating);
             }
-
         } catch (Exception e){
             resultDTO.setStatus(false);
             resultDTO.setMessage(e.getMessage());
