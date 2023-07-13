@@ -2,16 +2,32 @@ import React, { useEffect, useState } from "react";
 import TemplateAdmin from "../template/TemplateAdmin";
 import { PencilSquare, Trash3Fill } from "react-bootstrap-icons";
 import { Col, Table, Row, Modal, Button , Pagination} from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast ,ToastContainer } from "react-toastify";
+import axios from "axios";
+
 
 function ManagerSkill() {
-    const [token] = useState(sessionStorage.getItem("token"));
+    const [token,setToken] = useState(sessionStorage.getItem("token"));
     const [skill, setSkill] = useState([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deletingSkillId, setDeletingSkillId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
+    const [users, setUsers] = useState([]);
+    
+    const [role] = useState(sessionStorage.getItem("role"));
+    const navigate = useNavigate()
+    useEffect(()=>{
+        
+        if(role==="USER_MENTEE"||role==="USER_MENTOR"){
+            navigate("/error")
+        }
+    },[])
+  
+    
+    
+   
 
 
     useEffect(() => {

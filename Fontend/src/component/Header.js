@@ -3,6 +3,11 @@ import { Row, NavDropdown, Modal, Button} from 'react-bootstrap';
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import LoginIcon from '@mui/icons-material/Login';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
 
 
 function Navbar() {
@@ -29,7 +34,7 @@ function Navbar() {
         }
     }, [token1]);
     useEffect(() => {
-        fetch(`http://localhost:8080/api/skill`,role1)
+        fetch(`http://localhost:8080/api/skill`)
             .then((resp) => resp.json())
             .then((data) => {
                 setSkill(data);
@@ -50,22 +55,26 @@ function Navbar() {
             try {
                 const response = await axios.get(`http://localhost:8080/api/user/me`, {
                     headers: {
-                        'Content-Type': 'application/json',
+                        
                         Authorization: `Bearer ${token}`,
                     },
                 });
                 console.log(response.data)
                 setUsers(response.data);
+                sessionStorage.setItem('idne',response.data.id)
+                
                 setRole(response.data.roles[0].name);
                 const userID = response.data.id;
-                sessionStorage.getItem('role',response.data.roles[0].name)
-                console.log(role)
+                sessionStorage.setItem('role',response.data.roles[0].name)
+                
                 if (response.data.roles[0].name === "USER_MENTOR") {
-                    fetch(`http://localhost:8080/api/mentor/${userID}`,role1)
+                    fetch(`http://localhost:8080/api/mentor/${userID}`)
                       .then((res) => res.json())
                       .then((data) => {
                         setMentor(data);
-                        console.log(data);
+                        sessionStorage.setItem('mentorne',data.mentorID)
+                        
+                        
                       });
                   } else {
                     // Xử lý khi userID không phải là mentor
@@ -83,6 +92,8 @@ function Navbar() {
         }
 
     }, [token]);
+
+    
     const history = useNavigate()
 
     // Hàm để hiển thị/ẩn modal
@@ -99,7 +110,7 @@ function Navbar() {
             <nav className="navbar navbar-expand-sm navbar-light bg-light fixed-top nsvj">
                 <div className="container-fluid">
                     <img
-                        src="https://i.gifer.com/RrVB.gif"
+                        src="https://i.pinimg.com/564x/a2/3c/6f/a23c6fafa41d474975f9539d4a742e67.jpg"
                         width="90vh="
                         style={{
                             marginTop: "10px",
@@ -153,7 +164,7 @@ function Navbar() {
                                 <NavDropdown title="Setting" style={{ textDecoration: "none", fontSize: "20px" }}>
                                     {token ? (
                                         <>
-                                            <Link className="dropdown-item" to="/profile" style={{ textDecoration: "none", fontSize: "20px" }}>Profile</Link>
+                                            <Link className="dropdown-item" to="/profile" style={{ textDecoration: "none", fontSize: "20px" }}><PersonIcon/>Profile</Link>
                                             
                                             { role === "USER_ADMIN" ?(
                                                 <Link className="dropdown-item" to="/managerskill" style={{ textDecoration: "none", fontSize: "20px" }}>Manager</Link>
@@ -170,19 +181,19 @@ function Navbar() {
 
                                             }
                                             { role === "USER_MENTOR" ?(
-                                                <Link className="dropdown-item" to={`/requestmentor/`+mentor.mentorID} style={{ textDecoration: "none", fontSize: "20px" }}>Manager Mentor</Link>
+                                                <Link className="dropdown-item" to={`/requestmentor/`+mentor.mentorID} style={{ textDecoration: "none", fontSize: "20px" }}>Mentor's Manager</Link>
                                             ):(
                                                <span></span>
                                             )
 
                                             }
-                                            <NavDropdown.Item onClick={toggleModal} style={{ textDecoration: "none", fontSize: "20px" }}>Logout</NavDropdown.Item>
+                                            <NavDropdown.Item onClick={toggleModal} style={{ textDecoration: "none", fontSize: "20px" }}><LogoutIcon/>&nbsp;Logout</NavDropdown.Item>
                                             
                                         </>
                                     ) : (
                                         <>
-                                        <Link to="/login" className="dropdown-item" style={{ textDecoration: "none", fontSize: "20px" }}>Login</Link>
-                                        <Link to="/register" className="dropdown-item" style={{ textDecoration: "none", fontSize: "20px" }}>Register</Link></>
+                                        <Link to="/login" className="dropdown-item" style={{ textDecoration: "none", fontSize: "20px" }}><LoginIcon/>&nbsp;Login</Link>
+                                        <Link to="/register" className="dropdown-item" style={{ textDecoration: "none", fontSize: "20px" }}><VpnKeyIcon/>&nbsp;Register</Link></>
 
                                     )}
                                 </NavDropdown>

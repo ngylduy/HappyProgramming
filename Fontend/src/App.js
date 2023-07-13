@@ -25,10 +25,14 @@ import ManagerRequestMentor from './screens/ManagerRequestMentor';
 import EditRequestUser from './screens/EditRequestUser';
 import UpdateUserProfile from './screens/UpdateUserProfile';
 import UpdateCVMentor from './screens/UpdateCVMentor';
+import Error from './screens/Error';
+import ViewRatting from './screens/ViewRating';
+import ViewRattingUser from './screens/ViewRattingUser';
 
 
 
 function App() {
+
   return (
   
     
@@ -37,7 +41,7 @@ function App() {
      <Route path='/' element={<Home/>}/>
      <Route path='/login' element={<Login/>}/> 
      <Route path='/register' element={<Register/>}/>
-     <Route path='/rating' element={<Rating/>}/>
+     <Route path='/rating/:id/:mentorId' element={<Rating/>}/>
      <Route path='/dashboard' element={<Dashboard/>}/>
      <Route path='/managerskill' element={<ManagerSkill/>}/>
      <Route path='/skill/add' element={<AddSkill/>}/>
@@ -55,9 +59,12 @@ function App() {
      <Route path='/listmentor/skill/:userid' element={<ListMentorSkill/>}/>
      <Route path='/requestuser/:id' element={<ManagerRequestUser/>}/>
      <Route path='/requestmentor/:mentorID' element={<ManagerRequestMentor/>}/>
-     <Route path='/requestuser/edit/:id/:requestID' element={<EditRequestUser/>}/>
+     <Route path='/requestuser/edit/:id/:requestID/:mentorID' element={<EditRequestUser/>}/>
      <Route path='/update/userprofile' element={<UpdateUserProfile/>}/>
      <Route path='/update/cvmentor' element={<UpdateCVMentor/>}/>
+     <Route path='/error' element={<Error/>}/>
+     <Route path='/view/ratting' element={<ViewRatting/>}/>
+     <Route path='/view/rattinguser' element={<ViewRattingUser/>}/>
      </Routes>   
     </BrowserRouter>
    

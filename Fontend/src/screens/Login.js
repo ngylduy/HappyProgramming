@@ -3,22 +3,23 @@ import React, { useState, useEffect } from 'react';
 import TemplateLogin from '../template/TemplateLogin';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaLongArrowAltLeft } from "react-icons/fa";
 
 function Login() {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
-   
+
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
-    useEffect(()=>{
-        const stname =sessionStorage.getItem('token')
-        if(stname){
-            navigate("/")
+    useEffect(() => {
+        const stname = sessionStorage.getItem('token')
+        if (stname) {
+            navigate("/error")
         }
-    },[])
-    
+    }, [])
+
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
         const storedPassword = localStorage.getItem('password');
@@ -31,50 +32,59 @@ function Login() {
 
     async function handleLogin(event) {
         event.preventDefault();
-        if (!username || !password) {
-            toast.error('Vui lòng nhập tên đăng nhập và mật khẩu.');
+        if (!username) {
+            toast.error('Please enter username');
+            return;
+        }
+        if (!password) {
+            toast.error('Please enter password');
             return;
         }
 
+
         try {
             const response = await axios.post(
-              `http://localhost:8080/api/auth/login`,
-              {
-                username: username,
-                password: password,
-              }
+                `http://localhost:8080/api/auth/login`,
+                {
+                    username: username,
+                    password: password,
+                }
             );
-          
+
             if (response.status === 200) {
                 sessionStorage.setItem("token", response.data.token)
-                
-                
-                
-                
+
+
+
+
 
                 navigate('/');
-              
-              toast.success('Login success');
+
+                toast.success('Login success');
             } else {
-              throw new Error(`Unexpected status code ${response.status}`);
+                throw new Error(`Unexpected status code ${response.status}`);
             }
-          } catch (error) {
+        } catch (error) {
             if (error.response && error.response.status === 403) {
-              toast.error('Tên tài khoản hoặc mật khẩu không chính xác');
+                toast.error(' Invalid username and password');
             } else {
-              toast.error('Đã có lỗi xảy ra. Vui lòng thử lại sau');
+                toast.error('Đã có lỗi xảy ra. Vui lòng thử lại sau');
             }
-          }
-          
-        
-   
-      
+        }
+
+
+
+
+    }
+    const homePage  = () => {
+        navigate('/')
     }
 
     return (
         <TemplateLogin>
-            
-            <div className="container1">
+            <h3 type="button" onClick={homePage} style={{marginTop:'20px'}} ><FaLongArrowAltLeft/>HomePage</h3> 
+
+            <div className="container1">               
                 <div className="row px-3">
                     <div className="col-lg-10 col-xl-9 card flex-row mx-auto px-0">
                         <div className="img-left d-none d-md-flex" />
@@ -131,29 +141,16 @@ function Login() {
                                     >
                                         Sign in
                                     </button>
-                                    
-                                 
+
+
                                 </div>
-                                <div className="text-center mb-3">or login with</div>
-                                <div className="row mb-3">
-                                    <div className="col-6">
-                                        <a href="#" className="btn btn-block btn-social btn-facebook">
-                                            facebook
-                                        </a>
-                                    </div>
-                                    <div className="col-6">
-                                        <a href="#" className="btn btn-block btn-social btn-google">
-                                            google
-                                        </a>
-                                    </div>
-                                    
-                                </div>
+                                
                                 <hr className="my-4" />
                                 <div className="text-center mb-2">
-                                Don't have an account?
-                                <Link to="/register" className="ml-2">
-                                            Register here
-                                        </Link>
+                                    Don't have an account?
+                                    <Link to="/register" className="ml-2">
+                                        Register here
+                                    </Link>
                                 </div>
                             </form>
                         </div>

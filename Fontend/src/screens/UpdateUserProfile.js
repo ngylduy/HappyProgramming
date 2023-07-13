@@ -56,6 +56,9 @@ const UpdateUserProfile = () => {
    
 
     const handleSave = () => {
+        if (fullname.length === 0) {
+            toast.warning('Enter fullname')
+        } else {
         // Gửi dữ liệu chỉnh sửa lên server, sử dụng axios hoặc phương thức HTTP tương ứng
         // Ví dụ:
         const UpdateProfile = {
@@ -88,6 +91,7 @@ const UpdateUserProfile = () => {
                 console.error(error);
             });
     };
+}
 
     return (
         <div className="container">

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import TemplateLogin from '../template/TemplateLogin';
 import { Link, useNavigate, } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { FaLongArrowAltLeft } from "react-icons/fa";
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
 function Register() {
@@ -70,9 +71,14 @@ function Register() {
             });
         }
     }
+    const homePage  = () => {
+        navigate('/')
+    }
 
     return (
         <TemplateLogin>
+            <h3 type="button" onClick={homePage} style={{marginTop:'20px'}} ><FaLongArrowAltLeft/>HomePage</h3> 
+
             <div className="container1">
                 <div className="row px-3">
                     <div className="col-lg-10 col-xl-9 card flex-row mx-auto px-0">

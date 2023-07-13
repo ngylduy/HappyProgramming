@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { PencilSquare, Trash3Fill } from "react-bootstrap-icons";
 import { Col, Table, Row, Pagination, Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import TemplateMentor from "../template/TemplateMentor";
 import axios from "axios";
 
@@ -21,11 +21,13 @@ import axios from "axios";
 
 function ManagerRequestMentor() {
     const { mentorID } = useParams();
-    console.log(mentorID)
+    console.log("mentorID",mentorID)
     const [token,setToken] = useState(sessionStorage.getItem('token'));
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
-    const[status,setStatus]=useState([]);
+    const [currentMentorID] = useState(sessionStorage.getItem('mentorne'))
+    console.log("currentMentorID" ,currentMentorID)
+    
     const[users,setUsers] =useState([])
 
     useEffect(() => {
@@ -35,6 +37,15 @@ function ManagerRequestMentor() {
             console.log('Token is not stored in localStorage');
         }
     }, [token]);
+    const navigate = useNavigate();
+    useEffect(() => {
+        // ID của người dùng hiện tại (thay đổi giá trị này cho phù hợp)
+    
+        if (mentorID !== String(currentMentorID)) {
+          navigate("/error"); // Chuyển hướng đến trang lỗi nếu ID không hợp lệ
+          
+        }
+      }, [mentorID]);
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -171,17 +182,26 @@ function ManagerRequestMentor() {
                                                     <span style={{ color: "red" }}>Reject</span>
                                                 ) : r.status === 0 ? (
                                                     <span style={{ color: "green" }}>Accept</span>
-                                                ) : (
+                                                ) :  r.status === 3 ? (
+                                                    <span style={{ color: "red" }}>Close</span>
+                                                ):
+                                                (
                                                     <span></span>
                                                 )
                                             }</td>
                                             <td>
-                                                <Button className="btn btn-success"
-                                                onClick={() => handleUpdateStatus(r.requestID, 0)}
-                                                >Accept</Button>&emsp;
-                                                <Button className="btn btn-danger" 
-                                                onClick={() => handleUpdateStatus(r.requestID, 2)}
-                                                >Reject</Button>
+                                                {r.status ===3?(
+                                                    <span></span>
+                                                ):(<>
+                                                    <Button className="btn btn-success"
+                                                    onClick={() => handleUpdateStatus(r.requestID, 0)}
+                                                    >Accept</Button>&emsp;
+                                                    <Button className="btn btn-danger" 
+                                                    onClick={() => handleUpdateStatus(r.requestID, 2)}
+                                                    >Reject</Button>
+                                                    </>
+                                                )}
+                                               
 
 
                                             </td>

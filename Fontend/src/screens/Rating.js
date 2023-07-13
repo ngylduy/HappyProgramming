@@ -1,106 +1,120 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../styles/home.css'
+import '../styles/star.css'
+
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 
 const Rating = () => {
+    const { id, mentorId } = useParams()
+    console.log(mentorId)
+    const navigate = useNavigate()
+    const [token] = useState(sessionStorage.getItem("token"));
+    const [comment, setComment] = useState("");
+    const [star, setStar] = useState("");
+    
+
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        if (comment.length === 0) {
+            alert("Please enter your feedback");
+        } else if (star === "") {
+            alert("Please select a star rating");
+        } else {
+            const rating = {
+                comment,
+                star,
+                menteeID:id,
+                mentorID:mentorId,
+                
+            };
+
+            console.log(rating);
+
+            fetch('http://localhost:8080/api/rating', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(rating),
+            })
+                .then(() => {
+                    toast.success("Add success.");
+                    navigate("/requestuser/" + id);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.error("An error occurred. Please try again.");
+                });
+        }
+    };
     return (
-        <section>
-            <div className="container my-5 py-5 text-dark">
-                <div className="row d-flex justify-content-center">
-                    <div className="col-md-10 col-lg-8 col-xl-6">
-                        <div className="card">
-                            <div className="card-body p-4">
-                                <div className="d-flex flex-start w-100">
-                                    <div className="w-100">
-                                        <form action="rating" method="post">
-                                            <h5 style={{ color: "#5fcf80" }}>
-                                                Give mentor your feedback
-                                            </h5>
-                                            <div className="rating mb-3" id="rating">
-                                                <input
-                                                    type="radio"
-                                                    id="star5"
-                                                    name="rating"
-                                                    defaultValue={5}
-                                                />
-                                                <label className="full" htmlFor="star5" title="Awesome" />
-                                                <input
-                                                    type="radio"
-                                                    id="star4"
-                                                    name="rating"
-                                                    defaultValue={4}
-                                                />
-                                                <label
-                                                    className="full"
-                                                    htmlFor="star4"
-                                                    title="Pretty good"
-                                                />
-                                                <input
-                                                    type="radio"
-                                                    id="star3"
-                                                    name="rating"
-                                                    defaultValue={3}
-                                                />
-                                                <label className="full" htmlFor="star3" title="Meh" />
-                                                <input
-                                                    type="radio"
-                                                    id="star2"
-                                                    name="rating"
-                                                    defaultValue={2}
-                                                />
-                                                <label className="full" htmlFor="star2" title="Kinda bad" />
-                                                <input
-                                                    type="radio"
-                                                    id="star1"
-                                                    name="rating"
-                                                    defaultValue={1}
-                                                />
-                                                <label className="full" htmlFor="star1" title="Very bad" />
-                                            </div>
-                                            <div className="form-outline shadow-textarea">
-                                                <textarea
-                                                    className="form-control"
-                                                    name="feedback"
-                                                    id="feedback"
-                                                    placeholder="Give your feedback..."
-                                                    rows={4}
-                                                    defaultValue={""}
-                                                />
-                                            </div>
-                                            <br />
-                                            <input
-                                                type="hidden"
-                                                defaultValue="${mentorID}"
-                                                name="mentorID"
-                                            />
-                                            <div className="float-end mt-2 pt-1">
-                                                <input
-                                                    style={{ color: "white", backgroundColor: "#5fcf80" }}
-                                                    type="submit"
-                                                    defaultValue="Send Feedback"
-                                                    className="btn btn-primary btn-block"
-                                                />
-                                            </div>
-                                            <div style={{ color: "#5fcf80" }} className="form-input">
-                                                Return to{" "}
-                                                <a
-                                                    href="mentee"
-                                                    style={{ textDecoration: "none", color: "#5fcf80" }}
-                                                >
-                                                    <strong>Mentee Page</strong>
-                                                </a>
-                                            </div>
-                                            <br />
-                                            <h6 className="mb-4" style={{ color: "red" }} />
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+        <div className="container d-flex justify-content-center mt-5" >
+            <div className="card text-center mb-5" style={{ width: "70vh" }}>
+                <h6>Send Feedback</h6>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-outline shadow-textarea">
+                        <textarea
+                            className="form-control"
+                            name="feedback"
+                            id="feedback"
+                            placeholder="Give your feedback..."
+                            rows={4}
+                            defaultValue={""}
+                            value={comment}
+                            onChange={(event) => setComment(event.target.value)}
+                        />
+                    </div>
+
+
+                    <div className="rate bg-success py-3 text-white mt-3">
+
+
+
+                        <h6 className="mb-0">Give Star Mentor</h6>
+                        <div className="rating">
+                            {" "}
+                            <input type="radio" name="rating"
+                                value={5}
+                                id={5}
+                                onChange={(event) => setStar(event.target.value)} />
+                            <label htmlFor={5}>☆</label>{" "}
+                            <input type="radio" name="rating"
+                                value={4}
+                                id={4}
+                                onChange={(event) => setStar(event.target.value)} />
+                            <label htmlFor={4}>☆</label>{" "}
+                            <input type="radio" name="rating" value={3}
+                                id={3}
+                                onChange={(event) => setStar(event.target.value)} />
+                            <label htmlFor={3}>☆</label>{" "}
+                            <input type="radio" name="rating" value={2}
+                                id={2}
+                                onChange={(event) => setStar(event.target.value)} />
+                            <label htmlFor={2}>☆</label>{" "}
+                            <input type="radio" name="rating" value={1}
+                                id={1}
+                                onChange={(event) => setStar(event.target.value)} />
+                            <label htmlFor={1}>☆</label>
+                        </div>
+                        <div>
+                            <button className="btn btn-warning" >
+                                Submit
+                            </button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
-        </section>
+        </div>
+
+
+
 
 
     );

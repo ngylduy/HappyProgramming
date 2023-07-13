@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../styles/dashboard.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { FaHome } from "react-icons/fa";
 
 function SideBarUser() {
     const token = sessionStorage.getItem('token')
@@ -77,9 +78,9 @@ function SideBarUser() {
                         {/*  <!-- Nav Item - Dashboard --> */}
                         
                         <li className="nav-item active">
-                            <Link className="nav-link" to={'/'} >
+                            <Link className="nav-link collapsed" to={'/'} >
                             
-                                <span>Home</span>
+                                <span><FaHome/>   Home</span>
                                 </Link>
                         </li>
 

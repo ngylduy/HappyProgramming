@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 
 const EditRequestUser = () => {
     const [token] = useState(sessionStorage.getItem('token'));
-    const { requestID, id } = useParams();
+    const { requestID, id,mentorID } = useParams();
+    console.log(mentorID)
 
     const [skill, setSkill] = useState([]);
 
@@ -13,7 +14,7 @@ const EditRequestUser = () => {
     const [content, setContent] = useState('');
     const [link, setLink] = useState('');
     const [skillId, setSkillId] = useState([]);
-   
+
     const handleSkillChange = (e) => {
         const selectedSkillId = parseInt(e.target.value);
 
@@ -28,7 +29,7 @@ const EditRequestUser = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/request/${requestID}`,role1)
+        fetch(`http://localhost:8080/api/request/${requestID}`, role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setTitle(data?.title || '');
@@ -40,7 +41,7 @@ const EditRequestUser = () => {
             );
     }, [requestID]);
     useEffect(() => {
-        fetch(`http://localhost:8080/api/skill`,role1)
+        fetch(`http://localhost:8080/api/skill`, role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setSkill(data);
@@ -50,54 +51,56 @@ const EditRequestUser = () => {
             });
     }, []);
     const role1 = {
-        method:"GET",
-        headers:{
+        method: "GET",
+        headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         }
-     }
+    }
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-      
+
         if (title.trim() === "") {
-          alert("Please enter a valid name");
-          return;
+            alert("Please enter a valid name");
+            return;
         } else {
-          const updatedRequest = {
-            mentorId:3,
-            content: content,
-            link: link,
-            title: title,
-            skillId: skillId,
-          };
-      
-          fetch(`http://localhost:8080/api/request/update/${id}/${requestID}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json"
-            ,
-            Authorization: `Bearer ${token}` },
-            body: JSON.stringify(updatedRequest),
-          })
-            .then((response) => {
-              if (response.ok) {
-                return response.json();
-              } else {
-                throw new Error("Error updating skill");
-              }
+            const updatedRequest = {
+                mentorId: mentorID,
+                content: content,
+                link: link,
+                title: title,
+                skillId: skillId,
+            };
+
+            fetch(`http://localhost:8080/api/request/update/${id}/${requestID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                    ,
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(updatedRequest),
             })
-            .then(() => {
-              toast.success("Update successful");
-              navigate(`/requestuser/${id}`);
-            })
-            .catch((error) => {
-              console.error("Error updating skill:", error);
-            });
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("Error updating skill");
+                    }
+                })
+                .then(() => {
+                    toast.success("Update successful");
+                    navigate(`/requestuser/${id}`);
+                })
+                .catch((error) => {
+                    console.error("Error updating skill:", error);
+                });
         }
-      };
-      
+    };
+
 
     return (
         <Row>

@@ -97,9 +97,8 @@ function SideBar() {
                                 <div className="bg-white py-2 collapse-inner rounded">
                                     <h6 className="collapse-header">Custom View:</h6>
                                     <Link className="collapse-item" to={'/managerskill'}>List Mentor</Link>
-                                    <a className="collapse-item" href="utilities-border.html">Borders</a>
-                                    <a className="collapse-item" href="utilities-animation.html">Animations</a>
-                                    <a className="collapse-item" href="utilities-other.html">Other</a>
+                                    <Link className="collapse-item" to={'/view/ratting'}>ViewRating</Link>
+                                   
                                 </div>
                             </div>
                         </li>

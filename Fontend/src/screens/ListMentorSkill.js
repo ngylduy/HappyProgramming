@@ -15,7 +15,7 @@ const ListMentorSkill = () => {
      }
     // const [exp,setExp]=useState('')
     useEffect(() => {
-        fetch(`http://localhost:8080/api/mentor/skill/${userid}`,role1)
+        fetch(`http://localhost:8080/api/mentor/skill/${userid}`)
             .then((res) => res.json())
             .then((data) => {
                 setListMentor(data);

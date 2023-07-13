@@ -9,7 +9,7 @@ const ListMentee = () => {
     const [token] = useState(sessionStorage.getItem("token"));
     // const [exp,setExp]=useState('')
     useEffect(() => {
-        fetch(`http://localhost:8080/api/mentor/all`,role1)
+        fetch(`http://localhost:8080/api/mentor/all`)
             .then((res) => res.json())
             .then((data) => {
                 setListMentor(data);

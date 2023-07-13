@@ -3,10 +3,18 @@ import TemplateAdmin from "../template/TemplateAdmin";
 import { Row, Col, Table, Pagination } from "react-bootstrap";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
+import { useNavigate } from "react-router-dom";
 
 
 const ManagerUser = () => {
     const [token] = useState(sessionStorage.getItem("token"));
+    const [role] = useState(sessionStorage.getItem("role"));
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (role === "USER_MENTEE" || role === "USER_MENTOR") {
+            navigate("/error")
+        }
+    }, [])
 
     useEffect(() => {
         if (token) {
@@ -26,6 +34,7 @@ const ManagerUser = () => {
     const [user, setUser] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
+    
 
     useEffect(() => {
         fetch("http://localhost:8080/api/user",role1)

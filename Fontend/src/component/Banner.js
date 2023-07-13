@@ -34,30 +34,28 @@ const Banner = () => {
             <section className='section'>
                 <div className="introduce">
                     <div className='hello'>Hello, it's Me</div>
-                    <div className='name'>Technoly De</div>
+                    
                     {
                        textIntroduce &&  <div className='introduce-text'>And I'm a  <span className='animation-text'>{textIntroduce}</span></div>
                     }
                     <p className='describe'>
-                    Master your craft with leading mentors at your side. Grow with every online mentoring session and take the next step in your career. All on your terms, for a flat monthly price.
+                    <h5>Learn a new skill, launch a project, land your dream career.</h5>
                     </p>
 
                     
 
-                    <button className='btn-downloadCv'>
-                       Download CV
-                    </button>
+                    
                 </div>
 
                 <div className="avatarWrap">
                     <div className='moon'>
                         <div className="avtart">
-                            <img src='https://kenh14cdn.com/thumb_w/660/2019/2/4/photo-1-1549282130239476130621.jpg' />
+                            <img src='https://cdn.dribbble.com/users/1068771/screenshots/14225432/media/0da8c461ba3920a8c827d864a6e051ed.jpg?compress=1&resize=400x300&vertical=center&fbclid=IwAR1-ibGX2MrRK8wQXXzZxkTRWwZ2k3uOBhIyB3yB0p_HFOjoHE-FuTCPYyo' />
                         </div>
                         <div className='orbit'>
                             <p>✈️</p>
-                            {/* <div className='luxurious'>⭐️</div> */}
-                            <div className='rob'>☄️</div>
+                            <div className='luxurious'>⭐️</div>
+                            <div className='rob'>⭐️</div>
                         </div>
                     </div>
                 </div>

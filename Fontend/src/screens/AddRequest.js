@@ -122,7 +122,7 @@ const AddRequest = () => {
                                                 checked={skillId.includes(s.skillID)}
                                             />
                                             <label htmlFor={s.skillID}>
-                                                {s.skillName}
+                                            &emsp; {s.skillName}
                                             </label>
                                             <br />
                                         </div>

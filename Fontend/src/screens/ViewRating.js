@@ -16,8 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 
-
-function ManagerRequest() {
+function ViewRatting() {
     const [token] = useState(sessionStorage.getItem('token'));
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
@@ -45,37 +44,22 @@ function ManagerRequest() {
     }, [])
 
 
-    const [request, setRequest] = useState([]);
-    const handleDelete = (id) => {
-
-        if (window.confirm("Are you sure you want to delete this request?")) {
-            fetch(`http://localhost:8080/api/${id}`, {
-                method: "DELETE"
-            }).then(() => {
-                alert("delete successfully");
-                window.location.reload();
-            })
-                .catch(err => {
-                    console.log(err.message);
-                })
-
-
-        }
-    }
+    const [ratting, setRatting] = useState([]);
+    
     // Tính toán số trang
-    const totalPages = Math.ceil(request.length / usersPerPage);
+    const totalPages = Math.ceil(ratting.length / usersPerPage);
 
     // Lấy index bắt đầu và kết thúc của list user hiện tại
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    const currentRequest = request.slice(indexOfFirstUser, indexOfLastUser);
+    const currentRatting = ratting.slice(indexOfFirstUser, indexOfLastUser);
 
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/request/getall`, role1)
+        fetch(`http://localhost:8080/api/rating`, role1)
             .then((resp) => resp.json())
             .then((data) => {
-                setRequest(data);
+                setRatting(data);
                 console.log(data)
             })
             .catch((err) => {
@@ -89,49 +73,30 @@ function ManagerRequest() {
                 <Col xs={12}>
                     <Row>
                         <Col style={{ textAlign: "left", color: "blue" }}>
-                            <h2>List Request</h2>
+                            <h2>List Ratting</h2>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col style={{ textAlign: "right" }}>
-                            <h5><Link to={"/skill/add"}>Create Request</Link></h5>
-
-                        </Col>
-                    </Row>
+                    
                     <Row>
                         <Col>
                             <Table className="table border shadow" >
                                 <thead>
                                     <tr>
-                                        <th >Id</th>
-                                        <th >content</th>
-                                        <th>date</th>
-                                        <th >link</th>
-                                        <th>title</th>
-                                        <th scope={2} >Action</th>
+                                        <th >rateID</th>
+                                        <th >comment</th>
+                                        <th>star</th>
+                                        
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {currentRequest.map((r) => (
-                                        <tr key={r.requestID}>
-                                            <td >{r.requestID}</td>
-                                            <td >{r.content}</td>
-                                            <td>{r.date}</td>
-                                            <td><a href={r.link}>{r.link}</a></td>
-                                            <td>{r.title}</td>
-                                            <td >
-                                                {
-                                                    <Link styles={{ color: "blue" }} to={'/skill/edit/' + r.skillID}><PencilSquare /></Link>
-                                                }
-                                            </td>
-                                            <td >
-                                                {
-                                                    <>
-                                                        <Link style={{ marginRight: "30px" }} onClick={() => handleDelete(r.requestID)} ><Trash3Fill /></Link>
-
-                                                    </>
-                                                }
-                                            </td>
+                                    {currentRatting.map((r) => (
+                                        <tr key={r.rateID}>
+                                            <td >{r.rateID}</td>
+                                            <td >{r.comment}</td>
+                                            <td>{r.star}</td>
+                                            
+                                           
 
 
 
@@ -173,4 +138,4 @@ function ManagerRequest() {
     );
 }
 
-export default ManagerRequest;
+export default ViewRatting;
