@@ -8,6 +8,7 @@ import com.swp.hg.entity.User;
 import com.swp.hg.repository.MentorProfileRepo;
 import com.swp.hg.repository.RatingRepository;
 import com.swp.hg.repository.UserRepository;
+import com.swp.hg.response.RatingResponse;
 import com.swp.hg.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,21 +34,31 @@ public class RatingController {
     private  final MentorProfileRepo mentorProfileRepo;
 
     @GetMapping("/rating")
-    public List<Rating> getAll() {
-        List<Rating> ratings = ratingRepository.findAll();
+    public ResponseEntity<List<RatingResponse>> getAll() {
+        try {
+            List<Rating> ratings = ratingRepository.findAll();
+            List<RatingResponse> responseList = new ArrayList<>();
+            for (Rating rating : ratings) {
+                RatingResponse response = createRatingResponse(rating);
+                responseList.add(response);
+            }
 
-        for (Rating rating : ratings) {
-            int menteeID = rating.getMenteeRating().getId();
-            User menteeRating = userRepository.findUserById(menteeID);
-            rating.setMenteeRating(menteeRating);
-
-            int mentorID = rating.getMentorProfile().getMentorID();
-            MentorProfile mentorProfile = mentorProfileRepo.findMentorProfilesByMentorID(mentorID);
-            rating.setMentorProfile(mentorProfile);
+            return ResponseEntity.ok(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-        return ratings;
     }
+
+    private RatingResponse createRatingResponse(Rating rating){
+        RatingResponse response = new RatingResponse();
+        response.setComment(rating.getComment());
+        response.setStar(rating.getStar());
+        response.setMenteeID(rating.getMenteeRating().getId());
+        response.setRateID(rating.getRateID());
+        response.setMentorID(rating.getMentorProfile().getMentorID());
+        return response;
+    }
+
 
     @GetMapping("/rating/mentor/{id}")
     public List<Rating> getByMentorID(@PathVariable int id) {
