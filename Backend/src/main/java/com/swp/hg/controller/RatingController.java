@@ -5,11 +5,11 @@ import com.swp.hg.dto.ResultDTO;
 import com.swp.hg.entity.Rating;
 import com.swp.hg.service.RatingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,8 +21,28 @@ public class RatingController {
     private final RatingService ratingService;
 
     @GetMapping("/rating")
-    public List<Rating> getAll() {
-        return ratingService.getAll();
+    public ResponseEntity<List<RatingDTO>> getAll() {
+        try {
+            List<Rating> ratings = ratingService.getAll();
+            List<RatingDTO> responseList = new ArrayList<>();
+            for (Rating rating : ratings) {
+                RatingDTO response = createRatingResponse(rating);
+                responseList.add(response);
+            }
+            return ResponseEntity.ok(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private RatingDTO createRatingResponse(Rating rating){
+        RatingDTO response = new RatingDTO();
+        response.setComment(rating.getComment());
+        response.setStar(rating.getStar());
+        response.setMenteeID(rating.getMenteeRating().getId());
+        response.setRateID(rating.getRateID());
+        response.setMentorID(rating.getMentorProfile().getMentorID());
+        return response;
     }
 
     @GetMapping("/rating/mentor/{id}")
