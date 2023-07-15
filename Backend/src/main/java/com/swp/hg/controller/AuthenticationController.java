@@ -1,6 +1,7 @@
 package com.swp.hg.controller;
 
 import com.swp.hg.auth.AuthenticationRequest;
+import com.swp.hg.auth.AuthenticationResponse;
 import com.swp.hg.dto.ChangePassword;
 import com.swp.hg.dto.RegistrationRequest;
 import com.swp.hg.dto.ResponseStatus;
@@ -9,6 +10,7 @@ import com.swp.hg.service.Impl.ResetPassword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +24,16 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest){
-        return new ResponseEntity<>(authenticationService.authenticate(authenticationRequest), HttpStatus.OK);
+        try {
+            AuthenticationResponse response = authenticationService.authenticate(authenticationRequest);
+            if (response.getToken() != null) {
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (AuthenticationException ex) {
+            return new ResponseEntity<>(AuthenticationResponse.builder().message("User is no activated!").build(), HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping("/reset_password")
