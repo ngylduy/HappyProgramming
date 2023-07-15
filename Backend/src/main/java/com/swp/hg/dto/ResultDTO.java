@@ -12,4 +12,8 @@ public class ResultDTO<T> {
     private boolean status;
     private T data;
     private String message;
+
+    public boolean isStatus() {
+        return status;
+    }
 }

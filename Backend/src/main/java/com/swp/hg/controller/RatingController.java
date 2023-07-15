@@ -2,7 +2,12 @@ package com.swp.hg.controller;
 
 import com.swp.hg.dto.RatingDTO;
 import com.swp.hg.dto.ResultDTO;
+import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.entity.Rating;
+import com.swp.hg.entity.User;
+import com.swp.hg.repository.MentorProfileRepo;
+import com.swp.hg.repository.RatingRepository;
+import com.swp.hg.repository.UserRepository;
 import com.swp.hg.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +25,27 @@ public class RatingController {
 
     private final RatingService ratingService;
 
+    private  final RatingRepository ratingRepository;
+
+    private  final UserRepository userRepository;
+
+    private  final MentorProfileRepo mentorProfileRepo;
+
     @GetMapping("/rating")
     public List<Rating> getAll() {
-        return ratingService.getAll();
+        List<Rating> ratings = ratingRepository.findAll();
+
+        for (Rating rating : ratings) {
+            int menteeID = rating.getMenteeRating().getId();
+            User menteeRating = userRepository.findUserById(menteeID);
+            rating.setMenteeRating(menteeRating);
+
+            int mentorID = rating.getMentorProfile().getMentorID();
+            MentorProfile mentorProfile = mentorProfileRepo.findMentorProfilesByMentorID(mentorID);
+            rating.setMentorProfile(mentorProfile);
+        }
+
+        return ratings;
     }
 
     @GetMapping("/rating/mentor/{id}")
