@@ -29,7 +29,6 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
 
 //    @Query(value ="select * from mentor_profile  where userid = :id", nativeQuery = true)
 //    MentorProfile findMentorProfilesByUserID(@Param("id") int id);
-
-
+    List<Request> findByStatus(int status);
 
 }

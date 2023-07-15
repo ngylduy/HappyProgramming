@@ -58,6 +58,10 @@ public class MentorProfileController {
     public ResponseEntity<MentorProfile> getMentorProfileByUserId(@PathVariable int userid ){
         return  ResponseEntity.ok().body(mentorProfileService.getById(userid));
     }
+    @GetMapping("/getmentor/{mentorid}")
+    public ResponseEntity<MentorProfile> getMentorByMentorId(@PathVariable int mentorid) {
+        return ResponseEntity.ok().body(mentorProfileService.getByMentorID(mentorid));
+    }
 
 
     //delete mentor CV

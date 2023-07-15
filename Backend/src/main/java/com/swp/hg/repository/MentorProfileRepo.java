@@ -24,5 +24,4 @@ public interface MentorProfileRepo extends JpaRepository<MentorProfile, Integer>
     @Query(value = "select * from mentor_profile  where mentorid = :id LIMIT 1", nativeQuery = true)
     MentorProfile findMentorProfilesByMentorID(@Param("id") int id);
 
-
 }

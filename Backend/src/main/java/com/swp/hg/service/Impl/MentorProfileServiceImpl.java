@@ -44,9 +44,8 @@ public class MentorProfileServiceImpl implements MentorProfileService {
     public MentorProfile getById(int id) {
         return mentorProfileRepo.findMentorProfilesByUserID(id);
     }
+
     public MentorProfile getByMentorID(int id) {
         return mentorProfileRepo.findMentorProfilesByMentorID(id);
     }
-
-
 }

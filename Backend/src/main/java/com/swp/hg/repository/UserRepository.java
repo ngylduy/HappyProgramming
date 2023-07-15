@@ -15,12 +15,14 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username);
+
     User findByEmail(String email);
+
     User findUserByUsername(String username);
 
     User findUserById(int id);
 
-    List<User> findAllByRolesName(String roles_name);
+    List<User> findByRoles_Name(String roles_name);
 
     @Modifying
     @Query("UPDATE User u SET u.status = false WHERE u.id = ?1")

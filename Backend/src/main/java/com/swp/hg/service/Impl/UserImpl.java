@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserImpl implements UserService, UserDetailsService {
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -73,7 +72,7 @@ public class UserImpl implements UserService, UserDetailsService {
 
     @Override
     public List<User> getListUserByRole(String role_name) {
-        return userRepository.findAllByRolesName(role_name);
+        return userRepository.findByRoles_Name(role_name);
     }
 
     @Override
@@ -171,7 +170,7 @@ public class UserImpl implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(userPayload, user.getPassword(), authorities);
     }
 
-    public User takeUserByUsername(String username) {
+    public User takeUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username);
         if (user == null) {
             log.error("User not found in the database");
@@ -244,6 +243,5 @@ public class UserImpl implements UserService, UserDetailsService {
         saveConfirmationTokenResetPassword(user, token);
         return token;
     }
-
 
 }

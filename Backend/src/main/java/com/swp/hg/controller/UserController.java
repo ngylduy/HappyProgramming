@@ -55,7 +55,6 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-
     @PutMapping("/save/{id}")
     public ResponseEntity<?> saveUsers(@RequestBody UserDTO user, @PathVariable int id) {
         user.setId(id);

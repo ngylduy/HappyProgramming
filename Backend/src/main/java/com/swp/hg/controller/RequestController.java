@@ -10,6 +10,7 @@ import com.swp.hg.response.RequestResponse;
 import com.swp.hg.service.Impl.MentorProfileServiceImpl;
 import com.swp.hg.service.Impl.RequestService;
 import com.swp.hg.service.Impl.UserImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,31 +21,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/request")
 @CrossOrigin
+@RequiredArgsConstructor
 public class RequestController {
-    //update request for mentor
-    @PutMapping("/{requestId}/{status}")
-    public ResponseEntity<ApiResponse>updateRequestByMentor(@PathVariable int requestId,@PathVariable int status){
-        ApiResponse apiResponse = requestService.updateStatus(requestId,status);
-        if(apiResponse.isSuccess()){
-            return ResponseEntity.ok(apiResponse);
-        }else{
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
-        }
-    }
 
     private final RequestService requestService;
-    private  final MentorProfileServiceImpl mentorProfileService;
-
-    private  final UserImpl userService;
-
     private final RequestRepository requestRepository;
+    private final MentorProfileServiceImpl mentorProfileService;
+    private final UserImpl userService;
 
-    public RequestController(RequestService requestService, MentorProfileServiceImpl mentorProfileService, UserImpl userService, RequestRepository requestRepository) {
-        this.requestService = requestService;
-        this.mentorProfileService = mentorProfileService;
-        this.userService = userService;
-        this.requestRepository = requestRepository;
-    }
 
     //list all request (for Admin)
     @GetMapping("/getall")
@@ -54,47 +38,86 @@ public class RequestController {
 
 
     //get request by  request id
-    @GetMapping("/{id}")
-    public Request getRequestByRequestId(@PathVariable int id){
-        return requestService.getRequestByRequestId(id);
+    @GetMapping("/{requestId}")
+    public ResponseEntity<RequestResponse> getRequestDetails(@PathVariable int requestId) {
+        try {
+            Request request = requestService.getRequestByRequestId(requestId);
+            if (request != null) {
+                User mentee = userService.getById(request.getUsers().getId());
+                MentorProfile mentor = mentorProfileService.getByMentorID(request.getMentorProfile().getMentorID());
+
+                RequestResponse response = new RequestResponse();
+                response.setRequestId(request.getRequestID());
+                response.setDate(request.getDate());
+                response.setStatus(request.getStatus());
+                response.setLink(request.getLink());
+                response.setTitle(request.getTitle());
+                response.setContent(request.getContent());
+                response.setMentorStatus(request.getMentorStatus());
+                response.setMenteeId(mentee != null ? mentee.getId() : null);
+                response.setMentorId(mentor != null ? mentor.getMentorID() : null);
+
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-//    @GetMapping("/{requestId}")
-//    public ResponseEntity<RequestResponse> getRequestDetails(@PathVariable int requestId) {
-//        try {
-//            Request request = requestService.getRequestByRequestId(requestId);
-//            if (request != null) {
-//                User mentee = userService.getById(request.getUsers().getId());
-//                MentorProfile mentor = mentorProfileService.getByMentorID(request.getMentorProfile().getMentorID());
-//
-//                RequestResponse response = new RequestResponse();
-//                response.setRequestId(request.getRequestID());
-//                response.setDate(request.getDate());
-//                response.setStatus(request.getStatus());
-//                response.setLink(request.getLink());
-//                response.setTitle(request.getTitle());
-//                response.setContent(request.getContent());
-//                response.setMentorStatus(request.getMentorStatus());
-//                response.setMenteeId(mentee != null ? mentee.getId() : null);
-//                response.setMentorId(mentor != null ? mentor.getMentorID() : null);
-//
-//                return ResponseEntity.ok(response);
-//            } else {
-//                return ResponseEntity.notFound().build();
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
+
     //get list request by mentor id
     @GetMapping("/getbymentor/{mentorID}")
-    public List<Request> getRequestByMentorId(@PathVariable int mentorID){
-        return requestRepository.findByMentorProfile_MentorID(mentorID);
+    public ResponseEntity<List<RequestResponse>>getRequestByMentorId(@PathVariable int mentorID){
+
+        try {
+            List<Request> requests = requestRepository.findByMentorProfile_MentorID(mentorID);
+            List<RequestResponse> responseList = new ArrayList<>();
+
+            for (Request request : requests) {
+                RequestResponse response = createRequestResponse(request);
+                responseList.add(response);
+            }
+
+            return ResponseEntity.ok(responseList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
+
 
     //get list request by user id
     @GetMapping("/getbyuser/{userID}")
-    public List<Request> getRequestByUserId(@PathVariable int userID){
-        return requestRepository.findByUsersId(userID);
+    public ResponseEntity<List<RequestResponse>> getRequestsByUserId(@PathVariable int userID) {
+        try {
+            List<Request> requests = requestRepository.findByUsersId(userID);
+            List<RequestResponse> responseList = new ArrayList<>();
+
+            for (Request request : requests) {
+                RequestResponse response = createRequestResponse(request);
+                responseList.add(response);
+            }
+
+            return ResponseEntity.ok(responseList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private RequestResponse createRequestResponse(Request request) {
+        RequestResponse response = new RequestResponse();
+        response.setRequestId(request.getRequestID());
+        response.setDate(request.getDate());
+        response.setStatus(request.getStatus());
+        response.setLink(request.getLink());
+        response.setTitle(request.getTitle());
+        response.setContent(request.getContent());
+        response.setMentorStatus(request.getMentorStatus());
+        response.setMenteeId(request.getUsers().getId());
+        response.setMentorId(request.getMentorProfile().getMentorID());
+
+        return response;
     }
 
     //add new request by user id
@@ -107,41 +130,6 @@ public class RequestController {
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
         }
     }
-
-    //get list request by user id
-    //get list request by user id
-//    @GetMapping("/getbyuser/{userID}")
-//    public ResponseEntity<List<RequestResponse>> getRequestsByUserId(@PathVariable int userID) {
-//        try {
-//            List<Request> requests = requestRepository.findByUsersId(userID);
-//            List<RequestResponse> responseList = new ArrayList<>();
-//
-//            for (Request request : requests) {
-//                RequestResponse response = createRequestResponse(request);
-//                responseList.add(response);
-//            }
-//
-//            return ResponseEntity.ok(responseList);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-//
-//    private RequestResponse createRequestResponse(Request request) {
-//        RequestResponse response = new RequestResponse();
-//        response.setRequestId(request.getRequestID());
-//        response.setDate(request.getDate());
-//        response.setStatus(request.getStatus());
-//        response.setLink(request.getLink());
-//        response.setTitle(request.getTitle());
-//        response.setContent(request.getContent());
-//        response.setMentorStatus(request.getMentorStatus());
-//        response.setMenteeId(request.getUsers().getId());
-//        response.setMentorId(request.getMentorProfile().getMentorID());
-//
-//        return response;
-//    }
-
 
 
     // delete request by request id
@@ -169,6 +157,14 @@ public class RequestController {
         }
     }
 
-
+    @PutMapping("/{requestId}/{status}")
+    public ResponseEntity<ApiResponse>updateRequestByMentor(@PathVariable int requestId,@PathVariable int status){
+        ApiResponse apiResponse = requestService.updateStatus(requestId,status);
+        if(apiResponse.isSuccess()){
+            return ResponseEntity.ok(apiResponse);
+        }else{
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
+    }
 
 }
