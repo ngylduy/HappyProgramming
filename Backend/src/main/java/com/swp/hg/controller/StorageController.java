@@ -34,7 +34,7 @@ public class StorageController {
         String fileCode = service.saveFile(fileName, multipartFile);
         ImageDTO response = new ImageDTO();
         response.setFileName(fileName);
-        response.setFileUri("/api/images/" + fileCode + "-" + fileName);
+        response.setFileUri("/api/image/" + fileCode + "-" + fileName);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
