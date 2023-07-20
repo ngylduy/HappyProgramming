@@ -32,6 +32,11 @@ public class MentorProfileController {
         return ResponseEntity.ok().body(mentorProfileService.getMentors());
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<?> getActiveMentors() {
+        return ResponseEntity.ok().body(mentorProfileService.getActiveMentors());
+    }
+
     @PostMapping("/searchmentor")
     public ResponseEntity<SearchResultDTO<MentorProfileDTO>> search(@RequestBody MentorProfileDTO mentorProfileDTO) {
         SearchResultDTO<MentorProfileDTO> list = mentorProfileService.search(mentorProfileDTO);

@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Integer> {
 
-
     //get list request by mentor id
     List<Request> findByMentorProfile_MentorID(int id);
 
