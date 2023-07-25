@@ -3,13 +3,16 @@ package com.swp.hg.controller;
 import com.swp.hg.dto.RequestDTO;
 import com.swp.hg.entity.MentorProfile;
 import com.swp.hg.entity.Request;
+import com.swp.hg.entity.RequestSkill;
 import com.swp.hg.entity.User;
 import com.swp.hg.repository.RequestRepository;
 import com.swp.hg.response.ApiResponse;
 import com.swp.hg.response.RequestResponse;
 import com.swp.hg.service.Impl.MentorProfileServiceImpl;
 import com.swp.hg.service.Impl.RequestService;
+import com.swp.hg.service.Impl.RequestSkillService;
 import com.swp.hg.service.Impl.UserImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +34,16 @@ public class RequestController {
     private  final UserImpl userService;
 
 
+//    private  final RequestSkillService requestSkillService;
+
+
     public RequestController(RequestService requestService, RequestRepository requestRepository, MentorProfileServiceImpl mentorProfileService, UserImpl userService) {
         this.requestService = requestService;
         this.requestRepository = requestRepository;
         this.mentorProfileService = mentorProfileService;
         this.userService = userService;
+
+//        this.requestSkillService = requestSkillService;
     }
 
     //list all request (for Admin)
@@ -44,7 +52,11 @@ public class RequestController {
         return requestService.getALlRequest();
     }
 
-
+//    @GetMapping("/getallrequestskill")
+//    public List<RequestSkill> listRequestSkill()
+//    {
+//        return requestSkillService.getAllRequestSkill();
+//    }
     //get request by  request id
     @GetMapping("/{requestId}")
     public ResponseEntity<RequestResponse> getRequestDetails(@PathVariable int requestId) {
@@ -128,6 +140,10 @@ public class RequestController {
         response.setMentorStatus(request.getMentorStatus());
         response.setMenteeId(request.getUsers().getId());
         response.setMentorId(request.getMentorProfile().getMentorID());
+//        Collection<RequestSkill> requestSkillId  = request.getRequestSkills();
+//        response.setSkillId(requestService.getSkillIdByRequestSkillId(requestSkillId));
+//        response.setSkillId(request.getRequestSkills().);
+
 
         return response;
     }

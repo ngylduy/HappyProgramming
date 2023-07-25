@@ -194,6 +194,10 @@ public class RequestService {
         }
     }
 
+    public List<Integer> getSkillIdByRequestSkillId( Collection<RequestSkill> requestSkillId){
+        return requestRepository.getSkillIdByRequestSkillId(requestSkillId);
+    }
+
 
     
 

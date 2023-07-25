@@ -42,7 +42,6 @@ public class RatingController {
                 RatingResponse response = createRatingResponse(rating);
                 responseList.add(response);
             }
-
             return ResponseEntity.ok(responseList);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -61,13 +60,36 @@ public class RatingController {
 
 
     @GetMapping("/rating/mentor/{id}")
-    public List<Rating> getByMentorID(@PathVariable int id) {
-        return ratingService.getByMentorID(id);
+//    public List<Rating> getByMentorID(@PathVariable int id) {
+//        return ratingService.getByMentorID(id);
+//    }
+    public ResponseEntity<List<RatingResponse>> getByMentorID(@PathVariable int id) {
+        try {
+            List<Rating> ratings = ratingService.getByMentorID(id);
+            List<RatingResponse> responseList = new ArrayList<>();
+            for (Rating rating : ratings) {
+                RatingResponse response = createRatingResponse(rating);
+                responseList.add(response);
+            }
+            return ResponseEntity.ok(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/rating/mentee/{id}")
-    public List<Rating> getByMenteeID(@PathVariable int id) {
-        return ratingService.getByMenteeID(id);
+    public ResponseEntity<List<RatingResponse>> getByMenteeID(@PathVariable int id) {
+        try {
+            List<Rating> ratings = ratingService.getByMenteeID(id);
+            List<RatingResponse> responseList = new ArrayList<>();
+            for (Rating rating : ratings) {
+                RatingResponse response = createRatingResponse(rating);
+                responseList.add(response);
+            }
+            return ResponseEntity.ok(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/rating")

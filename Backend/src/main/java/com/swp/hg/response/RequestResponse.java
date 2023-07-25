@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.sql.Date;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,6 +21,7 @@ public class RequestResponse {
     private int mentorStatus;
     private Integer menteeId; // Use Integer to allow null value
     private Integer mentorId; // Use Integer to allow null value
+//    private List<Integer> SkillId;
     private Collection<RequestSkill> requestSkills;
 
     // Constructors, getters, and setters
