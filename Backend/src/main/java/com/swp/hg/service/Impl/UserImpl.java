@@ -244,4 +244,9 @@ public class UserImpl implements UserService, UserDetailsService {
         return token;
     }
 
+    @Override
+    public int getTotalUserByStatus(boolean status) {
+        return userRepository.countUserByStatus(status);
+    }
+
 }

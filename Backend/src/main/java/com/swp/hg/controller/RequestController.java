@@ -68,24 +68,20 @@ public class RequestController {
 
     //get list request by mentor id
     @GetMapping("/getbymentor/{mentorID}")
-    public ResponseEntity<List<RequestResponse>>getRequestByMentorId(@PathVariable int mentorID){
-
+    public ResponseEntity<?> getRequestByMentorId(@PathVariable int mentorID){
         try {
             List<Request> requests = requestRepository.findByMentorProfile_MentorID(mentorID);
             List<RequestResponse> responseList = new ArrayList<>();
-
             for (Request request : requests) {
                 RequestResponse response = createRequestResponse(request);
                 responseList.add(response);
             }
-
             return ResponseEntity.ok(responseList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
     }
-
 
     //get list request by user id
     @GetMapping("/getbyuser/{userID}")

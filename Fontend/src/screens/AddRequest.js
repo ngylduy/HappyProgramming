@@ -2,6 +2,9 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import TemplateUser from "../template/TemplateUser";
 
 const AddRequest = () => {
     const { id, mentorID } = useParams();
@@ -26,12 +29,32 @@ const AddRequest = () => {
     }, []);
 
     const navigate = useNavigate();
+    const IsValidate = () => {
+        let isproceed = true;
+
+        if (!title.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in title');
+        }
+        if (!content.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in content');
+        }
+        if (!link.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in link');
+        }
+        if (skillId.length === 0) {
+            isproceed = false;
+            toast.warning('Please select at least one skill');
+          }
+        return isproceed;
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (content.length === 0) {
-            toast.warning('Please enter content');
-        } else {
+        if (IsValidate()) {
+           
             const request = { title, link, content, skillId };
             console.log(request);
             fetch(`http://localhost:8080/api/request/add/${mentorID}/${id}`, {
@@ -42,7 +65,7 @@ const AddRequest = () => {
                 body: JSON.stringify(request)
             })
                 .then(() => {
-                    alert("Add success.");
+                    toast.success('Add Request Success ')
                     navigate("/requestuser/"+id);
                 });
         }
@@ -60,6 +83,7 @@ const AddRequest = () => {
     };
 
     return (
+        <TemplateUser>
         <Row>
             <Col className="offset-md-2 col-md-8" style={{ border: '1px solid back', boxShadow: " 0 0 20px rgba(0, 0, 0, 0.3)", marginTop: "100px" }}>
                 <Row>
@@ -79,7 +103,26 @@ const AddRequest = () => {
                             <Row>
                                 <Form.Group className="col-md-12">
                                     <Form.Text>content <span style={{ color: 'red' }}>*</span></Form.Text>
-                                    <Form.Control value={content} onChange={(e) => setContent(e.target.value)} as="textarea" />
+                                    <CKEditor
+                                    
+                                    editor={ClassicEditor}
+                                    data={content}
+                                    onReady={(editor)=>{
+                                        editor.editing.view.change((write)=>{
+                                            write.setStyle(
+                                                "height",
+                                                "200px",
+                                                editor.editing.view.document.getRoot()
+                                            )
+                                        })
+                                    }}
+                                    onChange={(e, editor) => {
+                                        const data = editor.getData();
+                                        setContent(data);
+                                    
+                                       
+                                    }}
+                                />
                                 </Form.Group>
                             </Row>
                             <Row>
@@ -94,7 +137,9 @@ const AddRequest = () => {
                                     {/* First column */}
                                     {skill.slice(0, Math.ceil(skill.length / 2)).map((s) => (
                                         <div key={s.skillID}>
+                                            
                                             <input
+                                                style={{appearance:'auto'}}
                                                 type="checkbox"
                                                 id={s.skillID}
                                                 name="skill"
@@ -114,6 +159,7 @@ const AddRequest = () => {
                                     {skill.slice(Math.ceil(skill.length / 2)).map((s) => (
                                         <div key={s.skillID}>
                                             <input
+                                                style={{appearance:'auto'}}
                                                 type="checkbox"
                                                 id={s.skillID}
                                                 name="skill"
@@ -132,7 +178,7 @@ const AddRequest = () => {
                             <Row>
                                 <Col style={{ textAlign: 'center', padding: "30px" }}>
                                     <Button className="btn btn-primary" type="submit">Add</Button>|
-                                    <Link to={'/'} className="btn btn-danger">Back to List</Link>
+                                    <Link to={'/requestuser/'+id} className="btn btn-danger">Back to List</Link>
                                 </Col>
                             </Row>
                         </Form>
@@ -140,6 +186,7 @@ const AddRequest = () => {
                 </Row>
             </Col>
         </Row>
+        </TemplateUser>
     );
 }
 

@@ -7,7 +7,6 @@ import Register from './screens/Register';
 import Rating from './screens/Rating';
 import Dashboard from './screens/Dashboard';
 import Mentor from './screens/Mentor';
-import Analytics from './screens/Analytics';
 import Profile from './screens/Profile';
 import ListMentee from './screens/ListMentor';
 import ProfileUser from './screens/ProfileUser';
@@ -27,7 +26,12 @@ import UpdateUserProfile from './screens/UpdateUserProfile';
 import UpdateCVMentor from './screens/UpdateCVMentor';
 import Error from './screens/Error';
 import ViewRatting from './screens/ViewRating';
-import ViewRattingUser from './screens/ViewRattingUser';
+
+import AddCv from './screens/AddCV';
+import ManagerRatingUser from './screens/ManagerRatingUser';
+import ManagerRatingMentor from './screens/ManagerRatingMentor';
+import FogotPassword from './screens/FogotPassword';
+import ManagerMentorRegist from './screens/ManagerMentorRegist';
 
 
 
@@ -38,6 +42,7 @@ function App() {
     
     <BrowserRouter>    
      <Routes>    
+     <Route path='/fogotpass' element={<FogotPassword/>}/>
      <Route path='/' element={<Home/>}/>
      <Route path='/login' element={<Login/>}/> 
      <Route path='/register' element={<Register/>}/>
@@ -46,7 +51,9 @@ function App() {
      <Route path='/managerskill' element={<ManagerSkill/>}/>
      <Route path='/skill/add' element={<AddSkill/>}/>
      <Route path='/mentor' element={<Mentor/>}/>
-     <Route path='/analytics' element={<Analytics/>}/>
+     <Route path='/addcv' element={<AddCv/>}/>
+     <Route path='/manager/rating' element={<ManagerRatingUser/>}/>
+     <Route path='/managermentor/rating' element={<ManagerRatingMentor/>}/>
      <Route path='/profile' element={<Profile/>}/>
      <Route path='/listmentor' element={<ListMentee/>}/>
      <Route path='/11' element={<ProfileUser/>}/>
@@ -63,8 +70,10 @@ function App() {
      <Route path='/update/userprofile' element={<UpdateUserProfile/>}/>
      <Route path='/update/cvmentor' element={<UpdateCVMentor/>}/>
      <Route path='/error' element={<Error/>}/>
+     <Route path="/*" element={<Error />}/>
      <Route path='/view/ratting' element={<ViewRatting/>}/>
-     <Route path='/view/rattinguser' element={<ViewRattingUser/>}/>
+     <Route path='/manager/regist' element={<ManagerMentorRegist/>}/>
+     
      </Routes>   
     </BrowserRouter>
    

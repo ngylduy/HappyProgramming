@@ -1,56 +1,46 @@
-import { useEffect,useState } from 'react';
-
-
+import { useEffect } from 'react';
+import Typed from 'typed.js';
 
 const Banner = () => {
 
-   
-    const [textIntroduce,setIntroduce] = useState("")
+    useEffect(() => {
+        const options = {
+            strings: ['<span>answers...</span>',
+                '<span style="color: #2f67fd !important">support...</span>',
+                '<span style="color: #2f67fd !important">help...</span>',
+                '<span style="color: #F05340 !important">provide...</span>'],
+            typeSpeed: 80,
+            loop: true,
+            backDelay: 900,
+            backSpeed: 50
+        };
+        const typed = new Typed('.typing-element', options);
+        return () => {
+            typed.destroy();
+        };
+    }, []);
 
-    const handleText = () =>{
-        setTimeout(()=>{
-                setIntroduce("Frontend Dev")
-        },0)
-        setTimeout(()=>{
-            setIntroduce("Tester")
-        },3000)
-        setTimeout(()=>{
-            setIntroduce("TikToker IT")
-        },6000)
-    }
-    useEffect(()=>{
-        if(textIntroduce !== "Frontend Dev"){
-            handleText()
-        }
-        const interval = setInterval(()=>{
-        handleText()
-        },9000)
-        return () => clearInterval(interval)
-    },[])
-  
     return (
-        
+
         <>
             <section className='section'>
                 <div className="introduce">
-                    <div className='hello'>Hello, it's Me</div>
-                    
-                    {
-                       textIntroduce &&  <div className='introduce-text'>And I'm a  <span className='animation-text'>{textIntroduce}</span></div>
-                    }
+                    <div className='hello'>Welcome to</div>
+
+                    <div className='introduce-text'>
+                        <span className="text-slider-items">
+                            <span>Happy Programming, we are here to <span className="typing-element"></span></span>
+                        </span>
+                    </div>
                     <p className='describe'>
-                    <h5>Learn a new skill, launch a project, land your dream career.</h5>
+                        <h5>Learn a new skill, launch a project, land your dream career.</h5>
                     </p>
-
-                    
-
-                    
                 </div>
 
                 <div className="avatarWrap">
                     <div className='moon'>
                         <div className="avtart">
-                            <img src='https://cdn.dribbble.com/users/1068771/screenshots/14225432/media/0da8c461ba3920a8c827d864a6e051ed.jpg?compress=1&resize=400x300&vertical=center&fbclid=IwAR1-ibGX2MrRK8wQXXzZxkTRWwZ2k3uOBhIyB3yB0p_HFOjoHE-FuTCPYyo' />
+                            <img src='https://happycode.com.es/wp-content/uploads/2022/01/HAPPY_CODE_LOGO-DUDA-gde_rgb-e1642522206836.png' />
                         </div>
                         <div className='orbit'>
                             <p>✈️</p>

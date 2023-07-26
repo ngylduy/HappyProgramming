@@ -30,14 +30,14 @@ function SideBar() {
                 <div id="wrapper">
 
                     {/*  <!-- Sidebar --> */}
-                    <ul className={style} id="accordionSidebar">
+                    <ul className={style} id="accordionSidebar"  style={{maxWidth:"90%"}}>
 
                         {/*  <!-- Sidebar - Brand --> */}
                         <a className="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                             <div className="sidebar-brand-icon rotate-n-15">
                                 <i className="fas fa-laugh-wink"></i>
                             </div>
-                            <div className="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                            <div className="sidebar-brand-text mx-3"></div>
                             <div className="text-center d-none d-md-inline">
                                 <button className="rounded-circle border-0" id="sidebarToggle" onClick={changeStyle}></button>
                             </div>
@@ -132,10 +132,11 @@ function SideBar() {
                         </li>
 
                         {/* <!-- Nav Item - Charts --> */}
-                        <li className="nav-item">
-                            <a className="nav-link" href="charts.html">
-                                <i className="fas fa-fw fa-chart-area"></i>
-                                <span>Charts</span></a>
+                        <li className="nav-item active">
+                            <Link className="nav-link" to={'/manager/regist'} >
+                            
+                                <span>List Mentor Regist</span>
+                                </Link>
                         </li>
 
                         {/*  <!-- Nav Item - Tables --> */}

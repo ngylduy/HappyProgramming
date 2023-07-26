@@ -25,4 +25,5 @@ public interface UserService {
     void saveConfirmationTokenResetPassword(User appUser, String token);
     void enableAppUser(String email);
     String createPasswordResetTokenForUser(int id);
+    int getTotalUserByStatus(boolean status);
 }

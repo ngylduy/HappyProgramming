@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import TemplateAdmin from "../template/TemplateAdmin"
 
-import { PencilSquare, Trash3Fill } from "react-bootstrap-icons";
-import { Col, Table, Row, Pagination } from "react-bootstrap";
+
+import { Col, Table, Row,  } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import {Pagination} from "antd"
 
 
 
@@ -46,22 +47,7 @@ function ManagerRequest() {
 
 
     const [request, setRequest] = useState([]);
-    const handleDelete = (id) => {
-
-        if (window.confirm("Are you sure you want to delete this request?")) {
-            fetch(`http://localhost:8080/api/${id}`, {
-                method: "DELETE"
-            }).then(() => {
-                alert("delete successfully");
-                window.location.reload();
-            })
-                .catch(err => {
-                    console.log(err.message);
-                })
-
-
-        }
-    }
+   
     // Tính toán số trang
     const totalPages = Math.ceil(request.length / usersPerPage);
 
@@ -69,6 +55,7 @@ function ManagerRequest() {
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentRequest = request.slice(indexOfFirstUser, indexOfLastUser);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
     useEffect(() => {
@@ -92,12 +79,7 @@ function ManagerRequest() {
                             <h2>List Request</h2>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col style={{ textAlign: "right" }}>
-                            <h5><Link to={"/skill/add"}>Create Request</Link></h5>
-
-                        </Col>
-                    </Row>
+                    
                     <Row>
                         <Col>
                             <Table className="table border shadow" >
@@ -108,7 +90,7 @@ function ManagerRequest() {
                                         <th>date</th>
                                         <th >link</th>
                                         <th>title</th>
-                                        <th scope={2} >Action</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,19 +101,7 @@ function ManagerRequest() {
                                             <td>{r.date}</td>
                                             <td><a href={r.link}>{r.link}</a></td>
                                             <td>{r.title}</td>
-                                            <td >
-                                                {
-                                                    <Link styles={{ color: "blue" }} to={'/skill/edit/' + r.skillID}><PencilSquare /></Link>
-                                                }
-                                            </td>
-                                            <td >
-                                                {
-                                                    <>
-                                                        <Link style={{ marginRight: "30px" }} onClick={() => handleDelete(r.requestID)} ><Trash3Fill /></Link>
-
-                                                    </>
-                                                }
-                                            </td>
+                                            
 
 
 
@@ -139,30 +109,14 @@ function ManagerRequest() {
                                     ))}
                                 </tbody>
                             </Table>
-                            <Pagination style={{ justifyContent: "flex-end" }}>
-                                <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />
-                                <Pagination.Prev
-                                    onClick={() => setCurrentPage(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                />
-                                {Array.from({ length: totalPages }, (_, index) => (
-                                    <Pagination.Item
-                                        key={index + 1}
-                                        active={index + 1 === currentPage}
-                                        onClick={() => setCurrentPage(index + 1)}
-                                    >
-                                        {index + 1}
-                                    </Pagination.Item>
-                                ))}
-                                <Pagination.Next
-                                    onClick={() => setCurrentPage(currentPage + 1)}
-                                    disabled={currentPage === totalPages}
-                                />
-                                <Pagination.Last
-                                    onClick={() => setCurrentPage(totalPages)}
-                                    disabled={currentPage === totalPages}
-                                />
-                            </Pagination>
+                            <Pagination
+                                current={currentPage}
+                                total={request.length}
+                                pageSize={usersPerPage}
+                                onChange={paginate}
+
+                                style={{ marginTop: "16px", textAlign: "center" }}
+                            />
                         </Col>
                     </Row>
                 </Col>

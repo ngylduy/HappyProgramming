@@ -1,7 +1,6 @@
-package com.swp.hg.CorsFilter;
+package com.swp.hg.corsfilter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -23,7 +22,6 @@ public class CorsFilter implements Filter {
 //        chain.doFilter(req, res);
 
         HttpServletResponse response = (HttpServletResponse) res;
-        HttpServletRequest request = (HttpServletRequest) req;
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");

@@ -9,7 +9,7 @@ export default function TemplateUser({title="", children}){
             <SideBarUser/>
             </Col>
             <Col md={9} xs={10}>
-            <div style={{marginTop:"70px"}}>{children}</div>
+            <div style={{marginTop:"45px"}}>{children}</div>
             </Col>
         </Row>
             

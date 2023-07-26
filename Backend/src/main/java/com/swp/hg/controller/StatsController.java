@@ -29,9 +29,15 @@ public class StatsController {
     public ResponseEntity<?> stats() {
         StatsDTO statsDTO = new StatsDTO();
         statsDTO.setTotalSkills(skillCategoryService.getTotalSkills());
+        statsDTO.setTotalActiveSkills(skillCategoryService.getTotalSkillByStatus(true));
+        statsDTO.setTotalActiveUsers(userService.getTotalUserByStatus(true));
         statsDTO.setTotalMentor(userService.getListUserByRole("USER_MENTOR").size());
         statsDTO.setTotalMentee(userService.getListUserByRole("USER_MENTEE").size());
         statsDTO.setTotalRequest(requestService.getALlRequest().size());
+        statsDTO.setTotalDeniedRequest(requestService.getCountRequestByStatus(2));
+        statsDTO.setTotalPendingRequest(requestService.getCountRequestByStatus(1));
+        statsDTO.setTotalProgressRequest(requestService.getCountRequestByStatus(0));
+        statsDTO.setTotalFinishedRequest(requestService.getCountRequestByStatus(3));
         return new ResponseEntity<>(statsDTO, HttpStatus.OK);
     }
 

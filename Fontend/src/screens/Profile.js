@@ -17,14 +17,7 @@ const Profile = () => {
     const [token, setToken] = useState(sessionStorage.getItem('token'));
     const [role, setRole] = useState('');
     const [mentor, setMentor] = useState([]);
-    // useEffect(()=>{
-    //     fetch(`http://localhost:8080/api/mentor/${id}`)
-    //     .then((res)=>res.json())
-    //     .then((data)=>{
-    //         setMentor(data);
-    //         console.log(data);
-    //     })
-    // })
+  
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -70,6 +63,26 @@ const Profile = () => {
             Authorization: `Bearer ${token}`,
         }
      }
+     const [avatarData, setAvatarData] = useState(null); // Thêm state để lưu trữ dữ liệu ảnh
+
+     const fetchMentorAvatar = () => {
+         if (mentor && mentor.avatar) {
+           fetch(`http://localhost:8080${mentor.avatar}`, role1)
+             .then((resp) => resp.blob())
+             .then((avatarData) => {
+               // Convert the avatar blob data to an object URL
+               const objectURL = URL.createObjectURL(avatarData);
+               // Set the avatar data in state
+               setAvatarData(objectURL);
+             })
+             .catch((err) => {
+               console.log(err.message);
+             });
+         }
+       };
+       useEffect(() => {
+        fetchMentorAvatar();
+    }, [mentor]);
 
 
 
@@ -91,7 +104,7 @@ const Profile = () => {
                                             <div className="d-flex flex-column align-items-center text-center">
                                                 {role === "USER_MENTOR" ? (
                                                     <img
-                                                        src={mentor.avatar}
+                                                        src={avatarData}
                                                         alt="Admin"
                                                         className="rounded-circle"
                                                         width={150}
@@ -105,12 +118,11 @@ const Profile = () => {
 
                                                 <div className="mt-3">
                                                     <h4>{users.username}</h4>
-                                                    <p className="text-secondary mb-1">Full Stack Developer</p>
+                                                    
                                                     <p className="text-muted font-size-sm">
                                                         {users.address}
                                                     </p>
-                                                    <button className="btn btn-primary">Follow</button>
-                                                    <button className="btn btn-outline-primary">Message</button>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -134,9 +146,9 @@ const Profile = () => {
                                                     >
                                                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                                                     </svg>
-                                                    <Link><a href={'https://github.com/Minhphuc2603'}>https://github.com/Minhphuc2603</a></Link>
-
+                                                   Github
                                                 </h6>
+                                                <span className="text-secondary">@bootdey</span>
 
                                             </li>
                                             <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -449,7 +461,7 @@ const Profile = () => {
                                             <div className="d-flex flex-column align-items-center text-center">
                                                 {role === "USER_MENTOR" ? (
                                                     <img
-                                                        src={mentor.avatar}
+                                                        src={avatarData}
                                                         alt="Admin"
                                                         className="rounded-circle"
                                                         width={150}
@@ -467,8 +479,7 @@ const Profile = () => {
                                                     <p className="text-muted font-size-sm">
                                                         {users.address}
                                                     </p>
-                                                    <button className="btn btn-primary">Follow</button>
-                                                    <button className="btn btn-outline-primary">Message</button>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -492,7 +503,7 @@ const Profile = () => {
                                                     >
                                                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                                                     </svg>
-                                                    <Link><a href={'https://github.com/Minhphuc2603'}>https://github.com/Minhphuc2603</a></Link>
+                                                    Github
 
                                                 </h6>
 
@@ -822,12 +833,11 @@ const Profile = () => {
 
                                                 <div className="mt-3">
                                                     <h4>{users.username}</h4>
-                                                    <p className="text-secondary mb-1">Full Stack Developer</p>
+                                                   
                                                     <p className="text-muted font-size-sm">
                                                         {users.address}
                                                     </p>
-                                                    <button className="btn btn-primary">Follow</button>
-                                                    <button className="btn btn-outline-primary">Message</button>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -851,8 +861,7 @@ const Profile = () => {
                                                     >
                                                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                                                     </svg>
-                                                    <Link><a href={'https://github.com/Minhphuc2603'}>https://github.com/Minhphuc2603</a></Link>
-
+                                                   Github
                                                 </h6>
 
                                             </li>

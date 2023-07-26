@@ -13,4 +13,5 @@ public class StatsDTO {
     int totalPendingRequest;
     int totalProgressRequest;
     int totalDeniedRequest;
+    int totalFinishedRequest;
 }

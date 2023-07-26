@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -22,16 +23,19 @@ class SkillCategoryImplTest {
     @Mock
     private SkillCategoryRepository skillCategoryRepository;
 
+    @InjectMocks
+    private SkillCategoryImpl skillCategoryService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-
     }
 
     @Test
     void delete() {
 
         List<SkillCategory> expected = new ArrayList<>();
+
         SkillCategory category1 = new SkillCategory();
         category1.setSkillID(1);
         category1.setSkillName("Java");
@@ -47,9 +51,7 @@ class SkillCategoryImplTest {
 
         when(skillCategoryRepository.findAll()).thenReturn(expected);
 
-        SkillCategoryService service = new SkillCategoryImpl(skillCategoryRepository);
-
-        List<SkillCategory> actual = service.getAll();
+        List<SkillCategory> actual = skillCategoryService.getAll();
 
         assertEquals(expected, actual);
     }

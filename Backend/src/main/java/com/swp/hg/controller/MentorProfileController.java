@@ -1,12 +1,10 @@
 package com.swp.hg.controller;
 
-import com.swp.hg.dto.MentorCVDTO;
-import com.swp.hg.dto.MentorProfileDTO;
-import com.swp.hg.dto.MentorRegistDTO;
-import com.swp.hg.dto.SearchResultDTO;
-import com.swp.hg.entity.MentorProfile;
+import com.swp.hg.dto.*;
+import com.swp.hg.entity.*;
 import com.swp.hg.repository.MentorProfileRepo;
 import com.swp.hg.response.ApiResponse;
+import com.swp.hg.response.RequestResponse;
 import com.swp.hg.service.Impl.MentorCVService;
 import com.swp.hg.service.MentorProfileService;
 import com.swp.hg.service.MentorRegistService;
@@ -15,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,15 +22,18 @@ import java.util.List;
 public class MentorProfileController {
 
     private final MentorProfileService mentorProfileService;
-
     private final MentorCVService mentorCVService;
-
     private final MentorProfileRepo mentorProfileRepo;
-
     private final MentorRegistService mentorRegistService;
+
     @GetMapping("/all")
     public ResponseEntity<List<MentorProfile>> getMentors() {
         return ResponseEntity.ok().body(mentorProfileService.getMentors());
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<?> getActiveMentors() {
+        return ResponseEntity.ok().body(mentorProfileService.getActiveMentors());
     }
 
     @PostMapping("/searchmentor")
@@ -57,10 +59,6 @@ public class MentorProfileController {
     @GetMapping("/{userid}")
     public ResponseEntity<MentorProfile> getMentorProfileByUserId(@PathVariable int userid ){
         return  ResponseEntity.ok().body(mentorProfileService.getById(userid));
-    }
-    @GetMapping("/getmentor/{mentorid}")
-    public ResponseEntity<MentorProfile> getMentorByMentorId(@PathVariable int mentorid) {
-        return ResponseEntity.ok().body(mentorProfileService.getByMentorID(mentorid));
     }
 
 
@@ -100,9 +98,37 @@ public class MentorProfileController {
         mentorRegistService.updateMentorRegistStatus(registDTO);
         return ResponseEntity.ok(new ApiResponse(true, "Mentor regist status updated successfully"));
     }
+
     @GetMapping("/skill/{id}")
     public ResponseEntity<List<MentorProfile>> getMentorsBySkillID(@PathVariable int id) {
         return ResponseEntity.ok().body(mentorProfileRepo.findMentorBySkillId(id));
     }
+
+    @GetMapping("/listMentorRegist")
+    public  ResponseEntity<List<MentorRegistDTO>> getListMentorRegist(){
+//        return ResponseEntity.ok().body(mentorRegistService.getMentorRegistList());
+        try {
+            List<MentorRegist> mentorRegists = mentorRegistService.getMentorRegistList();
+            List<MentorRegistDTO> responseList = new ArrayList<>();
+            for (MentorRegist mentorRegist : mentorRegists) {
+                MentorRegistDTO response = createMentorRegistResponse(mentorRegist);
+                responseList.add(response);
+            }
+            return ResponseEntity.ok(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+    }
+    private MentorRegistDTO createMentorRegistResponse(MentorRegist mentorRegist){
+        MentorRegistDTO response = new MentorRegistDTO();
+        response.setRegistID(mentorRegist.getRegistID());
+        response.setStatus(mentorRegist.getStatus());
+        response.setDate(mentorRegist.getDate());
+        response.setUserId(mentorRegist.getMentorRegist().getId());
+
+        return response;
+    }
+
 
 }

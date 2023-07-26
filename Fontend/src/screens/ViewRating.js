@@ -2,24 +2,15 @@ import React, { useEffect, useState } from "react";
 import TemplateAdmin from "../template/TemplateAdmin"
 
 import { PencilSquare, Trash3Fill } from "react-bootstrap-icons";
-import { Col, Table, Row, Pagination } from "react-bootstrap";
+import { Col, Table, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-
-
-
-
-
-
-
-
-
-
-
-
+import { Pagination } from "antd"
 function ViewRatting() {
     const [token] = useState(sessionStorage.getItem('token'));
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(5);
+    const [allUser, setAllUser] = useState([]);
+    const [allMentor, setAllMentor] = useState([])
     const role1 = {
         method: "GET",
         headers: {
@@ -27,6 +18,17 @@ function ViewRatting() {
             Authorization: `Bearer ${token}`,
         }
     }
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/user`, role1)
+            .then((resp) => resp.json())
+            .then((data) => {
+                setAllUser(data);
+            })
+            .catch((err) => {
+                console.log(err.message);
+                console.log(err);
+            });
+    }, []);
 
     useEffect(() => {
         if (token) {
@@ -45,7 +47,7 @@ function ViewRatting() {
 
 
     const [ratting, setRatting] = useState([]);
-    
+
     // Tính toán số trang
     const totalPages = Math.ceil(ratting.length / usersPerPage);
 
@@ -53,6 +55,7 @@ function ViewRatting() {
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentRatting = ratting.slice(indexOfFirstUser, indexOfLastUser);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
     useEffect(() => {
@@ -61,6 +64,18 @@ function ViewRatting() {
             .then((data) => {
                 setRatting(data);
                 console.log(data)
+            })
+            .catch((err) => {
+                console.log(err.message);
+                console.log(err);
+            });
+    }, [])
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/mentor/all`, role1)
+            .then((resp) => resp.json())
+            .then((data) => {
+                setAllMentor(data);
+
             })
             .catch((err) => {
                 console.log(err.message);
@@ -76,27 +91,35 @@ function ViewRatting() {
                             <h2>List Ratting</h2>
                         </Col>
                     </Row>
-                    
+
                     <Row>
                         <Col>
                             <Table className="table border shadow" >
                                 <thead>
                                     <tr>
-                                        <th >rateID</th>
-                                        <th >comment</th>
-                                        <th>star</th>
-                                        
-                                        
+                                        <th >RateID</th>
+                                        <th>MenteeName</th>
+                                        <th>MentorName</th>
+                                        <th >Comment</th>
+                                        <th>Star</th>
+
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {currentRatting.map((r) => (
                                         <tr key={r.rateID}>
                                             <td >{r.rateID}</td>
+                                            <td> {allUser.map(a => a.id === r.menteeID ? a.fullname : "")}</td>
+                                            <td >
+                                                {allMentor.map((m) =>
+                                                    m.mentorID === r.mentorID ? m.mentorProfile.fullname : " "
+                                                )}
+                                            </td>
                                             <td >{r.comment}</td>
-                                            <td>{r.star}</td>
-                                            
-                                           
+                                            <td>{r.star}&ensp;⭐️</td>
+
+
 
 
 
@@ -104,30 +127,14 @@ function ViewRatting() {
                                     ))}
                                 </tbody>
                             </Table>
-                            <Pagination style={{ justifyContent: "flex-end" }}>
-                                <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />
-                                <Pagination.Prev
-                                    onClick={() => setCurrentPage(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                />
-                                {Array.from({ length: totalPages }, (_, index) => (
-                                    <Pagination.Item
-                                        key={index + 1}
-                                        active={index + 1 === currentPage}
-                                        onClick={() => setCurrentPage(index + 1)}
-                                    >
-                                        {index + 1}
-                                    </Pagination.Item>
-                                ))}
-                                <Pagination.Next
-                                    onClick={() => setCurrentPage(currentPage + 1)}
-                                    disabled={currentPage === totalPages}
-                                />
-                                <Pagination.Last
-                                    onClick={() => setCurrentPage(totalPages)}
-                                    disabled={currentPage === totalPages}
-                                />
-                            </Pagination>
+                            <Pagination
+                                current={currentPage}
+                                total={ratting.length}
+                                pageSize={usersPerPage}
+                                onChange={paginate}
+
+                                style={{ marginTop: "16px", textAlign: "center" }}
+                            />
                         </Col>
                     </Row>
                 </Col>
