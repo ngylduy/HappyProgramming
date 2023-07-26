@@ -2,9 +2,12 @@ import React from 'react'
 import HomPage from '../template/HomePage';
 import "../styles/home.css"
 import "../styles/tailwind.min.css"
-import { Icon } from '@iconify/react';
+
 import { ToastContainer } from "react-toastify";
 import { Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
+
 
 function Home() {
   return (
@@ -281,10 +284,12 @@ function Home() {
                 </li>
               </ul>
               <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
-                <a href="/mentor/browse/">
+                <Link to={'/listmentor'}>
                   <button type="submit" className="blue-btn" href="/mentor/browse/">Find my mentor
                   </button>
-                </a>
+                </Link>
+
+
               </div>
             </div>
           </div>

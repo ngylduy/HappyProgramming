@@ -2,6 +2,8 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const EditRequestUser = () => {
     const [token] = useState(sessionStorage.getItem('token'));
@@ -57,16 +59,40 @@ const EditRequestUser = () => {
             Authorization: `Bearer ${token}`,
         }
     }
+    const IsValidate = () => {
+        let isproceed = true;
+
+        if (!title || !title.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in title');
+        }
+        if (!content || !content.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in content');
+        }
+        if (!link || !link.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in link');
+        }
+        if (skillId.length === 0) {
+            isproceed = false;
+            toast.warning('Please select at least one skill');
+          }
+        
+        
+
+
+
+
+        return isproceed;
+    }
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (title.trim() === "") {
-            alert("Please enter a valid name");
-            return;
-        } else {
+        if (IsValidate()) {
             const updatedRequest = {
                 mentorId: mentorID,
                 content: content,
@@ -128,7 +154,26 @@ const EditRequestUser = () => {
                             <Row>
                                 <Form.Group className="col-md-12">
                                     <Form.Text>content <span style={{ color: 'red' }}>*</span></Form.Text>
-                                    <Form.Control value={content} onChange={(e) => setContent(e.target.value)} as="textarea" />
+                                    <CKEditor
+                                    
+                                    editor={ClassicEditor}
+                                    data={content}
+                                    onReady={(editor)=>{
+                                        editor.editing.view.change((write)=>{
+                                            write.setStyle(
+                                                "height",
+                                                "200px",
+                                                editor.editing.view.document.getRoot()
+                                            )
+                                        })
+                                    }}
+                                    onChange={(e, editor) => {
+                                        const data = editor.getData();
+                                        setContent(data);
+                                    
+                                       
+                                    }}
+                                />
                                 </Form.Group>
                             </Row>
                             <Row>
@@ -144,6 +189,7 @@ const EditRequestUser = () => {
                                     {skill.slice(0, Math.ceil(skill.length / 2)).map((s) => (
                                         <div key={s.skillID}>
                                             <input
+                                               style={{appearance:'auto'}}
                                                 type="checkbox"
                                                 id={s.skillID}
                                                 name="skill"
@@ -163,6 +209,7 @@ const EditRequestUser = () => {
                                     {skill.slice(Math.ceil(skill.length / 2)).map((s) => (
                                         <div key={s.skillID}>
                                             <input
+                                                style={{appearance:'auto'}}
                                                 type="checkbox"
                                                 id={s.skillID}
                                                 name="skill"

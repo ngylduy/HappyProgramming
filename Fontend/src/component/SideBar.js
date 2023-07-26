@@ -30,33 +30,29 @@ function SideBar() {
                 <div id="wrapper">
 
                     {/*  <!-- Sidebar --> */}
-                    <ul className={style} id="accordionSidebar">
+                    <ul className={style} id="accordionSidebar" style={{ maxWidth: "90%" }}>
 
                         {/*  <!-- Sidebar - Brand --> */}
                         <a className="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                             <div className="sidebar-brand-icon rotate-n-15">
                                 <i className="fas fa-laugh-wink"></i>
                             </div>
-                            <div className="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                            <div className="sidebar-brand-text mx-3">Admin Manager</div>
                             <div className="text-center d-none d-md-inline">
-                                <button className="rounded-circle border-0" id="sidebarToggle" onClick={changeStyle}></button>
                             </div>
+
+
+
+
                         </a>
 
                         {/*   <!-- Divider --> */}
                         <hr className="sidebar-divider my-0" />
-
-                        {/*  <!-- Nav Item - Dashboard --> */}
-                        <li className="nav-item active">
-                            <a className="nav-link" href="index.html">
-                                <i className="fas fa-fw fa-tachometer-alt"></i>
-                                <span>Dashboard</span></a>
-                        </li>
                         <li className="nav-item active">
                             <Link className="nav-link" to={'/'} >
-                            
+
                                 <span>Home</span>
-                                </Link>
+                            </Link>
                         </li>
 
                         {/*  <!-- Divider --> */}
@@ -80,7 +76,7 @@ function SideBar() {
                                     <Link className="collapse-item" to={'/managerskill'}>ManagerSkill</Link>
                                     <Link className="collapse-item" to={'/manageruser'}>ManagerUser</Link>
                                     <Link className="collapse-item" to={'/managerrequest'}>ManagerRequest</Link>
-                                    
+
                                 </div>
                             </div>
                         </li>
@@ -96,9 +92,7 @@ function SideBar() {
                                 data-parent="#accordionSidebar">
                                 <div className="bg-white py-2 collapse-inner rounded">
                                     <h6 className="collapse-header">Custom View:</h6>
-                                    <Link className="collapse-item" to={'/managerskill'}>List Mentor</Link>
                                     <Link className="collapse-item" to={'/view/ratting'}>ViewRating</Link>
-                                   
                                 </div>
                             </div>
                         </li>
@@ -132,24 +126,17 @@ function SideBar() {
                         </li>
 
                         {/* <!-- Nav Item - Charts --> */}
-                        <li className="nav-item">
-                            <a className="nav-link" href="charts.html">
-                                <i className="fas fa-fw fa-chart-area"></i>
-                                <span>Charts</span></a>
-                        </li>
+                        <li className="nav-item active">
+                            <Link className="nav-link" to={'/manager/regist'} >
 
-                        {/*  <!-- Nav Item - Tables --> */}
-                        <li className="nav-item">
-                            <a className="nav-link" href="tables.html">
-                                <i className="fas fa-fw fa-table"></i>
-                                <span>Tables</span></a>
+                                <span>List Mentor Regist</span>
+                            </Link>
                         </li>
-
-                        {/* <!-- Divider --> */}
-                        <hr className="sidebar-divider d-none d-md-block" />
+                        <hr className="sidebar-divider d-none d-md-block"/>
+                        <div className="text-center d-none d-md-inline">
+                            <button className="rounded-circle border-0" id="sidebarToggle" onClick={changeStyle}></button>
+                        </div>
                     </ul>
-                    
-                    
                 </div>
             </body>
         </div>

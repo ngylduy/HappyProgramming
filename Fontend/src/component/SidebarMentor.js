@@ -50,7 +50,7 @@ function SideBarMentor() {
         }
 
     }, [token]);
-    const [style, setStyle] = useState("navbar-nav bg-gradient-primary sidebar sidebar-dark accordion");
+    const [style, setStyle] = useState("navbar-nav bg-gradient-primary sidebar sidebar-dark accordion ");
 
     const changeStyle = () => {
         if (style == "navbar-nav bg-gradient-primary sidebar sidebar-dark accordion") {
@@ -71,20 +71,20 @@ function SideBarMentor() {
 
     return (
         <div>
-            <body id="page-top">
+            
 
                 {/*  <!-- Page Wrapper --> */}
-                <div id="wrapper">
+                <div id="wrapper" >
 
                     {/*  <!-- Sidebar --> */}
-                    <ul className={style} id="accordionSidebar">
+                    <ul className={style} id="accordionSidebar"  style={{maxWidth:"90%"}}>
 
                         {/*  <!-- Sidebar - Brand --> */}
                         <a className="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                             <div className="sidebar-brand-icon rotate-n-15">
                                 <i className="fas fa-laugh-wink"></i>
                             </div>
-                            <div className="sidebar-brand-text mx-3">SB Admin <sup>1</sup></div>
+                            <div className="sidebar-brand-text mx-3"></div>
                             <div className="text-center d-none d-md-inline">
                                 <button className="rounded-circle border-0" id="sidebarToggle" onClick={changeStyle}></button>
                             </div>
@@ -163,11 +163,17 @@ function SideBarMentor() {
 
                         {/* <!-- Divider --> */}
                         <hr className="sidebar-divider d-none d-md-block" />
+                        <li className="nav-item active">
+                            <Link className="nav-link" to={'/managermentor/rating'} >
+                            
+                                <span>Rating </span>
+                                </Link>
+                        </li>
                     </ul>
                     
                     
                 </div>
-            </body>
+            
         </div>
     )
 }

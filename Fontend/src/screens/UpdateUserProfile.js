@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Input } from "antd";
+import moment from 'moment';
 
 
 const UpdateUserProfile = () => {
     const [users, setUsers] = useState([]);
-    const [token, setToken] = useState(sessionStorage.getItem("token"));
+    const [token] = useState(sessionStorage.getItem("token"));
     const navigator = useNavigate()
 
 
@@ -47,17 +49,56 @@ const UpdateUserProfile = () => {
         };
 
         if (token) {
-            setToken(token);
             fetchUsers();
         } else {
             setUsers([]);
         }
     }, [token]);
+    const IsValidate = () => {
+        let isproceed = true;
+
+       
+        if (!fullname || !fullname.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in fullname');
+        }
+        
+       
+        if (!address || !address.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in address');
+        }
+        
+        if (!phone || !phone.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in phone');
+          } else if (/^0\d{9}$/.test(phone)) {
+            // Kiểm tra số điện thoại hợp lệ
+          } else {
+            isproceed = false;
+            toast.warning("Phone numbers need 10 digits and start with the digit 0");
+          }
+        const currentDate = moment();
+        const dobDate = moment(dob);
+        const age = currentDate.diff(dobDate, 'years');
+
+        if (age < 6) {
+            isproceed = false;
+            toast.warning('You must be at least 15 years old');
+        }
+       
+
+
+
+
+        return isproceed;
+    }
+    
    
 
     const handleSave = () => {
-        if (fullname.length === 0) {
-            toast.warning('Enter fullname')
+        if (!IsValidate()) {
+            
         } else {
         // Gửi dữ liệu chỉnh sửa lên server, sử dụng axios hoặc phương thức HTTP tương ứng
         // Ví dụ:
@@ -111,10 +152,9 @@ const UpdateUserProfile = () => {
                                     /> */}
                                     <div className="mt-3">
                                         <h4>{users.username}</h4>
-                                        <p className="text-secondary mb-1">Full Stack Developer</p>
+                                        
                                         <p className="text-muted font-size-sm">{users.address}</p>
-                                        <button className="btn btn-primary">Follow</button>
-                                        <button className="btn btn-outline-primary">Message</button>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +253,7 @@ const UpdateUserProfile = () => {
                                         <h6 className="mb-0">Full Name</h6>
                                     </div>
                                     <div className="col-sm-9 text-secondary">
-                                        <input
+                                        <Input
                                             type="text"
                                             value={fullname}
                                             onChange={(event) => setFullname(event.target.value)}
@@ -235,7 +275,7 @@ const UpdateUserProfile = () => {
                                         <h6 className="mb-0">Phone</h6>
                                     </div>
                                     <div className="col-sm-9 text-secondary">
-                                        <input
+                                        <Input
                                             type="tel"
                                             value={phone}
                                             onChange={(event) => setPhone(event.target.value)}
@@ -260,7 +300,7 @@ const UpdateUserProfile = () => {
                                         <h6 className="mb-0">Address</h6>
                                     </div>
                                     <div className="col-sm-9 text-secondary">
-                                        <input
+                                        <Input
                                             type="text"
                                             value={address}
                                             onChange={(event) => setAddress(event.target.value)}
@@ -274,7 +314,7 @@ const UpdateUserProfile = () => {
                                         <h6 className="mb-0">DOB</h6>
                                     </div>
                                     <div className="col-sm-9 text-secondary">
-                                        <input
+                                        <Input
                                             type="date"
                                             value={dob}
                                             onChange={(event) => setDOB(event.target.value)}

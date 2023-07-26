@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Typed from 'typed.js';
 
 const Banner = () => {
 
     useEffect(() => {
         const options = {
-            strings: ['<span>answers...</span>', '<span style="color: #2f67fd !important">support...</span>', '<span style="color: #2f67fd !important">help...</span>', '<span style="color: #F05340 !important">provide...</span>'],
+            strings: ['<span>answers...</span>',
+                '<span style="color: #2f67fd !important">support...</span>',
+                '<span style="color: #2f67fd !important">help...</span>',
+                '<span style="color: #F05340 !important">provide...</span>'],
             typeSpeed: 80,
             loop: true,
             backDelay: 900,

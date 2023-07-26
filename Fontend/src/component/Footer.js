@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
+import { MDBFooter, MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 
 export default function Footer() {
     return (
@@ -20,17 +20,17 @@ export default function Footer() {
                         <MDBCol md="2" lg="2" xl="2" className='mx-auto mb-4'>
                             <h6 className='text-uppercase fw-bold mb-4'>Products</h6>
                             <p>
-                                <a href='#!' className='text-reset'>
+                                <a href='https://angular.io/' target="_blank" className='text-reset'>
                                     Angular
                                 </a>
                             </p>
                             <p>
-                                <a href='#!' className='text-reset'>
+                                <a href='https://react.dev/' target="_blank" className='text-reset'>
                                     React
                                 </a>
                             </p>
                             <p>
-                                <a href='#!' className='text-reset'>
+                                <a href='https://vuejs.org/' target="_blank" className='text-reset'>
                                     Vue
                                 </a>
                             </p>
@@ -71,8 +71,8 @@ export default function Footer() {
                 </MDBContainer>
             </section>
 
-            <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-                © 2023 Copyright all rights reserved.
+            <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)',color:'black' }}>
+               Happy Programming - Group4 - FPT Ha Noi
             </div>
         </MDBFooter>
     );

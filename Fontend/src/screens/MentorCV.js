@@ -1,4 +1,3 @@
-
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/profile.css"
@@ -8,9 +7,10 @@ import MaleIcon from '@mui/icons-material/Male';
 import axios from "axios";
 
 const MentorCV = () => {
-    const token = sessionStorage.getItem('token')
+    const token = sessionStorage.getItem('token');
     const [users, setUsers] = useState([]);
     const [stname, setToken] = useState(sessionStorage.getItem('token'));
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -19,9 +19,9 @@ const MentorCV = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log(response.data)
+                console.log(response.data);
                 setUsers(response.data);
-                
+
             } catch (error) {
                 console.error(error);
             }
@@ -35,30 +35,51 @@ const MentorCV = () => {
         }
 
     }, [token]);
-    
+
     const role1 = {
-        method:"GET",
-        headers:{
+        method: "GET",
+        headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         }
-     }
+    };
     const { userid } = useParams();
-    const [mentor, setMentor] = useState([])
-    const [exp,setExp]=useState('')
-    console.log(userid)
+    const [mentor, setMentor] = useState([]);
+    const [exp, setExp] = useState('');
+    const [avatarData, setAvatarData] = useState(null); // Thêm state để lưu trữ dữ liệu ảnh
+
+    const fetchMentorAvatar = () => {
+        if (mentor && mentor.avatar) {
+          fetch(`http://localhost:8080${mentor.avatar}`, role1)
+            .then((resp) => resp.blob())
+            .then((avatarData) => {
+              // Convert the avatar blob data to an object URL
+              const objectURL = URL.createObjectURL(avatarData);
+              // Set the avatar data in state
+              setAvatarData(objectURL);
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+        }
+      };
+
     useEffect(() => {
-        fetch("http://localhost:8080/api/mentor/" + userid,role1)
+        fetch(`http://localhost:8080/api/mentor/${userid}`, role1)
             .then((resp) => resp.json())
             .then((data) => {
                 setMentor(data);
-                setExp(data.mentorSkills[0].yearsOfExp)
-                console.log(data)
+                setExp(data.mentorSkills[0].yearsOfExp);
+                console.log(data);
             })
             .catch((err) => {
                 console.log(err.message);
             });
     }, []);
+
+    useEffect(() => {
+        fetchMentorAvatar();
+    }, [mentor]);
 
     return (
         <div className="container">
@@ -81,13 +102,14 @@ const MentorCV = () => {
                         <div className="card">
                             <div className="card-body">
                                 <div className="d-flex flex-column align-items-center text-center">
-                                    <img
-                                        src={mentor.avatar}
-                                        alt="Admin"
-                                        className="rounded-circle"
-                                        width={150}
-
-                                    />
+                                    {avatarData && (
+                                        <img
+                                            src={avatarData}
+                                            alt="Admin"
+                                            className="rounded-circle"
+                                            width={150}
+                                        />
+                                    )}
                                     <div className="mt-3">
                                         {mentor && mentor.mentorProfile && <h4>{mentor.mentorProfile.fullname}</h4>}
                                         <p className="text-secondary mb-1">{mentor.profession}</p>
@@ -95,9 +117,11 @@ const MentorCV = () => {
                                             <p className="text-muted font-size-sm">
                                                 {mentor.mentorProfile.address}
                                             </p>}
-                                            {mentor && mentor.mentorProfile &&
-                                        <Link to={`/request/add/`+mentor.mentorID+'/'+users.id} className="btn btn-primary">Send Request</Link>
-                                            }
+
+                                        {mentor && mentor.mentorProfile &&
+                                            <Link to={`/request/add/${mentor.mentorID}/${users.id}`} className="btn btn-primary">Send Request</Link>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
@@ -121,8 +145,8 @@ const MentorCV = () => {
                                         >
                                             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                                         </svg>
-                                        <button id="github-button" style={{ marginLeft: '100px' }}>GitHub</button>
-
+                                        Github
+                                        <span className="text-secondary">@bootdey</span>
                                     </h6>
 
                                 </li>
@@ -214,41 +238,39 @@ const MentorCV = () => {
                                     <div className="col-sm-3">
                                         <h6 className="mb-0">Phone</h6>
                                     </div>
-                                    {mentor && mentor.mentorProfile && 
-                                    <div className="col-sm-9 text-secondary">{mentor.mentorProfile.phone}</div>}
+                                    {mentor && mentor.mentorProfile &&
+                                        <div className="col-sm-9 text-secondary">{mentor.mentorProfile.phone}</div>}
                                 </div>
                                 <hr />
                                 <div className="row">
                                     <div className="col-sm-3">
                                         <h6 className="mb-0">Gender</h6>
                                     </div>
-                                    {mentor && mentor.mentorProfile && 
-                                    <div className="col-sm-9 text-secondary">{
-                                       mentor.mentorProfile.gender ? (
-                                            <span style={{ color: "blue" }}>
-                                                <MaleIcon style={{ width: "2em", height: "40px" }} />
-                                            </span>
-                                        ) : (
-                                            <span style={{ color: "red" }}>
-                                                <FemaleIcon style={{ width: "2em", height: "40px" }}/>
-                                            </span>
-                                        )
-                                    }</div>
-                                }
+                                    {mentor && mentor.mentorProfile &&
+                                        <div className="col-sm-9 text-secondary">
+                                            {mentor.mentorProfile.gender ? (
+                                                <span style={{ color: "blue" }}>
+                                                    <MaleIcon style={{ width: "2em", height: "40px" }} />
+                                                </span>
+                                            ) : (
+                                                <span style={{ color: "red" }}>
+                                                    <FemaleIcon style={{ width: "2em", height: "40px" }} />
+                                                </span>
+                                            )}
+                                        </div>
+                                    }
                                 </div>
                                 <hr />
                                 <div className="row">
                                     <div className="col-sm-3">
                                         <h6 className="mb-0">Year of Exp</h6>
                                     </div>
-                                    {mentor && mentor.mentorProfile && 
-                                    <div className="col-sm-9 text-secondary">
-                                        {exp}  year
-                                    </div>
+                                    {mentor && mentor.mentorProfile &&
+                                        <div className="col-sm-9 text-secondary">
+                                            {exp} year
+                                        </div>
                                     }
                                 </div>
-                                
-                                
                             </div>
                         </div>
                         <div className="row gutters-sm">
@@ -387,9 +409,7 @@ const MentorCV = () => {
                 </div>
             </div>
         </div>
-
     );
 }
 
 export default MentorCV;
-

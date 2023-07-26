@@ -1,40 +1,60 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import ProfileTemplate from "../template/ProfileTemplate";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const ListMentee = () => {
-    const [user, setUser] = useState([]);
+
     const [listmentor, setListMentor] = useState([]);
     const [token] = useState(sessionStorage.getItem("token"));
+    const [role] = useState(sessionStorage.getItem("role"));
     // const [exp,setExp]=useState('')
+    
     useEffect(() => {
-        fetch(`http://localhost:8080/api/mentor/all`)
-            .then((res) => res.json())
-            .then((data) => {
-                setListMentor(data);
-                
+        fetch("http://localhost:8080/api/mentor/active"
+          )
+        .then((res) => res.json())
+        .then((data) => {
+            // Log data khi fetch lên API thành công
+            console.log(data);
 
-                console.log(data);
-            })
-    }, [])
+            // Tiến hành lấy ảnh đại diện cho từng mentor trong danh sách
+            data.forEach((mentor) => {
+                fetch(`http://localhost:8080${mentor.avatar}`, {
+                    method: "GET"
+                })
+                .then((resp) => resp.blob())
+                .then((avatarData) => {
+                    const avatarUrl = URL.createObjectURL(avatarData);
+                    setListMentor((prevList) => prevList.map((m) => {
+                        if (m.mentorID === mentor.mentorID) {
+                            return { ...m, avatarUrl };
+                        }
+                        return m;
+                    }));
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                    console.log(err);
+                });
+            });
+
+            // Cập nhật danh sách mentor (đã có thông tin avatarUrl) vào state
+            setListMentor(data.map((mentor) => {
+                return { ...mentor, avatarUrl: null }; // Thêm thuộc tính avatarUrl để lưu trữ đường dẫn ảnh
+            }));
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+    }, [token]);
     const role1 = {
-        method:"GET",
-        headers:{
+        method: "GET",
+        headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         }
-     }
-    useEffect(() => {
-        fetch("http://localhost:8080/api/user")
-            .then((resp) => resp.json())
-            .then((data) => {
-                setUser(data);
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    }, []);
+    }
     return (
         <ProfileTemplate>
             <div className="breadcrumb-bar">
@@ -68,25 +88,35 @@ const ListMentee = () => {
                         {listmentor.map((m) => {
                             const exp = m.mentorSkills[0]?.yearsOfExp || '';
                             return (
-                                <div className="col-md-8 col-lg-6 col-xl-4">
+                                <div className="col-md-8 col-lg-6 col-xl-4" key={m.mentorID}>
                                     <div className="card-body">
                                         <div className="pro-widget-content">
                                             <div className="profile-info-widget">
                                                 <a className="booking-user-img" href="/reactjs/template/app/Mentor/profile-mentee">
-                                                    <img src={m.avatar} alt="User Image" />
+                                                    <img src={m.avatarUrl} alt="User Image" />
                                                 </a>
                                                 <div className="profile-det-info">
                                                     <h3>
-                                                        <Link to={`/mentor/cv/`+m.mentorProfile.id}>
-                                                            {m.mentorProfile.fullname}</Link>
-                                                        
-                                                    
+                                                        {token ? (
+                                                            role === "USER_MENTEE" ? (
+                                                                <Link to={`/mentor/cv/${m.mentorProfile.id}`}>
+                                                                    {m.mentorProfile.fullname}
+                                                                </Link>
+                                                            ) : (
+                                                                <Link >
+                                                                    {m.mentorProfile.fullname}
+                                                                </Link>
+                                                            )
+                                                        ) : (
+                                                            <Link to="/login">{m.mentorProfile.fullname}</Link>
+                                                        )}
                                                     </h3>
+
                                                     <hr />
                                                     <div className="mentee-details">
-                                                        
+
                                                         <h5>
-                                                            <i style={{marginRight:'45px'}}className="fas fa-map-marker-alt" />  {m.mentorProfile.address}
+                                                            <i style={{ marginRight: '45px' }} className="fas fa-map-marker-alt" />  {m.mentorProfile.address}
                                                         </h5>
                                                     </div>
                                                 </div>
@@ -98,10 +128,10 @@ const ListMentee = () => {
                                                     Phone <span>{m.mentorProfile.phone}</span>
                                                 </li>
                                                 <li>
-                                                 Profession <span>{m.profession}</span>
+                                                    Profession <span>{m.profession}</span>
                                                 </li>
                                                 <li>
-                                                  Year of Exp <span>{exp} year</span>
+                                                    Year of Exp <span>{exp} year</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -109,14 +139,6 @@ const ListMentee = () => {
                                 </div>
                             );
                         })}
-
-
-
-
-
-
-
-
                     </Row>
 
                 </Container>

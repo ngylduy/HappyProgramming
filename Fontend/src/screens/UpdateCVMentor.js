@@ -12,7 +12,7 @@ const UpdateCVMentor = () => {
 
 
     const [users, setUsers] = useState([]);
-    const [token, setToken] = useState(sessionStorage.getItem('token'));
+    const [token] = useState(sessionStorage.getItem('token'));
     const [role, setRole] = useState('');
     const [mentor, setMentor] = useState([]);
     const [avatar, setAvatar] = useState('');
@@ -49,7 +49,7 @@ const UpdateCVMentor = () => {
         };
 
         if (token) {
-            setToken(token);
+            
             fetchUsers();
         } else {
             setUsers([]);

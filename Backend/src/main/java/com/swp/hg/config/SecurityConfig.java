@@ -22,29 +22,32 @@ public class SecurityConfig {
      private final AuthorizationFilter authenticationFilter;
      private final AuthenticationProvider authenticationProvider;
 
-     @Bean
-     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-         http.csrf().disable();
-         http.sessionManagement().sessionCreationPolicy(STATELESS);
-         http.authorizeRequests()
-                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                 .requestMatchers("/api/auth/**").permitAll()
-                 .requestMatchers(HttpMethod.POST, "/api/rating").hasAnyAuthority("USER_MENTEE")
-                 .requestMatchers(HttpMethod.PUT, "/api/rating").hasAnyAuthority("USER_MENTEE")
-                 .requestMatchers(HttpMethod.GET, "/api/rating").permitAll()
-                 .requestMatchers(HttpMethod.POST, "/api/skill").hasAnyAuthority("USER_ADMIN")
-                 .requestMatchers(HttpMethod.PUT, "/api/skill").hasAnyAuthority("USER_ADMIN")
-                 .requestMatchers(HttpMethod.GET, "/api/skill").permitAll()
-                 .requestMatchers(HttpMethod.GET, "/api/mentor/**").permitAll()
-                 .and()
-                 .csrf().disable()
-                 .authorizeRequests()
-                 .anyRequest()
-                 .authenticated()
-                 .and()
-                 .authenticationProvider(authenticationProvider)
-                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-         return http.build();
-     }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+        http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(STATELESS);
+        http.authorizeRequests()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/rating").hasAnyAuthority("USER_MENTEE")
+                .requestMatchers(HttpMethod.PUT, "/api/rating").hasAnyAuthority("USER_MENTEE")
+                .requestMatchers(HttpMethod.GET, "/api/rating").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/skill").hasAnyAuthority("USER_ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/skill").hasAnyAuthority("USER_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/skill").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/mentor/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/mentor/searchmentor").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/mentor/searchmentor").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/image/**").permitAll()
+                .and()
+                .csrf().disable()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 
 }

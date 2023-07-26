@@ -4,6 +4,8 @@ import TemplateLogin from '../template/TemplateLogin';
 import { Link, useNavigate, } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { FaLongArrowAltLeft } from "react-icons/fa";
+import moment from 'moment';
+import validator from 'validator'
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
 function Register() {
@@ -13,42 +15,62 @@ function Register() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
-    const [gender, setGender] = useState("female");
+    const [gender, setGender] = useState(0);
     const [fullname, setFullname] = useState("")
     const [dob, setDob] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const navigate = useNavigate();
 
     const IsValidate = () => {
         let isproceed = true;
-        let errormessage = 'Please enter the value in ';
-        if (username === null || username === '') {
-            isproceed = false;
-            errormessage += ' Username';
-        }
-        if (fullname === null || fullname === '') {
-            isproceed = false;
-            errormessage += ' Fullname';
-        }
-        if (password === null || password === '') {
-            isproceed = false;
-            errormessage += ' Password';
-        }
-        if (email === null || email === '') {
-            isproceed = false;
-            errormessage += ' Email';
-        }
 
-        if (!isproceed) {
-            toast.warning(errormessage)
+        if (!username || !username.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in username');
+        }
+        if (!fullname || !fullname.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in fullname');
+        }
+        if (!password || !password.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in password');
+        }
+        if (!email || !email.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in email');
+        }
+        if (!address || !address.trim()) {
+            isproceed = false;
+            toast.warning('Please enter the value in address');
+        }
+        if (password !== confirmPassword) {
+            isproceed = false;
+            toast.warning('Passwords do not match');
+
+        }
+        if (/^0\d{9}$/.test(phone)) {
         } else {
-            if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
-
-            } else {
-                isproceed = false;
-                toast.warning('Please enter the valid email')
-            }
+          isproceed = false;
+          toast.warning("Phone numbers need 10 digits and start with the digit 0");
         }
+        const currentDate = moment();
+        const dobDate = moment(dob);
+        const age = currentDate.diff(dobDate, 'years');
+
+        if (age < 6) {
+            isproceed = false;
+            toast.warning('You must be at least 15 years old');
+        }
+        if (!validator.isEmail(email)) {
+            isproceed = false;
+            toast.warning('Please enter a valid email');
+        }
+
+
+
+
         return isproceed;
     }
 
@@ -71,15 +93,15 @@ function Register() {
             });
         }
     }
-    const homePage  = () => {
+    const homePage = () => {
         navigate('/')
     }
 
     return (
         <TemplateLogin>
-            <h3 type="button" onClick={homePage} style={{marginTop:'20px'}} ><FaLongArrowAltLeft/>HomePage</h3> 
+            <h3 type="button" onClick={homePage} style={{ marginTop: '20px' }} ><FaLongArrowAltLeft />HomePage</h3>
 
-            <div className="container1">
+            <div className="container">
                 <div className="row px-3">
                     <div className="col-lg-10 col-xl-9 card flex-row mx-auto px-0">
                         <div className="img-left d-none d-md-flex" />
@@ -91,6 +113,7 @@ function Register() {
                                         <i className="fa fa-envelope-o" />
                                     </span>
                                     <input
+                                      
                                         type="email"
                                         name=""
                                         placeholder="Email Address"
@@ -130,17 +153,18 @@ function Register() {
                                     <input type="Username" name="" placeholder="Username" required="" value={username} onChange={e => setUserName(e.target.value)} />
                                 </div>
                                 <div className="form-input">
-                                    <span>
-                                        <i className="fa fa-key" />
-                                    </span>
-                                    <input type="password" name="" placeholder="Password" required="" value={password} onChange={e => setPassword(e.target.value)} />
+
+                                    <input type="Password" name="" placeholder="Password" required="" value={password} onChange={e => setPassword(e.target.value)} />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-input">
+                                    <input type="Password" name="" placeholder="Confirm Password" required="" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                                </div>
+                                <div className="form-group" >
                                     <label>Gender</label>
                                     <br></br>
-                                    <input type="radio" checked={gender === 0} onChange={e => setGender(0)} name="gender" value={0} />
+                                    <input style={{ appearance: 'auto' }} type="radio" checked={gender === 0} onChange={e => setGender(0)} name="gender" value={0} />
                                     <label>Male</label>&emsp;
-                                    <input type="radio" checked={gender === 1} onChange={e => setGender(1)} name="gender" value={1} />
+                                    <input style={{ appearance: 'auto' }} type="radio" checked={gender === 1} onChange={e => setGender(1)} name="gender" value={1} />
                                     <label>Female</label>
 
                                 </div>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import TemplateAdmin from "../template/TemplateAdmin";
-import { Row, Col, Table, Pagination } from "react-bootstrap";
+import { Row, Col, Table,  } from "react-bootstrap";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import { useNavigate } from "react-router-dom";
+import {Pagination} from "antd"
 
 
 const ManagerUser = () => {
@@ -16,13 +17,7 @@ const ManagerUser = () => {
         }
     }, [])
 
-    useEffect(() => {
-        if (token) {
-            console.log("Token được lưu trong localStorage:", token);
-        } else {
-            console.log("Token không được lưu trong localStorage");
-        }
-    }, [token]);
+    
     const role1 = {
         method:"GET",
         headers:{
@@ -56,7 +51,7 @@ const ManagerUser = () => {
     const currentUsers = user.slice(indexOfFirstUser, indexOfLastUser);
 
     // Chuyển đổi trang
-    // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <TemplateAdmin>
@@ -110,30 +105,14 @@ const ManagerUser = () => {
                                     ))}
                                 </tbody>
                             </Table>
-                            <Pagination style={{justifyContent: "flex-end"}}>
-                                <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />
-                                <Pagination.Prev
-                                    onClick={() => setCurrentPage(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                />
-                                {Array.from({ length: totalPages }, (_, index) => (
-                                    <Pagination.Item
-                                        key={index + 1}
-                                        active={index + 1 === currentPage}
-                                        onClick={() => setCurrentPage(index + 1)}
-                                    >
-                                        {index + 1}
-                                    </Pagination.Item>
-                                ))}
-                                <Pagination.Next
-                                    onClick={() => setCurrentPage(currentPage + 1)}
-                                    disabled={currentPage === totalPages}
-                                />
-                                <Pagination.Last
-                                    onClick={() => setCurrentPage(totalPages)}
-                                    disabled={currentPage === totalPages}
-                                />
-                            </Pagination>
+                            <Pagination
+                                current={currentPage}
+                                total={user.length}
+                                pageSize={usersPerPage}
+                                onChange={paginate}
+
+                                style={{ marginTop: "16px", textAlign: "center" }}
+                            />
                         </Col>
                     </Row>
                 </Col>

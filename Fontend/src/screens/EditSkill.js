@@ -34,7 +34,7 @@ const EditSkill = () => {
         e.preventDefault();
 
         if (skillName.trim() === '') {
-            alert("Please enter a valid name");
+            toast.warning("Please enter a valid name");
             return;
         } else {
             const updatedSkill = {

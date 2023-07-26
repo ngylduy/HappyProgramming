@@ -10,4 +10,5 @@ public class MentorRegistDTO {
         private int registID;
         private int status;
         private int userId;
+        private LocalDateTime date;
 }

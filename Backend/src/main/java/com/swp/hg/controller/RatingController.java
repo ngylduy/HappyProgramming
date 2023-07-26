@@ -3,6 +3,7 @@ package com.swp.hg.controller;
 import com.swp.hg.dto.RatingDTO;
 import com.swp.hg.dto.ResultDTO;
 import com.swp.hg.entity.Rating;
+import com.swp.hg.response.RatingResponse;
 import com.swp.hg.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,13 +47,34 @@ public class RatingController {
     }
 
     @GetMapping("/rating/mentor/{id}")
-    public List<Rating> getByMentorID(@PathVariable int id) {
-        return ratingService.getByMentorID(id);
+    public ResponseEntity<List<RatingDTO>> getByMentorID(@PathVariable int id) {
+        try {
+            List<Rating> ratings = ratingService.getByMentorID(id);
+            List<RatingDTO> responseList = new ArrayList<>();
+            for (Rating rating : ratings) {
+                RatingDTO response = createRatingResponse(rating);
+                responseList.add(response);
+            }
+            return ResponseEntity.ok(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
+
     @GetMapping("/rating/mentee/{id}")
-    public List<Rating> getByMenteeID(@PathVariable int id) {
-        return ratingService.getByMenteeID(id);
+    public ResponseEntity<List<RatingDTO>> getByMenteeID(@PathVariable int id) {
+        try {
+            List<Rating> ratings = ratingService.getByMenteeID(id);
+            List<RatingDTO> responseList = new ArrayList<>();
+            for (Rating rating : ratings) {
+                RatingDTO response = createRatingResponse(rating);
+                responseList.add(response);
+            }
+            return ResponseEntity.ok(responseList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/rating")
@@ -67,5 +89,7 @@ public class RatingController {
         ResultDTO<Rating> ratingResultDTO = ratingService.saveOrUpdate(ratingDTO);
         return new ResponseEntity<ResultDTO<Rating>>(ratingResultDTO, HttpStatus.OK);
     }
+
+
 
 }

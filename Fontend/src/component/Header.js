@@ -1,26 +1,42 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { Row, NavDropdown, Modal, Button} from 'react-bootstrap';
+import { Row, NavDropdown} from 'react-bootstrap';
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LoginIcon from '@mui/icons-material/Login';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
-
+import { Modal } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+
 
 
 function Navbar() {
+    const { confirm } = Modal;
+    const showPromiseConfirm = () => {
+       
+        confirm({
+            title: 'Do you want to Logout ',
+            icon: <ExclamationCircleFilled />,
+            content: 'When clicked the OK button, this dialog will be closed after 1 second',
+            onOk() {
+                return new Promise((resolve, reject) => {
+                    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+                    sessionStorage.removeItem('token');
+                    navigate('/');
+                    toast.success("Logout success");
+                }).catch(() => console.log('Oops errors!'));
+            },
+            onCancel() { },
+        });
+    };
     const token = sessionStorage.getItem('token')
     
     const navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false); // State để điều khiển hiển thị modal
-    const handleLogout = () => {
-        setShowModal(false); // Ẩn modal khi logout
-        sessionStorage.removeItem('token');
-        navigate('/');
-        toast.success("Logout success");
-    }
+    
+   
     const [users, setUsers] = useState([]);
     const [token1, setToken] = useState(sessionStorage.getItem('token'));
     const [skill,setSkill] =useState([]);
@@ -43,13 +59,7 @@ function Navbar() {
                 console.log(err.message);
             });
     }, []);
-    const role1 = {
-        method:"GET",
-        headers:{
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        }
-     }
+    
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -62,6 +72,8 @@ function Navbar() {
                 console.log(response.data)
                 setUsers(response.data);
                 sessionStorage.setItem('idne',response.data.id)
+                sessionStorage.setItem('user',response.data.username)
+                
                 
                 setRole(response.data.roles[0].name);
                 const userID = response.data.id;
@@ -97,9 +109,7 @@ function Navbar() {
     const history = useNavigate()
 
     // Hàm để hiển thị/ẩn modal
-    const toggleModal = () => {
-        setShowModal(!showModal);
-    }
+    
     const handleSkillClick = (skillID) => {
         history(`/listmentor/skill/${skillID}`);
         window.location.reload();
@@ -107,7 +117,7 @@ function Navbar() {
 
     return (
         <>
-            <nav className="navbar navbar-expand-sm navbar-light bg-light fixed-top nsvj nav-header">
+            <nav className="navbar navbar-expand-sm navbar-light bg-light fixed-top nsvj nav-header" style={{zIndex:'200'}}>
                 <div className="container-fluid">
                     <img
                         src="https://happycode.com.es/wp-content/uploads/2022/01/HAPPY_CODE_LOGO-DUDA-gde_rgb-e1642522206836.png"
@@ -150,6 +160,7 @@ function Navbar() {
                                 <NavDropdown title="Skill" style={{ textDecoration: "none", fontSize: "18px" }}>
                                     {skill.map((s)=>(
                                             <Link
+                                            key={s.skillID}
                                             className="dropdown-item"
                                             onClick={() => handleSkillClick(s.skillID)}
                                         >
@@ -167,27 +178,27 @@ function Navbar() {
                                             <Link className="dropdown-item" to="/profile" style={{ textDecoration: "none", fontSize: "18px" }}><PersonIcon/>Profile</Link>
                                             
                                             { role === "USER_ADMIN" ?(
-                                                <Link className="dropdown-item" to="/managerskill" style={{ textDecoration: "none", fontSize: "18px" }}>Manager</Link>
+                                                <Link className="dropdown-item" to="/managerskill" style={{ textDecoration: "none", fontSize: "18px" }}><DashboardIcon/>Manager</Link>
                                             ):(
                                                <span></span>
                                             )
 
                                             }
                                             { role === "USER_MENTEE" ?(
-                                                <Link className="dropdown-item" to={`/requestuser/`+users.id} style={{ textDecoration: "none", fontSize: "18px" }}>My Request</Link>
+                                                <Link className="dropdown-item" to={`/requestuser/`+users.id} style={{ textDecoration: "none", fontSize: "18px" }}><DashboardIcon/>My Request</Link>
                                             ):(
                                                <span></span>
                                             )
 
                                             }
                                             { role === "USER_MENTOR" ?(
-                                                <Link className="dropdown-item" to={`/requestmentor/`+mentor.mentorID} style={{ textDecoration: "none", fontSize: "18px" }}>Mentor's Manager</Link>
+                                                <Link className="dropdown-item" to={`/requestmentor/`+mentor.mentorID} style={{ textDecoration: "none", fontSize: "18px" }}><DashboardIcon/>Mentor's Manager</Link>
                                             ):(
                                                <span></span>
                                             )
 
                                             }
-                                            <NavDropdown.Item onClick={toggleModal} style={{ textDecoration: "none", fontSize: "18px" }}><LogoutIcon/>&nbsp;Logout</NavDropdown.Item>
+                                            <NavDropdown.Item onClick={showPromiseConfirm} style={{ textDecoration: "none", fontSize: "18px" }}><LogoutIcon/>&nbsp;Logout</NavDropdown.Item>
                                             
                                         </>
                                     ) : (
@@ -204,18 +215,7 @@ function Navbar() {
             </nav>
 
             {/* Modal Logout */}
-            <Modal show={showModal} onHide={toggleModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Logout</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>Are you sure you want to logout?</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={toggleModal}>Cancel</Button>
-                    <Button variant="primary" onClick={handleLogout}>Logout</Button>
-                </Modal.Footer>
-            </Modal>
+            
             <style>{`
             .navbar-links {
               display: flex;
